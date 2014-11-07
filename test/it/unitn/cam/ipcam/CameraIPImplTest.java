@@ -12,7 +12,8 @@ public class CameraIPImplTest {
         Camera cameraIP = CameraIPBuilder.create()
                 .user("admin")
                 .password("admin")
-                .base("http://192.168.1.142:88")
+                .host("192.168.1.142")
+                .port(88)
                 .template(Cmds.ZOOMIN, "/cgi-bin/CGIProxy.fcgi?cmd=zoomIn&usr=${user}&pwd=${password}")
                 .template(Cmds.ZOOMOUT, "/cgi-bin/CGIProxy.fcgi?cmd=zoomOut&usr=${user}&pwd=${password}")
                 .build();

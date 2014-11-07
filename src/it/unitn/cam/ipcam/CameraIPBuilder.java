@@ -14,9 +14,10 @@ import java.util.Map;
  */
 public class CameraIPBuilder {
 
-    private String base;
-    private String user;
-    private String password;
+    private String host = "127.0.0.1";
+    private Integer port = 80;
+    private String user = "admin";
+    private String password = "";
     private Map<Cmds, String> urls = new HashMap<>();
 
 
@@ -24,8 +25,13 @@ public class CameraIPBuilder {
         return new CameraIPBuilder();
     }
 
-    public CameraIPBuilder base(String base) {
-        this.base = base;
+    public CameraIPBuilder host(String host) {
+        this.host= host;
+        return this;
+    }
+
+    public CameraIPBuilder port(Integer port) {
+        this.port= port;
         return this;
     }
 
@@ -45,8 +51,9 @@ public class CameraIPBuilder {
         Map<String, Object> map = new HashMap();
         map.put("user", user);
         map.put("password", password);
-        String url = mmp.format(map);
-        urls.put(cmds, base+url);
+        String cmd = mmp.format(map);
+        String url = "http://" + host + ":" + port + cmd;
+        urls.put(cmds, url);
         return this;
     }
 
