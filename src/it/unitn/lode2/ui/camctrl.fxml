@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.web.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.CamCtrlController">
+   <children>
+      <Button fx:id="zoomInButton" layoutX="29.0" layoutY="88.0" mnemonicParsing="false" onAction="#handleZoomInAction" prefHeight="26.0" prefWidth="73.0" text="zoomIn" />
+      <Button fx:id="zoomOutButton" layoutX="29.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleZoomOutAction" text="zoomOut" />
+      <ImageView fx:id="previewImageView" fitHeight="308.0" fitWidth="418.0" layoutX="160.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="519.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleRefreshAction" text="refresh" />
+   </children>
+</AnchorPane>
