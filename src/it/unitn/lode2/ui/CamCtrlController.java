@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
@@ -33,6 +34,12 @@ public class CamCtrlController implements Initializable {
     private ImageView previewImageView;
 
     @FXML
+    private ImageView vumeterImageView;
+
+    @FXML
+    private ToggleButton previewToggleButton;
+
+    @FXML
     private Button zoomOutButton;
 
     @FXML
@@ -51,6 +58,7 @@ public class CamCtrlController implements Initializable {
     private Button tiltDownButton;
 
     private static final String SNAPSHOTURL = "http://192.168.1.142:88/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=admin&pwd=admin";
+    private Timeline timeline;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -78,7 +86,7 @@ public class CamCtrlController implements Initializable {
 
         configHandlers();
 
-        Timeline timeline = new Timeline();
+        timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
             @Override
@@ -86,7 +94,7 @@ public class CamCtrlController implements Initializable {
                 refreshPreview();
             }
         }));
-        timeline.play();
+        //timeline.play();
     }
 
     private void configHandlers() {
@@ -123,10 +131,19 @@ public class CamCtrlController implements Initializable {
                 tiltDownButton.setOnAction(handlerTiltDownAction);
             }
         }
+        previewToggleButton.setOnAction(handlerPreview);
     }
 
     private void refreshPreview() {
         previewImageView.setImage(new Image(SNAPSHOTURL));
+    }
+
+    private void playPreview() {
+        timeline.play();
+    }
+
+    private void stopPreview() {
+        timeline.stop();
     }
 
 
@@ -257,6 +274,17 @@ public class CamCtrlController implements Initializable {
                 camera.tiltStop();
             } catch (IOException e) {
                 handleIOException(e);
+            }
+        }
+    };
+
+    private EventHandler<ActionEvent> handlerPreview = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            if( previewToggleButton.isSelected() ){
+                playPreview();
+            } else {
+                stopPreview();
             }
         }
     };

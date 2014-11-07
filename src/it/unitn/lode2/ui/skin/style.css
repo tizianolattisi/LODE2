@@ -18,7 +18,23 @@
     -fx-graphic: url("arrow-down2.png");
 }
 
+#backgroundPane {
+    -fx-background-image: url("../images/background.png");
+}
 
+.toggle-button {
+    -fx-background-image: url("../images/off.png");
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.toggle-button:selected {
+    -fx-background-image: url("../images/on.png");
+}
+
+#vumeterImageView {
+    -fx-image: url("../images/vumeter.png");
+}
 
 .button {
     -fx-padding: 7;
