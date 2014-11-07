@@ -17,7 +17,7 @@ public class CameraIPBuilder {
     private Integer port = 80;
     private String user = "admin";
     private String password = "";
-    private Map<Cmds, String> urls = new HashMap<>();
+    private Map<Cmds, String> templates = new HashMap<>();
 
 
     public static CameraIPBuilder create(){
@@ -46,17 +46,22 @@ public class CameraIPBuilder {
 
 
     public CameraIPBuilder template(Cmds cmds, String template) {
-        MessageMapFormat mmp = new MessageMapFormat(template);
-        Map<String, Object> map = new HashMap();
-        map.put("user", user);
-        map.put("password", password);
-        String cmd = mmp.format(map);
-        String url = "http://" + host + ":" + port + cmd;
-        urls.put(cmds, url);
+        templates.put(cmds, template);
         return this;
     }
 
     public CameraIPImpl build(){
+        Map<Cmds, String> urls = new HashMap<>();
+        for( Cmds cmd: templates.keySet() ) {
+            String template = templates.get(cmd);
+            MessageMapFormat mmp = new MessageMapFormat(template);
+            Map<String, Object> map = new HashMap();
+            map.put("user", user);
+            map.put("password", password);
+            String relativeUrl = mmp.format(map);
+            String url = "http://" + host + ":" + port + relativeUrl;
+            urls.put(cmd, url);
+        }
         CameraIPImpl cameraIP = new CameraIPImpl();
         if( urls.containsKey(Cmds.ZOOMIN) && urls.containsKey(Cmds.ZOOMOUT) ){
             cameraIP.setZoomInUrl(urls.get(Cmds.ZOOMIN));
