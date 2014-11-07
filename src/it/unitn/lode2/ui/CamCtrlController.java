@@ -1,6 +1,7 @@
 package it.unitn.lode2.ui;
 
 import it.unitn.lode2.cam.Camera;
+import it.unitn.lode2.cam.Capability;
 import it.unitn.lode2.cam.ipcam.CameraIPBuilder;
 import it.unitn.lode2.cam.ipcam.Cmds;
 import javafx.animation.KeyFrame;
@@ -13,7 +14,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -64,15 +64,7 @@ public class CamCtrlController implements Initializable {
                 .template(Cmds.PANSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&usr=${user}&pwd=${password}")
                 .build();
 
-        zoomInButton.setOnMousePressed(handlerZoomIn);
-        zoomInButton.setOnMouseReleased(handlerZoomStop);
-        zoomOutButton.setOnMousePressed(handlerZoomOut);
-        zoomOutButton.setOnMouseReleased(handlerZoomStop);
-
-        panLeftButton.setOnMousePressed(handlerPanLeft);
-        panLeftButton.setOnMouseReleased(handlerPanStop);
-        panRightButton.setOnMousePressed(handlerPanRight);
-        panRightButton.setOnMouseReleased(handlerPanStop);
+        configHandlers();
 
         Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -85,6 +77,31 @@ public class CamCtrlController implements Initializable {
         timeline.play();
     }
 
+    private void configHandlers() {
+        if( camera.hasCapability(Capability.ZOOM) ){
+            if( camera.hasCapability(Capability.ZOOMSTOP) ){
+                zoomInButton.setOnMousePressed(handlerZoomIn);
+                zoomOutButton.setOnMousePressed(handlerZoomOut);
+                zoomInButton.setOnMouseReleased(handlerZoomStop);
+                zoomOutButton.setOnMouseReleased(handlerZoomStop);
+            } else {
+                zoomInButton.setOnAction(handlerZoomInAction);
+                zoomOutButton.setOnAction(handlerZoomOutAction);
+            }
+        }
+        if( camera.hasCapability(Capability.PAN) ){
+            if( camera.hasCapability(Capability.PANSTOP) ){
+                panLeftButton.setOnMousePressed(handlerPanLeft);
+                panLeftButton.setOnMouseReleased(handlerPanStop);
+                panRightButton.setOnMousePressed(handlerPanRight);
+                panRightButton.setOnMouseReleased(handlerPanStop);
+            } else {
+                panLeftButton.setOnAction(handlerPanLeftAction);
+                panRightButton.setOnAction(handlerPanRightAction);
+            }
+        }
+    }
+
     private void refreshPreview() {
         previewImageView.setImage(new Image(SNAPSHOTURL));
     }
@@ -92,6 +109,12 @@ public class CamCtrlController implements Initializable {
 
     /* Event handling */
 
+    private EventHandler<ActionEvent> handlerZoomInAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            handlerZoomIn.handle(event);
+        }
+    };
     private EventHandler<Event> handlerZoomIn = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
@@ -100,6 +123,12 @@ public class CamCtrlController implements Initializable {
             } catch (IOException e) {
                 handleIOException(e);
             }
+        }
+    };
+    private EventHandler<ActionEvent> handlerZoomOutAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            handlerZoomOut.handle(event);
         }
     };
     private EventHandler<Event> handlerZoomOut = new EventHandler<Event>() {
@@ -123,6 +152,12 @@ public class CamCtrlController implements Initializable {
         }
     };
 
+    private EventHandler<ActionEvent> handlerPanLeftAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            handlerPanLeft.handle(event);
+        }
+    };
     private EventHandler<Event> handlerPanLeft = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
@@ -131,6 +166,12 @@ public class CamCtrlController implements Initializable {
             } catch (IOException e) {
                 handleIOException(e);
             }
+        }
+    };
+    private EventHandler<ActionEvent> handlerPanRightAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            handlerPanRight.handle(event);
         }
     };
     private EventHandler<Event> handlerPanRight = new EventHandler<Event>() {
