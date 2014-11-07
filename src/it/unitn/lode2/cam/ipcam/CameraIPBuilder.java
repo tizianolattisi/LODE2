@@ -83,6 +83,16 @@ public class CameraIPBuilder {
             cameraIP.setPanStopUrl(urls.get(Cmds.PANSTOP));
             cameraIP.addCapability(Capability.PANSTOP);
         }
+        // TILT
+        if( urls.containsKey(Cmds.TILTUP) && urls.containsKey(Cmds.TILTDOWN) ){
+            cameraIP.setTiltUpUrl(urls.get(Cmds.TILTUP));
+            cameraIP.setTiltDownUrl(urls.get(Cmds.TILTDOWN));
+            cameraIP.addCapability(Capability.TILT);
+        }
+        if( urls.containsKey(Cmds.TILTSTOP) ){
+            cameraIP.setTiltStopUrl(urls.get(Cmds.TILTSTOP));
+            cameraIP.addCapability(Capability.TILTSTOP);
+        }
         return cameraIP;
     }
 }

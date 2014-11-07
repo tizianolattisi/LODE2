@@ -13,6 +13,8 @@
       <ImageView fx:id="previewImageView" fitHeight="308.0" fitWidth="418.0" layoutX="160.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
       <Button layoutX="519.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleRefreshAction" text="refresh" />
       <Button fx:id="panLeftButton" layoutX="29.0" layoutY="226.0" mnemonicParsing="false" text="&lt;" />
-      <Button fx:id="panRightButton" layoutX="89.0" layoutY="226.0" mnemonicParsing="false" text="&gt;" />
+      <Button fx:id="panRightButton" layoutX="79.0" layoutY="226.0" mnemonicParsing="false" text="&gt;" />
+      <Button fx:id="tiltUpButton" layoutX="53.0" layoutY="200.0" mnemonicParsing="false" text="^" />
+      <Button fx:id="tiltDownButton" layoutX="53.0" layoutY="252.0" mnemonicParsing="false" text="v" />
    </children>
 </AnchorPane>

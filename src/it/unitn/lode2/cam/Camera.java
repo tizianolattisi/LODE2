@@ -21,4 +21,8 @@ public interface Camera {
     public void panRight() throws IOException;
     public void panStop() throws IOException;
 
+    public void tiltUp() throws IOException;
+    public void tiltDown() throws IOException;
+    public void tiltStop() throws IOException;
+
 }

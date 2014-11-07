@@ -44,6 +44,11 @@ public class CamCtrlController implements Initializable {
     @FXML
     private Button panRightButton;
 
+    @FXML
+    private Button tiltUpButton;
+
+    @FXML
+    private Button tiltDownButton;
 
     private static final String SNAPSHOTURL = "http://192.168.1.142:88/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=admin&pwd=admin";
 
@@ -56,12 +61,19 @@ public class CamCtrlController implements Initializable {
                 .password("admin")
                 .host("192.168.1.142")
                 .port(88)
+
                 .template(Cmds.ZOOMIN, "/cgi-bin/CGIProxy.fcgi?cmd=zoomIn&usr=${user}&pwd=${password}")
                 .template(Cmds.ZOOMOUT, "/cgi-bin/CGIProxy.fcgi?cmd=zoomOut&usr=${user}&pwd=${password}")
                 .template(Cmds.ZOOMSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=zoomStop&usr=${user}&pwd=${password}")
+
                 .template(Cmds.PANLEFT, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveLeft&usr=${user}&pwd=${password}")
                 .template(Cmds.PANRIGHT, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveRight&usr=${user}&pwd=${password}")
                 .template(Cmds.PANSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&usr=${user}&pwd=${password}")
+
+                .template(Cmds.TILTUP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveUp&usr=${user}&pwd=${password}")
+                .template(Cmds.TILTDOWN, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveDown&usr=${user}&pwd=${password}")
+                .template(Cmds.TILTSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&usr=${user}&pwd=${password}")
+
                 .build();
 
         configHandlers();
@@ -98,6 +110,17 @@ public class CamCtrlController implements Initializable {
             } else {
                 panLeftButton.setOnAction(handlerPanLeftAction);
                 panRightButton.setOnAction(handlerPanRightAction);
+            }
+        }
+        if( camera.hasCapability(Capability.TILT) ){
+            if( camera.hasCapability(Capability.TILTSTOP) ){
+                tiltUpButton.setOnMousePressed(handlerTiltUp);
+                tiltUpButton.setOnMouseReleased(handlerTiltStop);
+                tiltDownButton.setOnMousePressed(handlerTiltDown);
+                tiltDownButton.setOnMouseReleased(handlerTiltStop);
+            } else {
+                tiltUpButton.setOnAction(handlerTiltUpAction);
+                tiltDownButton.setOnAction(handlerTiltDownAction);
             }
         }
     }
@@ -189,6 +212,49 @@ public class CamCtrlController implements Initializable {
         public void handle(Event event){
             try {
                 camera.panStop();
+            } catch (IOException e) {
+                handleIOException(e);
+            }
+        }
+    };
+
+    private EventHandler<ActionEvent> handlerTiltUpAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            handlerTiltUp.handle(event);
+        }
+    };
+    private EventHandler<Event> handlerTiltUp = new EventHandler<Event>() {
+        @Override
+        public void handle(Event event){
+            try {
+                camera.tiltUp();
+            } catch (IOException e) {
+                handleIOException(e);
+            }
+        }
+    };
+    private EventHandler<ActionEvent> handlerTiltDownAction = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            handlerTiltDown.handle(event);
+        }
+    };
+    private EventHandler<Event> handlerTiltDown = new EventHandler<Event>() {
+        @Override
+        public void handle(Event event){
+            try {
+                camera.tiltDown();
+            } catch (IOException e) {
+                handleIOException(e);
+            }
+        }
+    };
+    private EventHandler<Event> handlerTiltStop = new EventHandler<Event>() {
+        @Override
+        public void handle(Event event){
+            try {
+                camera.tiltStop();
             } catch (IOException e) {
                 handleIOException(e);
             }

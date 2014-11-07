@@ -21,6 +21,10 @@ public class CameraIPImpl extends AbstractCamera {
     private String panRightUrl;
     private String panStopUrl;
 
+    private String tiltUpUrl;
+    private String tiltDownUrl;
+    private String tiltStopUrl;
+
     @Override
     public void zoomIn() throws IOException {
         executeGET(zoomInUrl);
@@ -51,6 +55,21 @@ public class CameraIPImpl extends AbstractCamera {
         executeGET(panStopUrl);
     }
 
+    @Override
+    public void tiltUp() throws IOException {
+        executeGET(tiltUpUrl);
+    }
+
+    @Override
+    public void tiltDown() throws IOException {
+        executeGET(tiltDownUrl);
+    }
+
+    @Override
+    public void tiltStop() throws IOException {
+        executeGET(tiltStopUrl);
+    }
+
     public void setZoomInUrl(String zoomInUrl) {
         this.zoomInUrl = zoomInUrl;
     }
@@ -73,6 +92,18 @@ public class CameraIPImpl extends AbstractCamera {
 
     public void setPanStopUrl(String panStopUrl) {
         this.panStopUrl = panStopUrl;
+    }
+
+    public void setTiltUpUrl(String tiltUpUrl) {
+        this.tiltUpUrl = tiltUpUrl;
+    }
+
+    public void setTiltDownUrl(String tiltDownUrl) {
+        this.tiltDownUrl = tiltDownUrl;
+    }
+
+    public void setTiltStopUrl(String tiltStopUrl) {
+        this.tiltStopUrl = tiltStopUrl;
     }
 
     private void executeGET(String sUrl) throws IOException {
