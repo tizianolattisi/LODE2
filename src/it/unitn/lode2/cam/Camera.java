@@ -1,4 +1,4 @@
-package it.unitn.cam;
+package it.unitn.lode2.cam;
 
 import java.io.IOException;
 

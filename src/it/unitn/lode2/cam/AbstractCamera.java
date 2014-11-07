@@ -1,9 +1,8 @@
-package it.unitn.cam;
+package it.unitn.lode2.cam;
 
 
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.Set;
 
 /**

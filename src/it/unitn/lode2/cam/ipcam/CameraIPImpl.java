@@ -1,12 +1,10 @@
-package it.unitn.cam.ipcam;
+package it.unitn.lode2.cam.ipcam;
 
-import it.unitn.cam.AbstractCamera;
+import it.unitn.lode2.cam.AbstractCamera;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * User: tiziano

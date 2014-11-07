@@ -1,7 +1,7 @@
-package it.unitn.cam.ipcam;
+package it.unitn.lode2.cam.ipcam;
 
-import it.unitn.cam.Camera;
-import it.unitn.cam.Capability;
+import it.unitn.lode2.cam.Camera;
+import it.unitn.lode2.cam.Capability;
 import org.junit.Test;
 
 public class CameraIPImplTest {

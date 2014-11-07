@@ -1,9 +1,8 @@
-package it.unitn.cam.ipcam;
+package it.unitn.lode2.cam.ipcam;
 
 import com.axiastudio.mapformat.MessageMapFormat;
-import it.unitn.cam.Capability;
+import it.unitn.lode2.cam.Capability;
 
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
