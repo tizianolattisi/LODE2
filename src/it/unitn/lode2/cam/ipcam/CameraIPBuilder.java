@@ -69,11 +69,19 @@ public class CameraIPBuilder {
             cameraIP.setZoomOutUrl(urls.get(Cmds.ZOOMOUT));
             cameraIP.addCapability(Capability.ZOOM);
         }
+        if( urls.containsKey(Cmds.ZOOMSTOP) ){
+            cameraIP.setZoomStopUrl(urls.get(Cmds.ZOOMSTOP));
+            cameraIP.addCapability(Capability.ZOOMSTOP);
+        }
         // PAN
         if( urls.containsKey(Cmds.PANLEFT) && urls.containsKey(Cmds.PANRIGHT) ){
             cameraIP.setPanLeftUrl(urls.get(Cmds.PANLEFT));
             cameraIP.setPanRightUrl(urls.get(Cmds.PANRIGHT));
             cameraIP.addCapability(Capability.PAN);
+        }
+        if( urls.containsKey(Cmds.PANSTOP) ){
+            cameraIP.setPanStopUrl(urls.get(Cmds.PANSTOP));
+            cameraIP.addCapability(Capability.PANSTOP);
         }
         return cameraIP;
     }

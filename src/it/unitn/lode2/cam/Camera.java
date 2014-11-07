@@ -15,8 +15,10 @@ public interface Camera {
 
     public void zoomIn() throws IOException;
     public void zoomOut() throws IOException;
+    public void zoomStop() throws IOException;
 
     public void panLeft() throws IOException;
     public void panRight() throws IOException;
+    public void panStop() throws IOException;
 
 }
