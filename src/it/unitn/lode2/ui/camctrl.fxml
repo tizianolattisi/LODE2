@@ -12,5 +12,7 @@
       <Button fx:id="zoomOutButton" layoutX="29.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleZoomOutAction" text="zoomOut" />
       <ImageView fx:id="previewImageView" fitHeight="308.0" fitWidth="418.0" layoutX="160.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
       <Button layoutX="519.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleRefreshAction" text="refresh" />
+      <Button fx:id="panLeftButton" layoutX="29.0" layoutY="226.0" mnemonicParsing="false" onAction="#handlePanLeftAction" text="&lt;" />
+      <Button fx:id="panRightButton" layoutX="89.0" layoutY="226.0" mnemonicParsing="false" onAction="#handlePanRightAtcion" text="&gt;" />
    </children>
 </AnchorPane>

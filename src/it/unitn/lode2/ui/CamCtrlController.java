@@ -40,6 +40,13 @@ public class CamCtrlController implements Initializable {
     @FXML
     private Button zoomInButton;
 
+    @FXML
+    private Button panLeftButton;
+
+    @FXML
+    private Button panRightButton;
+
+
     private static final String SNAPSHOTURL = "http://192.168.1.142:88/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=admin&pwd=admin";
 
     @Override
@@ -53,6 +60,8 @@ public class CamCtrlController implements Initializable {
                 .port(88)
                 .template(Cmds.ZOOMIN, "/cgi-bin/CGIProxy.fcgi?cmd=zoomIn&usr=${user}&pwd=${password}")
                 .template(Cmds.ZOOMOUT, "/cgi-bin/CGIProxy.fcgi?cmd=zoomOut&usr=${user}&pwd=${password}")
+                .template(Cmds.PANLEFT, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveLeft&usr=${user}&pwd=${password}")
+                .template(Cmds.PANRIGHT, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveRight&usr=${user}&pwd=${password}")
                 .build();
 
         Timeline timeline = new Timeline();
@@ -66,6 +75,13 @@ public class CamCtrlController implements Initializable {
         timeline.play();
     }
 
+    private void refreshPreview() {
+        previewImageView.setImage(new Image(SNAPSHOTURL));
+    }
+
+
+    /* Buttons hadling */
+
     @FXML
     void handleZoomInAction(ActionEvent event) throws IOException {
         camera.zoomIn();
@@ -77,12 +93,18 @@ public class CamCtrlController implements Initializable {
     }
 
     @FXML
-    void handleRefreshAction(ActionEvent event) {
-        refreshPreview();
+    void handlePanLeftAction(ActionEvent event) throws IOException {
+        camera.panLeft();
     }
 
-    private void refreshPreview() {
-        previewImageView.setImage(new Image(SNAPSHOTURL));
+    @FXML
+    void handlePanRightAtcion(ActionEvent event) throws IOException {
+        camera.panRight();
+    }
+
+    @FXML
+    void handleRefreshAction(ActionEvent event) {
+        refreshPreview();
     }
 
 }

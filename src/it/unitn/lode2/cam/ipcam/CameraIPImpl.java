@@ -16,6 +16,9 @@ public class CameraIPImpl extends AbstractCamera {
     private String zoomInUrl;
     private String zoomOutUrl;
 
+    private String panLeftUrl;
+    private String panRightUrl;
+
     @Override
     public void zoomIn() throws IOException {
         executeGET(zoomInUrl);
@@ -26,12 +29,30 @@ public class CameraIPImpl extends AbstractCamera {
         executeGET(zoomOutUrl);
     }
 
+    @Override
+    public void panLeft() throws IOException {
+        executeGET(panLeftUrl);
+    }
+
+    @Override
+    public void panRight() throws IOException {
+        executeGET(panRightUrl);
+    }
+
     public void setZoomInUrl(String zoomInUrl) {
         this.zoomInUrl = zoomInUrl;
     }
 
     public void setZoomOutUrl(String zoomOutUrl) {
         this.zoomOutUrl = zoomOutUrl;
+    }
+
+    public void setPanLeftUrl(String panLeftUrl) {
+        this.panLeftUrl = panLeftUrl;
+    }
+
+    public void setPanRightUrl(String panRightUrl) {
+        this.panRightUrl = panRightUrl;
     }
 
     private void executeGET(String sUrl) throws IOException {

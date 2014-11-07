@@ -63,10 +63,17 @@ public class CameraIPBuilder {
             urls.put(cmd, url);
         }
         CameraIPImpl cameraIP = new CameraIPImpl();
+        // ZOOM
         if( urls.containsKey(Cmds.ZOOMIN) && urls.containsKey(Cmds.ZOOMOUT) ){
             cameraIP.setZoomInUrl(urls.get(Cmds.ZOOMIN));
             cameraIP.setZoomOutUrl(urls.get(Cmds.ZOOMOUT));
             cameraIP.addCapability(Capability.ZOOM);
+        }
+        // PAN
+        if( urls.containsKey(Cmds.PANLEFT) && urls.containsKey(Cmds.PANRIGHT) ){
+            cameraIP.setPanLeftUrl(urls.get(Cmds.PANLEFT));
+            cameraIP.setPanRightUrl(urls.get(Cmds.PANRIGHT));
+            cameraIP.addCapability(Capability.PAN);
         }
         return cameraIP;
     }
