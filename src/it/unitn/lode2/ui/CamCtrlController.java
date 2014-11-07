@@ -6,6 +6,7 @@ import it.unitn.lode2.cam.ipcam.Cmds;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -57,9 +58,21 @@ public class CamCtrlController implements Initializable {
                 .port(88)
                 .template(Cmds.ZOOMIN, "/cgi-bin/CGIProxy.fcgi?cmd=zoomIn&usr=${user}&pwd=${password}")
                 .template(Cmds.ZOOMOUT, "/cgi-bin/CGIProxy.fcgi?cmd=zoomOut&usr=${user}&pwd=${password}")
+                .template(Cmds.ZOOMSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=zoomStop&usr=${user}&pwd=${password}")
                 .template(Cmds.PANLEFT, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveLeft&usr=${user}&pwd=${password}")
                 .template(Cmds.PANRIGHT, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveRight&usr=${user}&pwd=${password}")
+                .template(Cmds.PANSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&usr=${user}&pwd=${password}")
                 .build();
+
+        zoomInButton.setOnMousePressed(handlerZoomIn);
+        zoomInButton.setOnMouseReleased(handlerZoomStop);
+        zoomOutButton.setOnMousePressed(handlerZoomOut);
+        zoomOutButton.setOnMouseReleased(handlerZoomStop);
+
+        panLeftButton.setOnMousePressed(handlerPanLeft);
+        panLeftButton.setOnMouseReleased(handlerPanStop);
+        panRightButton.setOnMousePressed(handlerPanRight);
+        panRightButton.setOnMouseReleased(handlerPanStop);
 
         Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -77,27 +90,74 @@ public class CamCtrlController implements Initializable {
     }
 
 
-    /* Buttons hadling */
+    /* Event handling */
 
-    @FXML
-    void handleZoomInMousePressed(MouseEvent event) throws IOException {
-        camera.zoomIn();
+    private EventHandler<Event> handlerZoomIn = new EventHandler<Event>() {
+        @Override
+        public void handle(Event event){
+            try {
+                camera.zoomIn();
+            } catch (IOException e) {
+                handleIOException(e);
+            }
+        }
+    };
+    private EventHandler<Event> handlerZoomOut = new EventHandler<Event>() {
+        @Override
+        public void handle(Event event){
+            try {
+                camera.zoomOut();
+            } catch (IOException e) {
+                handleIOException(e);
+            }
+        }
+    };
+    private EventHandler<Event> handlerZoomStop = new EventHandler<Event>() {
+        @Override
+        public void handle(Event event){
+            try {
+                camera.zoomStop();
+            } catch (IOException e) {
+                handleIOException(e);
+            }
+        }
+    };
+
+    private EventHandler<Event> handlerPanLeft = new EventHandler<Event>() {
+        @Override
+        public void handle(Event event){
+            try {
+                camera.panLeft();
+            } catch (IOException e) {
+                handleIOException(e);
+            }
+        }
+    };
+    private EventHandler<Event> handlerPanRight = new EventHandler<Event>() {
+        @Override
+        public void handle(Event event){
+            try {
+                camera.panRight();
+            } catch (IOException e) {
+                handleIOException(e);
+            }
+        }
+    };
+    private EventHandler<Event> handlerPanStop = new EventHandler<Event>() {
+        @Override
+        public void handle(Event event){
+            try {
+                camera.panStop();
+            } catch (IOException e) {
+                handleIOException(e);
+            }
+        }
+    };
+
+    private void handleIOException(IOException e) {
+        e.printStackTrace();
     }
 
-    @FXML
-    void handleZoomOutMousePressed(MouseEvent event) throws IOException {
-        camera.zoomOut();
-    }
-
-    @FXML
-    void handlePanLeftMousePressed(MouseEvent event) throws IOException {
-        camera.panLeft();
-    }
-
-    @FXML
-    void handlePanRightMousePressed(MouseEvent event) throws IOException {
-        camera.panRight();
-    }
 
     @FXML
     void handleRefreshAction(ActionEvent event) {

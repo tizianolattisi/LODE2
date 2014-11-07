@@ -8,11 +8,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.CamCtrlController">
    <children>
-      <Button fx:id="zoomInButton" layoutX="29.0" layoutY="88.0" mnemonicParsing="false" onMousePressed="#handleZoomInMousePressed" prefHeight="26.0" prefWidth="73.0" text="zoomIn" />
-      <Button fx:id="zoomOutButton" layoutX="29.0" layoutY="128.0" mnemonicParsing="false" onMousePressed="#handleZoomOutMousePressed" text="zoomOut" />
+      <Button fx:id="zoomInButton" layoutX="29.0" layoutY="88.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="73.0" text="zoomIn" />
+      <Button fx:id="zoomOutButton" layoutX="29.0" layoutY="128.0" mnemonicParsing="false" text="zoomOut" />
       <ImageView fx:id="previewImageView" fitHeight="308.0" fitWidth="418.0" layoutX="160.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
       <Button layoutX="519.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleRefreshAction" text="refresh" />
-      <Button fx:id="panLeftButton" layoutX="29.0" layoutY="226.0" mnemonicParsing="false" onMousePressed="#handlePanLeftMousePressed" text="&lt;" />
-      <Button fx:id="panRightButton" layoutX="89.0" layoutY="226.0" mnemonicParsing="false" onMousePressed="#handlePanRightMousePressed" text="&gt;" />
+      <Button fx:id="panLeftButton" layoutX="29.0" layoutY="226.0" mnemonicParsing="false" text="&lt;" />
+      <Button fx:id="panRightButton" layoutX="89.0" layoutY="226.0" mnemonicParsing="false" text="&gt;" />
    </children>
 </AnchorPane>
