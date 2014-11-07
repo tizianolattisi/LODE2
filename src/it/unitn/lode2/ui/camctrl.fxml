@@ -8,13 +8,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.CamCtrlController">
    <children>
-      <Button fx:id="zoomInButton" layoutX="29.0" layoutY="88.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="73.0" text="zoomIn" />
-      <Button fx:id="zoomOutButton" layoutX="29.0" layoutY="128.0" mnemonicParsing="false" text="zoomOut" />
+      <Button fx:id="zoomInButton" layoutX="53.0" layoutY="59.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" />
+      <Button fx:id="zoomOutButton" layoutX="53.0" layoutY="117.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" />
       <ImageView fx:id="previewImageView" fitHeight="308.0" fitWidth="418.0" layoutX="160.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
-      <Button layoutX="519.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleRefreshAction" text="refresh" />
-      <Button fx:id="panLeftButton" layoutX="29.0" layoutY="226.0" mnemonicParsing="false" text="&lt;" />
-      <Button fx:id="panRightButton" layoutX="79.0" layoutY="226.0" mnemonicParsing="false" text="&gt;" />
-      <Button fx:id="tiltUpButton" layoutX="53.0" layoutY="200.0" mnemonicParsing="false" text="^" />
-      <Button fx:id="tiltDownButton" layoutX="53.0" layoutY="252.0" mnemonicParsing="false" text="v" />
+      <Button fx:id="panLeftButton" layoutX="16.0" layoutY="227.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" />
+      <Button fx:id="panRightButton" layoutX="89.0" layoutY="227.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" />
+      <Button fx:id="tiltUpButton" layoutX="53.0" layoutY="187.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" />
+      <Button fx:id="tiltDownButton" layoutX="53.0" layoutY="268.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0" />
    </children>
 </AnchorPane>

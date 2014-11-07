@@ -1,0 +1,33 @@
+
+#zoomInButton {
+    -fx-graphic: url("zoom-in.png");
+}
+#zoomOutButton {
+    -fx-graphic: url("zoom-out.png");
+}
+#panLeftButton {
+    -fx-graphic: url("arrow-left2.png");
+}
+#panRightButton {
+    -fx-graphic: url("arrow-right2.png");
+}
+#tiltUpButton {
+    -fx-graphic: url("arrow-up2.png");
+}
+#tiltDownButton {
+    -fx-graphic: url("arrow-down2.png");
+}
+
+
+
+.button {
+    -fx-padding: 7;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-spacing: 3;
+    -fx-border-radius: 36;
+}
+
+.button:hover {
+    -fx-border-color: gray;
+}

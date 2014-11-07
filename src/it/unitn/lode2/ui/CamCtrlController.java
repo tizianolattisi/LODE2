@@ -265,10 +265,4 @@ public class CamCtrlController implements Initializable {
         e.printStackTrace();
     }
 
-
-    @FXML
-    void handleRefreshAction(ActionEvent event) {
-        refreshPreview();
-    }
-
 }

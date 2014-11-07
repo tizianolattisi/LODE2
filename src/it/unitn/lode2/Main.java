@@ -12,7 +12,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("ui/camctrl.fxml"));
         primaryStage.setTitle("Cam controller");
-        primaryStage.setScene(new Scene(root, 600, 400));
+        Scene scene = new Scene(root, 600, 400);
+        scene.getStylesheets().add("/it/unitn/lode2/ui/skin/style.css");
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 
