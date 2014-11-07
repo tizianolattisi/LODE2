@@ -4,10 +4,7 @@ import it.unitn.lode2.cam.Camera;
 import it.unitn.lode2.cam.ipcam.CameraIPBuilder;
 import it.unitn.lode2.cam.ipcam.Cmds;
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,7 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -83,22 +80,22 @@ public class CamCtrlController implements Initializable {
     /* Buttons hadling */
 
     @FXML
-    void handleZoomInAction(ActionEvent event) throws IOException {
+    void handleZoomInMousePressed(MouseEvent event) throws IOException {
         camera.zoomIn();
     }
 
     @FXML
-    void handleZoomOutAction(ActionEvent event) throws IOException {
+    void handleZoomOutMousePressed(MouseEvent event) throws IOException {
         camera.zoomOut();
     }
 
     @FXML
-    void handlePanLeftAction(ActionEvent event) throws IOException {
+    void handlePanLeftMousePressed(MouseEvent event) throws IOException {
         camera.panLeft();
     }
 
     @FXML
-    void handlePanRightAtcion(ActionEvent event) throws IOException {
+    void handlePanRightMousePressed(MouseEvent event) throws IOException {
         camera.panRight();
     }
 
