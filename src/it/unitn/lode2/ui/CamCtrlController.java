@@ -10,11 +10,15 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -38,6 +42,9 @@ public class CamCtrlController implements Initializable {
 
     @FXML
     private ToggleButton previewToggleButton;
+
+    @FXML
+    private Button setupButton;
 
     @FXML
     private Button zoomOutButton;
@@ -132,6 +139,7 @@ public class CamCtrlController implements Initializable {
             }
         }
         previewToggleButton.setOnAction(handlerPreview);
+        setupButton.setOnAction(handlerSetup);
     }
 
     private void refreshPreview() {
@@ -286,6 +294,23 @@ public class CamCtrlController implements Initializable {
             } else {
                 stopPreview();
             }
+        }
+    };
+
+    private EventHandler<ActionEvent> handlerSetup = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/it/unitn/lode2/ui/camsetup.fxml"));
+                Scene scene = new Scene(root, 600, 700);
+                Stage stage = new Stage();
+                stage.setTitle("Camera config");
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     };
 
