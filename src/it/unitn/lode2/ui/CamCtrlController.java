@@ -152,6 +152,7 @@ public class CamCtrlController implements Initializable {
 
     private void stopPreview() {
         timeline.stop();
+        previewImageView.setImage(null);
     }
 
 

@@ -1,21 +1,39 @@
 
 #zoomInButton {
-    -fx-graphic: url("zoom-in.png");
+    -fx-graphic: url("../images/zoom-in.png");
+}
+#zoomInButton:pressed {
+    -fx-graphic: url("../images/zoom-in-pressed.png");
 }
 #zoomOutButton {
-    -fx-graphic: url("zoom-out.png");
+    -fx-graphic: url("../images/zoom-out.png");
+}
+#zoomOutButton:pressed {
+    -fx-graphic: url("../images/zoom-out-pressed.png");
 }
 #panLeftButton {
-    -fx-graphic: url("arrow-left2.png");
+    -fx-graphic: url("../images/pan-left.png");
+}
+#panLeftButton:pressed {
+    -fx-graphic: url("../images/pan-left-pressed.png");
 }
 #panRightButton {
-    -fx-graphic: url("arrow-right2.png");
+    -fx-graphic: url("../images/pan-right.png");
+}
+#panRightButton:pressed {
+    -fx-graphic: url("../images/pan-right-pressed.png");
 }
 #tiltUpButton {
-    -fx-graphic: url("arrow-up2.png");
+    -fx-graphic: url("../images/tilt-up.png");
+}
+#tiltUpButton:pressed {
+    -fx-graphic: url("../images/tilt-up-pressed.png");
 }
 #tiltDownButton {
-    -fx-graphic: url("arrow-down2.png");
+    -fx-graphic: url("../images/tilt-down.png");
+}
+#tiltDownButton:pressed {
+    -fx-graphic: url("../images/tilt-down-pressed.png");
 }
 
 #backgroundPane {
@@ -40,14 +58,16 @@
     -fx-image: url("../images/vumeter.png");
 }
 
+
 .button {
-    -fx-padding: 7;
     -fx-border-color: transparent;
     -fx-background-color: transparent;
-    -fx-spacing: 3;
-    -fx-border-radius: 36;
-}
 
+/*    -fx-padding: 7;
+    -fx-spacing: 3;
+    -fx-border-radius: 36;*/
+}
+/*
 .button:hover {
     -fx-border-color: gray;
-}
+}*/
