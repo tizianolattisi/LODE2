@@ -32,6 +32,10 @@
     -fx-background-image: url("../images/on.png");
 }
 
+#monitorImageView {
+    -fx-image: url("../images/monitor.png");
+}
+
 #vumeterImageView {
     -fx-image: url("../images/vumeter.png");
 }
