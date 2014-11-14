@@ -93,6 +93,11 @@ public class CameraIPBuilder {
             cameraIP.setTiltStopUrl(urls.get(Cmds.TILTSTOP));
             cameraIP.addCapability(Capability.TILTSTOP);
         }
+        // SNAPSHOT
+        if( urls.containsKey(Cmds.SNAPSHOT) ){
+            cameraIP.setSnapshotUrl(urls.get(Cmds.SNAPSHOT));
+            cameraIP.addCapability(Capability.SNAPSHOT);
+        }
         return cameraIP;
     }
 }

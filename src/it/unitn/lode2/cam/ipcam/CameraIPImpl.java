@@ -25,6 +25,8 @@ public class CameraIPImpl extends AbstractCamera {
     private String tiltDownUrl;
     private String tiltStopUrl;
 
+    private String snapshotUrl;
+
     @Override
     public void zoomIn() throws IOException {
         executeGET(zoomInUrl);
@@ -70,6 +72,11 @@ public class CameraIPImpl extends AbstractCamera {
         executeGET(tiltStopUrl);
     }
 
+    @Override
+    public InputStream snapshot() throws IOException {
+        return executeGET(snapshotUrl);
+    }
+
     public void setZoomInUrl(String zoomInUrl) {
         this.zoomInUrl = zoomInUrl;
     }
@@ -106,21 +113,19 @@ public class CameraIPImpl extends AbstractCamera {
         this.tiltStopUrl = tiltStopUrl;
     }
 
-    private void executeGET(String sUrl) throws IOException {
+    public void setSnapshotUrl(String snapshotUrl) {
+        this.snapshotUrl = snapshotUrl;
+    }
+
+    private InputStream executeGET(String sUrl) throws IOException {
         URL url = new URL(sUrl);
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setRequestMethod("GET");
         connection.connect();
 
         InputStream inputStream = connection.getInputStream();
+        return inputStream;
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
-        }
-        br.close();
     }
 
 

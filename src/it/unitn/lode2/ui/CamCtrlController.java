@@ -64,7 +64,6 @@ public class CamCtrlController implements Initializable {
     @FXML
     private Button tiltDownButton;
 
-    private static final String SNAPSHOTURL = "http://192.168.1.142:88/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=admin&pwd=admin";
     private Timeline timeline;
 
     @Override
@@ -88,6 +87,8 @@ public class CamCtrlController implements Initializable {
                 .template(Cmds.TILTUP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveUp&usr=${user}&pwd=${password}")
                 .template(Cmds.TILTDOWN, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveDown&usr=${user}&pwd=${password}")
                 .template(Cmds.TILTSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&usr=${user}&pwd=${password}")
+
+                .template(Cmds.SNAPSHOT, "/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=${user}&pwd=${password}")
 
                 .build();
 
@@ -143,7 +144,11 @@ public class CamCtrlController implements Initializable {
     }
 
     private void refreshPreview() {
-        previewImageView.setImage(new Image(SNAPSHOTURL));
+        try {
+            previewImageView.setImage(new Image(camera.snapshot()));
+        } catch (IOException e) {
+            handleIOException(e);
+        }
     }
 
     private void playPreview() {

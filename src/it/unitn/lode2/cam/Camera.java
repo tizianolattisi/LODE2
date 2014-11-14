@@ -1,6 +1,7 @@
 package it.unitn.lode2.cam;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * User: tiziano
@@ -25,4 +26,5 @@ public interface Camera {
     public void tiltDown() throws IOException;
     public void tiltStop() throws IOException;
 
+    public InputStream snapshot() throws IOException;
 }
