@@ -119,12 +119,14 @@ public class CameraIPImpl extends AbstractCamera {
 
     private InputStream executeGET(String sUrl) throws IOException {
         URL url = new URL(sUrl);
+        return url.openStream();
+        /*
         HttpURLConnection connection = (HttpURLConnection)url.openConnection();
         connection.setRequestMethod("GET");
         connection.connect();
 
         InputStream inputStream = connection.getInputStream();
-        return inputStream;
+        return inputStream;*/
 
     }
 
