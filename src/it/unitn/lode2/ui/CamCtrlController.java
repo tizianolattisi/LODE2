@@ -4,6 +4,8 @@ import it.unitn.lode2.cam.Camera;
 import it.unitn.lode2.cam.Capability;
 import it.unitn.lode2.cam.ipcam.CameraIPBuilder;
 import it.unitn.lode2.cam.ipcam.Cmds;
+import it.unitn.lode2.recorder.Recorder;
+import it.unitn.lode2.recorder.ipcam.RecorderIPBuilder;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -33,6 +35,8 @@ import java.util.ResourceBundle;
 public class CamCtrlController implements Initializable {
 
     Camera camera;
+
+    Recorder recorder=null;
 
     @FXML
     private ImageView previewImageView;
@@ -64,6 +68,15 @@ public class CamCtrlController implements Initializable {
     @FXML
     private Button tiltDownButton;
 
+    @FXML
+    private Button recordButton;
+
+    @FXML
+    private Button pauseButton;
+
+    @FXML
+    private Button stopButton;
+
     private Timeline timeline;
 
     @Override
@@ -73,7 +86,7 @@ public class CamCtrlController implements Initializable {
         camera = CameraIPBuilder.create()
                 .user("admin")
                 .password("admin")
-                .host("192.168.1.142")
+                .host("192.168.1.143")
                 .port(88)
 
                 .template(Cmds.ZOOMIN, "/cgi-bin/CGIProxy.fcgi?cmd=zoomIn&usr=${user}&pwd=${password}")
@@ -91,6 +104,10 @@ public class CamCtrlController implements Initializable {
                 .template(Cmds.SNAPSHOT, "/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=${user}&pwd=${password}")
 
                 .build();
+
+        recorder = RecorderIPBuilder.create()
+                .build();
+
 
         configHandlers();
 
@@ -141,6 +158,9 @@ public class CamCtrlController implements Initializable {
         }
         previewToggleButton.setOnAction(handlerPreview);
         setupButton.setOnAction(handlerSetup);
+        recordButton.setOnAction(handlerRecord);
+        pauseButton.setOnAction(handlerPause);
+        stopButton.setOnAction(handlerStop);
     }
 
     private void refreshPreview() {
@@ -317,6 +337,33 @@ public class CamCtrlController implements Initializable {
                 e.printStackTrace();
             }
 
+        }
+    };
+
+    private EventHandler<ActionEvent> handlerRecord = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            if( recorder.isIdle() || recorder.isPaused() ) {
+                recorder.record();
+            }
+        }
+    };
+
+    private EventHandler<ActionEvent> handlerPause = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            if( recorder.isRecording() ){
+                recorder.pause();
+            }
+        }
+    };
+
+    private EventHandler<ActionEvent> handlerStop = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            if( recorder.isRecording() ){
+                recorder.stop();
+            }
         }
     };
 
