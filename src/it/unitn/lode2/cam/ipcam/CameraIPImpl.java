@@ -74,7 +74,8 @@ public class CameraIPImpl extends AbstractCamera {
 
     @Override
     public InputStream snapshot() throws IOException {
-        return executeGET(snapshotUrl);
+        URL url = new URL(snapshotUrl);
+        return url.openStream();
     }
 
     public void setZoomInUrl(String zoomInUrl) {
@@ -117,17 +118,12 @@ public class CameraIPImpl extends AbstractCamera {
         this.snapshotUrl = snapshotUrl;
     }
 
-    private InputStream executeGET(String sUrl) throws IOException {
+    private void executeGET(String sUrl) throws IOException {
         URL url = new URL(sUrl);
-        return url.openStream();
-        /*
-        HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.connect();
-
-        InputStream inputStream = connection.getInputStream();
-        return inputStream;*/
-
+        connection.getContent();
     }
 
 

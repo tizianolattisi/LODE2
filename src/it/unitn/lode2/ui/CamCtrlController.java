@@ -192,11 +192,17 @@ public class CamCtrlController implements Initializable {
     private EventHandler<Event> handlerZoomIn = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
-            try {
-                camera.zoomIn();
-            } catch (IOException e) {
-                handleIOException(e);
-            }
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        camera.zoomIn();
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
+            });
+            thread.start();
         }
     };
     private EventHandler<ActionEvent> handlerZoomOutAction = new EventHandler<ActionEvent>() {
@@ -208,21 +214,33 @@ public class CamCtrlController implements Initializable {
     private EventHandler<Event> handlerZoomOut = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
-            try {
-                camera.zoomOut();
-            } catch (IOException e) {
-                handleIOException(e);
-            }
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        camera.zoomOut();
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
+            });
+            thread.start();
         }
     };
     private EventHandler<Event> handlerZoomStop = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
-            try {
-                camera.zoomStop();
-            } catch (IOException e) {
-                handleIOException(e);
-            }
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        camera.zoomStop();
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
+            });
+            thread.start();
         }
     };
 
@@ -235,11 +253,17 @@ public class CamCtrlController implements Initializable {
     private EventHandler<Event> handlerPanLeft = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
-            try {
-                camera.panLeft();
-            } catch (IOException e) {
-                handleIOException(e);
-            }
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        camera.panLeft();
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
+            });
+            thread.start();
         }
     };
     private EventHandler<ActionEvent> handlerPanRightAction = new EventHandler<ActionEvent>() {
@@ -251,21 +275,33 @@ public class CamCtrlController implements Initializable {
     private EventHandler<Event> handlerPanRight = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
-            try {
-                camera.panRight();
-            } catch (IOException e) {
-                handleIOException(e);
-            }
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        camera.panRight();
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
+            });
+            thread.start();
         }
     };
     private EventHandler<Event> handlerPanStop = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
-            try {
-                camera.panStop();
-            } catch (IOException e) {
-                handleIOException(e);
-            }
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        camera.panStop();
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
+            });
+            thread.start();
         }
     };
 
@@ -278,11 +314,18 @@ public class CamCtrlController implements Initializable {
     private EventHandler<Event> handlerTiltUp = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
-            try {
-                camera.tiltUp();
-            } catch (IOException e) {
-                handleIOException(e);
-            }
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        camera.tiltUp();
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
+            });
+            thread.start();
+
         }
     };
     private EventHandler<ActionEvent> handlerTiltDownAction = new EventHandler<ActionEvent>() {
@@ -294,21 +337,33 @@ public class CamCtrlController implements Initializable {
     private EventHandler<Event> handlerTiltDown = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
-            try {
-                camera.tiltDown();
-            } catch (IOException e) {
-                handleIOException(e);
-            }
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        camera.tiltDown();
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
+            });
+            thread.start();
         }
     };
     private EventHandler<Event> handlerTiltStop = new EventHandler<Event>() {
         @Override
         public void handle(Event event){
-            try {
-                camera.tiltStop();
-            } catch (IOException e) {
-                handleIOException(e);
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    camera.tiltStop();
+                } catch (IOException e) {
+                    handleIOException(e);
+                }
             }
+        });
+        thread.start();
         }
     };
 
