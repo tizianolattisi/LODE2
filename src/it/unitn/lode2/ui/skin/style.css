@@ -1,41 +1,3 @@
-
-#zoomInButton {
-    -fx-graphic: url("../images/zoom-in.png");
-}
-#zoomInButton:pressed {
-    -fx-graphic: url("../images/zoom-in-pressed.png");
-}
-#zoomOutButton {
-    -fx-graphic: url("../images/zoom-out.png");
-}
-#zoomOutButton:pressed {
-    -fx-graphic: url("../images/zoom-out-pressed.png");
-}
-#panLeftButton {
-    -fx-graphic: url("../images/pan-left.png");
-}
-#panLeftButton:pressed {
-    -fx-graphic: url("../images/pan-left-pressed.png");
-}
-#panRightButton {
-    -fx-graphic: url("../images/pan-right.png");
-}
-#panRightButton:pressed {
-    -fx-graphic: url("../images/pan-right-pressed.png");
-}
-#tiltUpButton {
-    -fx-graphic: url("../images/tilt-up.png");
-}
-#tiltUpButton:pressed {
-    -fx-graphic: url("../images/tilt-up-pressed.png");
-}
-#tiltDownButton {
-    -fx-graphic: url("../images/tilt-down.png");
-}
-#tiltDownButton:pressed {
-    -fx-graphic: url("../images/tilt-down-pressed.png");
-}
-
 #backgroundPane {
     -fx-background-image: url("../images/background.png");
 }
@@ -62,12 +24,9 @@
 .button {
     -fx-border-color: transparent;
     -fx-background-color: transparent;
-
-/*    -fx-padding: 7;
-    -fx-spacing: 3;
-    -fx-border-radius: 36;*/
+    -fx-background-image: url("../images/button.png");
 }
-/*
-.button:hover {
-    -fx-border-color: gray;
-}*/
+
+.button:pressed {
+    -fx-background-image: url("../images/button-pressed.png");
+}
