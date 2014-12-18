@@ -10,14 +10,14 @@ import java.io.IOException;
  * Date: 14/12/14
  * Time: 14:18
  */
-public class RecorderIPImpl implements Recorder {
+public class IPRecorderImpl implements Recorder {
 
     private static final String FFMPEG_COMMAND = "/Applications/ffmpeg/bin/ffmpeg";
 
     private Process recordProcess=null;
     RecorderStatus status = RecorderStatus.IDLE;
 
-    public RecorderIPImpl() {
+    public IPRecorderImpl() {
     }
 
     @Override

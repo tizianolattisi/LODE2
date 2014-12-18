@@ -6,7 +6,7 @@ import it.unitn.lode2.cam.ipcam.CameraIPBuilder;
 import it.unitn.lode2.cam.ipcam.Cmds;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
-import it.unitn.lode2.recorder.ipcam.RecorderIPBuilder;
+import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -111,7 +111,7 @@ public class CamCtrlController implements Initializable {
 
                 .build();
 
-        recorder = RecorderIPBuilder.create()
+        recorder = IPRecorderBuilder.create()
                 .protocol(IPRecorderProtocol.RTSP)
                 .host(HOST)
                 .port(PORT)
