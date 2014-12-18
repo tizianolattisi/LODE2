@@ -3,6 +3,8 @@ package it.unitn.lode2.recorder.ipcam;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.RecorderStatus;
 
+import java.io.IOException;
+
 /**
  * User: tiziano
  * Date: 14/12/14
@@ -10,16 +12,37 @@ import it.unitn.lode2.recorder.RecorderStatus;
  */
 public class RecorderIPImpl implements Recorder {
 
+    private static final String FFMPEG_COMMAND = "/Applications/ffmpeg/bin/ffmpeg";
+
+    private Process recordProcess=null;
     RecorderStatus status = RecorderStatus.IDLE;
 
+    public RecorderIPImpl() {
+    }
+
     @Override
-    public void record() {
+    public void record() throws IOException {
+        recordProcess  = new ProcessBuilder(FFMPEG_COMMAND,
+                "-i",
+                "rtsp://admin:admin@192.168.1.143:88/videoMain",
+                "-strict",
+                "-2",
+                "-acodec", "aac",
+                "-vcodec", "copy",
+                "-b:a", "32k",
+                "movie0.mp4").start();
+        System.out.println("record");
         status = RecorderStatus.RECORDING;
     }
 
     @Override
     public void stop() {
-        status = RecorderStatus.IDLE;
+        if( recordProcess.isAlive() ) {
+            recordProcess.destroy();
+            recordProcess=null;
+            System.out.println("stop");
+            status = RecorderStatus.IDLE;
+        }
     }
 
     @Override

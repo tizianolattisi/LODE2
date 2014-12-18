@@ -5,6 +5,7 @@ import it.unitn.lode2.cam.Capability;
 import it.unitn.lode2.cam.ipcam.CameraIPBuilder;
 import it.unitn.lode2.cam.ipcam.Cmds;
 import it.unitn.lode2.recorder.Recorder;
+import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
 import it.unitn.lode2.recorder.ipcam.RecorderIPBuilder;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -33,6 +34,10 @@ import java.util.ResourceBundle;
  * Time: 09:39
  */
 public class CamCtrlController implements Initializable {
+
+    // parametri da passare in configurazione
+    private final String HOST = "192.168.1.143";
+    private final int PORT = 88;
 
     Camera camera;
 
@@ -82,12 +87,13 @@ public class CamCtrlController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        // TODO: use IOC to inject the implementations of Camera and Recorder
 
         camera = CameraIPBuilder.create()
                 .user("admin")
                 .password("admin")
-                .host("192.168.1.143")
-                .port(88)
+                .host(HOST)
+                .port(PORT)
 
                 .template(Cmds.ZOOMIN, "/cgi-bin/CGIProxy.fcgi?cmd=zoomIn&usr=${user}&pwd=${password}")
                 .template(Cmds.ZOOMOUT, "/cgi-bin/CGIProxy.fcgi?cmd=zoomOut&usr=${user}&pwd=${password}")
@@ -106,6 +112,9 @@ public class CamCtrlController implements Initializable {
                 .build();
 
         recorder = RecorderIPBuilder.create()
+                .protocol(IPRecorderProtocol.RTSP)
+                .host(HOST)
+                .port(PORT)
                 .build();
 
 
@@ -399,7 +408,11 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             if( recorder.isIdle() || recorder.isPaused() ) {
-                recorder.record();
+                try {
+                    recorder.record();
+                } catch (IOException e) {
+                    handleIOException(e);
+                }
             }
         }
     };

@@ -2,6 +2,8 @@ package it.unitn.lode2.recorder;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
+import java.io.IOException;
+
 /**
  * User: tiziano
  * Date: 14/12/14
@@ -9,7 +11,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
  */
 public interface Recorder {
 
-    public void record();
+    public void record() throws IOException;
 
     public void stop();
 
