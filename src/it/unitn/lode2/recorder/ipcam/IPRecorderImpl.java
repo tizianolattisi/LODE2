@@ -17,20 +17,55 @@ public class IPRecorderImpl implements Recorder {
     private Process recordProcess=null;
     RecorderStatus status = RecorderStatus.IDLE;
 
-    public IPRecorderImpl() {
+    private final IPRecorderProtocol protocol;
+    private final String host;
+    private final Integer port;
+    private final String path;
+    private final String user;
+    private final String password;
+    private final String output;
+
+    private String url;
+
+    public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password, String output) {
+        this.protocol = protocol;
+        this.host = host;
+        this.port = port;
+        this.path = path;
+        this.user = user;
+        this.password = password;
+        this.output = output;
+
+        url = protocol.toString().toLowerCase() + "://";
+        if( user!=null && password!=null ){
+            url += user+ ":" + password + "@";
+        }
+        url += host + ":" + port + path;
+    }
+    public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password) {
+        this(host, port, protocol, path, user, password, null);
+    }
+    public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path) {
+        this(host, port, protocol, path, null, null, null);
+    }
+    public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol) {
+        this(host, port, protocol, null, null, null, null);
+    }
+    public IPRecorderImpl(String host, Integer port) {
+        this(host, port, null, null, null, null, null);
     }
 
     @Override
     public void record() throws IOException {
         recordProcess  = new ProcessBuilder(FFMPEG_COMMAND,
                 "-i",
-                "rtsp://admin:admin@192.168.1.143:88/videoMain",
+                url,
                 "-strict",
                 "-2",
                 "-acodec", "aac",
                 "-vcodec", "copy",
                 "-b:a", "32k",
-                "movie0.mp4").start();
+                output).start();
         System.out.println("record");
         status = RecorderStatus.RECORDING;
     }

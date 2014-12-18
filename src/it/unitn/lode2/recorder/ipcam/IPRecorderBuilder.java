@@ -8,10 +8,12 @@ package it.unitn.lode2.recorder.ipcam;
 public class IPRecorderBuilder {
 
     private String host="127.0.0.1";
-
     private Integer port=80;
-
     private IPRecorderProtocol protocol=IPRecorderProtocol.HTTP;
+    private String url="/";
+    private String user=null;
+    private String password=null;
+    private String output ="movie.mp4";
 
     public static IPRecorderBuilder create(){
         return new IPRecorderBuilder();
@@ -27,13 +29,34 @@ public class IPRecorderBuilder {
         return this;
     }
 
+    public IPRecorderBuilder url(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public IPRecorderBuilder user(String user) {
+        this.user = user;
+        return this;
+    }
+
+    public IPRecorderBuilder password(String password) {
+        this.password = password;
+        return this;
+    }
+
     public IPRecorderBuilder protocol(IPRecorderProtocol protocol){
         this.protocol = protocol;
         return this;
     }
 
+    public IPRecorderBuilder output(String output) {
+        this.output = output;
+        return this;
+    }
+
     public IPRecorderImpl build(){
-        IPRecorderImpl recorder = new IPRecorderImpl();
+        // TODO: per ora il builder si limita a creare l'istanza
+        IPRecorderImpl recorder = new IPRecorderImpl(host, port, protocol, url, user, password, output);
         return recorder;
     }
 }

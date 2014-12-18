@@ -1,5 +1,6 @@
 package it.unitn.lode2.ui;
 
+import it.unitn.lode2.IOC;
 import it.unitn.lode2.cam.Camera;
 import it.unitn.lode2.cam.Capability;
 import it.unitn.lode2.cam.ipcam.CameraIPBuilder;
@@ -38,6 +39,8 @@ public class CamCtrlController implements Initializable {
     // parametri da passare in configurazione
     private final String HOST = "192.168.1.143";
     private final int PORT = 88;
+    private final String USER = "admin";
+    private final String PASSWORD = "admin";
 
     Camera camera;
 
@@ -87,36 +90,9 @@ public class CamCtrlController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // TODO: use IOC to inject the implementations of Camera and Recorder
-
-        camera = CameraIPBuilder.create()
-                .user("admin")
-                .password("admin")
-                .host(HOST)
-                .port(PORT)
-
-                .template(Cmds.ZOOMIN, "/cgi-bin/CGIProxy.fcgi?cmd=zoomIn&usr=${user}&pwd=${password}")
-                .template(Cmds.ZOOMOUT, "/cgi-bin/CGIProxy.fcgi?cmd=zoomOut&usr=${user}&pwd=${password}")
-                .template(Cmds.ZOOMSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=zoomStop&usr=${user}&pwd=${password}")
-
-                .template(Cmds.PANLEFT, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveLeft&usr=${user}&pwd=${password}")
-                .template(Cmds.PANRIGHT, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveRight&usr=${user}&pwd=${password}")
-                .template(Cmds.PANSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&usr=${user}&pwd=${password}")
-
-                .template(Cmds.TILTUP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveUp&usr=${user}&pwd=${password}")
-                .template(Cmds.TILTDOWN, "/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveDown&usr=${user}&pwd=${password}")
-                .template(Cmds.TILTSTOP, "/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&usr=${user}&pwd=${password}")
-
-                .template(Cmds.SNAPSHOT, "/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&usr=${user}&pwd=${password}")
-
-                .build();
-
-        recorder = IPRecorderBuilder.create()
-                .protocol(IPRecorderProtocol.RTSP)
-                .host(HOST)
-                .port(PORT)
-                .build();
-
+        // IOC to inject the implementations of Camera and Recorder
+        camera = IOC.queryUtility(Camera.class);
+        recorder = IOC.queryUtility(Recorder.class);
 
         configHandlers();
 
