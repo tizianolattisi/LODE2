@@ -10,17 +10,16 @@
 <AnchorPane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.CamCtrlController">
    <children>
       <ImageView fx:id="monitorImageView" fitHeight="256.0" fitWidth="342.0" layoutX="340.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="zoomInButton" layoutX="141.0" layoutY="26.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="ZOOM&#10;IN" textAlignment="CENTER" />
-      <Button fx:id="zoomOutButton" layoutX="141.0" layoutY="102.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="ZOOM&#10;OUT" textAlignment="CENTER" />
+      <Button fx:id="zoomInButton" layoutX="161.0" layoutY="26.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="ZOOM&#10;IN" textAlignment="CENTER" />
+      <Button fx:id="zoomOutButton" layoutX="161.0" layoutY="102.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="ZOOM&#10;OUT" textAlignment="CENTER" />
       <ImageView fx:id="previewImageView" fitHeight="200.0" fitWidth="320.0" layoutX="350.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="panLeftButton" layoutX="74.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="PAN&#10;LEFT" textAlignment="CENTER" />
-      <Button fx:id="panRightButton" layoutX="208.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="PAN&#10;RIGHT" textAlignment="CENTER" />
-      <Button fx:id="tiltUpButton" layoutX="141.0" layoutY="225.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="TILT&#10;UP" textAlignment="CENTER" />
-      <Button fx:id="tiltDownButton" layoutX="141.0" layoutY="359.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="TILT&#10;DOWN" textAlignment="CENTER" />
+      <Button fx:id="panLeftButton" layoutX="94.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="PAN&#10;LEFT" textAlignment="CENTER" />
+      <Button fx:id="panRightButton" layoutX="228.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="PAN&#10;RIGHT" textAlignment="CENTER" />
+      <Button fx:id="tiltUpButton" layoutX="161.0" layoutY="225.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="TILT&#10;UP" textAlignment="CENTER" />
+      <Button fx:id="tiltDownButton" layoutX="161.0" layoutY="359.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="TILT&#10;DOWN" textAlignment="CENTER" />
       <ToggleButton fx:id="previewToggleButton" layoutX="689.0" layoutY="27.0" maxHeight="70.0" maxWidth="48.0" minHeight="70.0" minWidth="48.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="48.0" text="ToggleButton" />
-      <ImageView fx:id="vumeterImageView" fitHeight="165.0" fitWidth="165.0" layoutX="511.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true" />
-      <ToggleButton fx:id="previewToggleButton1" layoutX="689.0" layoutY="373.0" maxHeight="70.0" maxWidth="48.0" minHeight="70.0" minWidth="48.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="48.0" text="ToggleButton" />
-      <Button fx:id="setupButton" layoutX="671.0" layoutY="492.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="SETUP" />
+      <ImageView fx:id="vumeterImageView" fitHeight="165.0" fitWidth="165.0" layoutX="437.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="setupButton" layoutX="670.0" layoutY="492.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="SETUP" />
       <Button fx:id="stopButton" layoutX="498.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="STOP" />
       <ToggleButton fx:id="preset1ToggleButton" layoutX="69.0" layoutY="492.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" styleClass="preset" text="PRESET&#10;1" textAlignment="CENTER">
          <font>
