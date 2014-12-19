@@ -27,6 +27,8 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -85,6 +87,20 @@ public class CamCtrlController implements Initializable {
     @FXML
     private Button stopButton;
 
+    @FXML
+    private ToggleButton preset1ToggleButton;
+
+    @FXML
+    private ToggleButton preset2ToggleButton;
+
+    @FXML
+    private ToggleButton preset3ToggleButton;
+
+    @FXML
+    private ToggleButton preset4ToggleButton;
+
+    private List<ToggleButton> toggleButtons;
+
     private Timeline timeline;
 
     @Override
@@ -93,6 +109,8 @@ public class CamCtrlController implements Initializable {
         // IOC to inject the implementations of Camera and Recorder
         camera = IOC.queryUtility(Camera.class);
         recorder = IOC.queryUtility(Recorder.class);
+
+        toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
 
         configHandlers();
 
@@ -146,6 +164,10 @@ public class CamCtrlController implements Initializable {
         recordButton.setOnAction(handlerRecord);
         pauseButton.setOnAction(handlerPause);
         stopButton.setOnAction(handlerStop);
+        preset1ToggleButton.setOnAction(handlerPreset);
+        preset2ToggleButton.setOnAction(handlerPreset);
+        preset3ToggleButton.setOnAction(handlerPreset);
+        preset4ToggleButton.setOnAction(handlerPreset);
     }
 
     private void refreshPreview() {
@@ -407,6 +429,16 @@ public class CamCtrlController implements Initializable {
         public void handle(ActionEvent event) {
             if( recorder.isRecording() ){
                 recorder.stop();
+            }
+        }
+    };
+
+    private EventHandler<ActionEvent> handlerPreset = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            ToggleButton pressedButton = (ToggleButton) event.getSource();
+            for( ToggleButton button: toggleButtons ){
+                    button.setSelected(button == pressedButton);
             }
         }
     };
