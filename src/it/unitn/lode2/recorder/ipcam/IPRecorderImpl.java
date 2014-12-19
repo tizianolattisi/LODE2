@@ -86,6 +86,13 @@ public class IPRecorderImpl implements Recorder {
     }
 
     @Override
+    public void wakeup() {
+        if( RecorderStatus.PAUSED.equals(status) ) {
+            status = RecorderStatus.RECORDING;
+        }
+    }
+
+    @Override
     public RecorderStatus status() {
         return status;
     }

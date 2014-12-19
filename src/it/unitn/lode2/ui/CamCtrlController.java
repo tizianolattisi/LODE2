@@ -79,10 +79,10 @@ public class CamCtrlController implements Initializable {
     private Button tiltDownButton;
 
     @FXML
-    private Button recordButton;
+    private ToggleButton recordToggleButton;
 
     @FXML
-    private Button pauseButton;
+    private ToggleButton pauseToggleButton;
 
     @FXML
     private Button stopButton;
@@ -161,8 +161,8 @@ public class CamCtrlController implements Initializable {
         }
         previewToggleButton.setOnAction(handlerPreview);
         setupButton.setOnAction(handlerSetup);
-        recordButton.setOnAction(handlerRecord);
-        pauseButton.setOnAction(handlerPause);
+        recordToggleButton.setOnAction(handlerRecord);
+        pauseToggleButton.setOnAction(handlerPause);
         stopButton.setOnAction(handlerStop);
         preset1ToggleButton.setOnAction(handlerPreset);
         preset2ToggleButton.setOnAction(handlerPreset);
@@ -412,6 +412,7 @@ public class CamCtrlController implements Initializable {
                     handleIOException(e);
                 }
             }
+            recordToggleButton.setSelected(true);
         }
     };
 
@@ -420,6 +421,11 @@ public class CamCtrlController implements Initializable {
         public void handle(ActionEvent event) {
             if( recorder.isRecording() ){
                 recorder.pause();
+            } else if( recorder.isPaused() ){
+                recorder.wakeup();
+            }
+            else {
+                pauseToggleButton.setSelected(false);
             }
         }
     };
@@ -427,8 +433,10 @@ public class CamCtrlController implements Initializable {
     private EventHandler<ActionEvent> handlerStop = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            if( recorder.isRecording() ){
+            if( recorder.isRecording() || recorder.isPaused() ){
                 recorder.stop();
+                recordToggleButton.setSelected(false);
+                pauseToggleButton.setSelected(false);
             }
         }
     };

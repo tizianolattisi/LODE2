@@ -21,8 +21,6 @@
       <ImageView fx:id="vumeterImageView" fitHeight="165.0" fitWidth="165.0" layoutX="511.0" layoutY="373.0" pickOnBounds="true" preserveRatio="true" />
       <ToggleButton fx:id="previewToggleButton1" layoutX="689.0" layoutY="373.0" maxHeight="70.0" maxWidth="48.0" minHeight="70.0" minWidth="48.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="48.0" text="ToggleButton" />
       <Button fx:id="setupButton" layoutX="671.0" layoutY="492.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="SETUP" />
-      <Button fx:id="recordButton" layoutX="344.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="REC" />
-      <Button fx:id="pauseButton" layoutX="421.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="PAUSE" />
       <Button fx:id="stopButton" layoutX="498.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" text="STOP" />
       <ToggleButton fx:id="preset1ToggleButton" layoutX="69.0" layoutY="492.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" styleClass="preset" text="PRESET&#10;1" textAlignment="CENTER">
          <font>
@@ -44,5 +42,7 @@
             <Font size="12.0" />
          </font>
       </ToggleButton>
+      <ToggleButton fx:id="pauseToggleButton" layoutX="421.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" styleClass="preset" text="PAUSE" textAlignment="CENTER" />
+      <ToggleButton fx:id="recordToggleButton" layoutX="344.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" styleClass="preset" text="REC" textAlignment="CENTER" />
    </children>
 </AnchorPane>

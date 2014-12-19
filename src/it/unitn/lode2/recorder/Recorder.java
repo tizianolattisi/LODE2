@@ -17,6 +17,8 @@ public interface Recorder {
 
     public void pause();
 
+    public void wakeup();
+
     public RecorderStatus status();
 
     public Boolean isIdle();
