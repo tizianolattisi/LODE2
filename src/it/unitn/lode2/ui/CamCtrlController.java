@@ -187,6 +187,12 @@ public class CamCtrlController implements Initializable {
         previewImageView.setImage(null);
     }
 
+    private void resetPresetButtons() {
+        for( ToggleButton button: toggleButtons ){
+            button.setSelected(false);
+        }
+    }
+
 
     /* Event handling */
 
@@ -210,8 +216,10 @@ public class CamCtrlController implements Initializable {
                 }
             });
             thread.start();
+            resetPresetButtons();
         }
     };
+
     private EventHandler<ActionEvent> handlerZoomOutAction = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
@@ -232,6 +240,7 @@ public class CamCtrlController implements Initializable {
                 }
             });
             thread.start();
+            resetPresetButtons();
         }
     };
     private EventHandler<Event> handlerZoomStop = new EventHandler<Event>() {
@@ -271,6 +280,7 @@ public class CamCtrlController implements Initializable {
                 }
             });
             thread.start();
+            resetPresetButtons();
         }
     };
     private EventHandler<ActionEvent> handlerPanRightAction = new EventHandler<ActionEvent>() {
@@ -293,6 +303,7 @@ public class CamCtrlController implements Initializable {
                 }
             });
             thread.start();
+            resetPresetButtons();
         }
     };
     private EventHandler<Event> handlerPanStop = new EventHandler<Event>() {
@@ -332,7 +343,7 @@ public class CamCtrlController implements Initializable {
                 }
             });
             thread.start();
-
+            resetPresetButtons();
         }
     };
     private EventHandler<ActionEvent> handlerTiltDownAction = new EventHandler<ActionEvent>() {
@@ -355,6 +366,7 @@ public class CamCtrlController implements Initializable {
                 }
             });
             thread.start();
+            resetPresetButtons();
         }
     };
     private EventHandler<Event> handlerTiltStop = new EventHandler<Event>() {
