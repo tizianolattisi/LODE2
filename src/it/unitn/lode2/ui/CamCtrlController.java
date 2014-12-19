@@ -55,6 +55,9 @@ public class CamCtrlController implements Initializable {
     private ImageView vumeterImageView;
 
     @FXML
+    private ImageView onairImageView;
+
+    @FXML
     private ToggleButton previewToggleButton;
 
     @FXML
@@ -420,6 +423,7 @@ public class CamCtrlController implements Initializable {
             if( recorder.isIdle() || recorder.isPaused() ) {
                 try {
                     recorder.record();
+                    onairImageView.setId("onair");
                 } catch (IOException e) {
                     handleIOException(e);
                 }
@@ -433,8 +437,10 @@ public class CamCtrlController implements Initializable {
         public void handle(ActionEvent event) {
             if( recorder.isRecording() ){
                 recorder.pause();
+                onairImageView.setId("offair");
             } else if( recorder.isPaused() ){
                 recorder.wakeup();
+                onairImageView.setId("onair");
             }
             else {
                 pauseToggleButton.setSelected(false);
@@ -447,6 +453,7 @@ public class CamCtrlController implements Initializable {
         public void handle(ActionEvent event) {
             if( recorder.isRecording() || recorder.isPaused() ){
                 recorder.stop();
+                onairImageView.setId("offair");
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
             }

@@ -43,5 +43,6 @@
       </ToggleButton>
       <ToggleButton fx:id="pauseToggleButton" layoutX="421.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" styleClass="preset" text="PAUSE" textAlignment="CENTER" />
       <ToggleButton fx:id="recordToggleButton" layoutX="344.0" layoutY="292.0" mnemonicParsing="false" prefHeight="67.0" prefWidth="67.0" styleClass="preset" text="REC" textAlignment="CENTER" />
+      <ImageView fx:id="onairImageView" fitHeight="47.0" fitWidth="88.0" layoutX="591.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" styleClass="offair" />
    </children>
 </AnchorPane>

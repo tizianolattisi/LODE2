@@ -20,6 +20,14 @@
     -fx-image: url("../images/vumeter.png");
 }
 
+#offair {
+    -fx-image: url("../images/off-air.gif");
+}
+
+#onair {
+    -fx-image: url("../images/on-air.gif");
+}
+
 /* Standard buttons */
 .button {
     -fx-border-color: transparent;
