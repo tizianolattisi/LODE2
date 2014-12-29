@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private final static String HOST = "192.168.1.143";
+    private final static String HOST = "192.168.1.3";
     private final static Integer PORT = 88;
     private final static String USER = "admin";
     private final static String PASSWORD = "admin";
@@ -24,7 +24,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/it/unitn/lode2/ui/camctrl.fxml"));
         primaryStage.setTitle("Cam controller");
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1024, 768);
         scene.getStylesheets().add("/it/unitn/lode2/ui/skin/style.css");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -60,6 +60,7 @@ public class Main extends Application {
                 .url("/videoMain")
                 .user(USER)
                 .password(PASSWORD)
+                .output("/Users/tiziano/movie.mp4")
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
 

@@ -38,12 +38,6 @@ import java.util.ResourceBundle;
  */
 public class CamCtrlController implements Initializable {
 
-    // parametri da passare in configurazione
-    private final String HOST = "192.168.1.143";
-    private final int PORT = 88;
-    private final String USER = "admin";
-    private final String PASSWORD = "admin";
-
     Camera camera;
 
     Recorder recorder=null;
@@ -464,8 +458,17 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             ToggleButton pressedButton = (ToggleButton) event.getSource();
+            Integer i = 0;
             for( ToggleButton button: toggleButtons ){
-                    button.setSelected(button == pressedButton);
+                i++;
+                button.setSelected(button == pressedButton);
+                if( button == pressedButton ) {
+                    try {
+                        camera.goToPreset(i.toString());
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
             }
         }
     };

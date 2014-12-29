@@ -73,6 +73,11 @@ public class CameraIPImpl extends AbstractCamera {
     }
 
     @Override
+    public void goToPreset(String preset) throws IOException {
+        executeGET("http://192.168.1.3:88/cgi-bin/CGIProxy.fcgi?cmd=ptzGotoPresetPoint&name=" + preset + "&usr=admin&pwd=admin");
+    }
+
+    @Override
     public InputStream snapshot() throws IOException {
         URL url = new URL(snapshotUrl);
         return url.openStream();

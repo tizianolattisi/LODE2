@@ -12,7 +12,7 @@
     -fx-background-image: url("../images/on.png");
 }
 
-#monitorImageView {
+.monitor {
     -fx-image: url("../images/monitor.png");
 }
 
@@ -28,23 +28,35 @@
     -fx-image: url("../images/on-air.gif");
 }
 
+#previewImageView {
+    -fx-image: url("../images/no-image.png");
+}
+
+#currentSlideImageView {
+    -fx-image: url("../images/no-image.png");
+}
+
+#nextSlideImageView {
+    -fx-image: url("../images/no-image.png");
+}
+
 /* Standard buttons */
 .button {
     -fx-border-color: transparent;
     -fx-background-color: transparent;
-    -fx-background-image: url("../images/button.png");
+    -fx-background-image: url("../images/button48.png");
 }
 
 .button:pressed {
-    -fx-background-image: url("../images/button-pressed.png");
+    -fx-background-image: url("../images/button-pressed48.png");
 }
 
 /* Preset button */
 .preset {
-    -fx-background-image: url("../images/button.png");
+    -fx-background-image: url("../images/button48.png");
     -fx-border-color: transparent;
     -fx-background-color: transparent;
 }
 .preset:selected {
-    -fx-background-image: url("../images/button-pressed.png");
+    -fx-background-image: url("../images/button-pressed48.png");
 }
