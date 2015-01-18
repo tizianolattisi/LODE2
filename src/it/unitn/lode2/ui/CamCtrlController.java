@@ -51,7 +51,6 @@ public class CamCtrlController implements Initializable {
     @FXML private ImageView next3SlideImageView;
 
     @FXML private ImageView previewImageView;
-    @FXML private ImageView vumeterImageView;
     @FXML private ImageView onairImageView;
     @FXML private ToggleButton previewToggleButton;
 
@@ -97,7 +96,7 @@ public class CamCtrlController implements Initializable {
                 refreshPreview();
             }
         }));
-        
+
         projector.show();
         refreshSlides();
     }

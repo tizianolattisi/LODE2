@@ -2,22 +2,8 @@
     -fx-background-image: url("../images/background.png");
 }
 
-.toggle-button {
-    -fx-background-image: url("../images/off.png");
-    -fx-border-color: transparent;
-    -fx-background-color: transparent;
-}
-
-.toggle-button:selected {
-    -fx-background-image: url("../images/on.png");
-}
-
 .monitor {
     -fx-image: url("../images/monitor.png");
-}
-
-#vumeterImageView {
-    -fx-image: url("../images/vumeter.png");
 }
 
 #offair {
