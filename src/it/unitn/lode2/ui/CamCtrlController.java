@@ -7,18 +7,23 @@ import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.slide.Projector;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -38,6 +43,7 @@ public class CamCtrlController implements Initializable {
     private Camera camera;
     private Recorder recorder=null;
     private Projector projector;
+    ImageView slideImageView=null;
 
 
     @FXML private ImageView currentSlideImageView;
@@ -81,6 +87,26 @@ public class CamCtrlController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // Second screen
+        ObservableList<Screen> screens = Screen.getScreens();
+        if( screens.size()>1 ){
+            Screen screen = screens.get(1);
+            Rectangle2D bounds = screen.getBounds();
+            slideImageView = new ImageView();
+            Pane slidePane = new Pane();
+            slidePane.getChildren().add(slideImageView);
+            Scene scene = new Scene(slidePane);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setX(bounds.getMinX());
+            stage.setY(bounds.getMinY());
+            stage.setWidth(bounds.getWidth());
+            stage.setHeight(bounds.getHeight());
+            stage.setFullScreen(true);
+            stage.toFront();
+            stage.show();
+        }
 
         // IOC to inject the implementations of Camera, Recorder, and Projector
         camera = IOC.queryUtility(Camera.class);
@@ -497,6 +523,7 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             projector.show();
+            projector.shownSlide().ifPresent(s -> slideImageView.setImage(s.createPreview()));
             refreshSlides();
         }
     };
