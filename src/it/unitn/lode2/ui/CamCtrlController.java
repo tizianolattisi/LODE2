@@ -8,6 +8,7 @@ import it.unitn.lode2.cam.ipcam.Cmds;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
 import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
+import it.unitn.lode2.slide.Projector;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -38,63 +39,39 @@ import java.util.ResourceBundle;
  */
 public class CamCtrlController implements Initializable {
 
-    Camera camera;
+    private Camera camera;
+    private Recorder recorder=null;
+    private Projector projector;
 
-    Recorder recorder=null;
 
-    @FXML
-    private ImageView previewImageView;
+    @FXML private ImageView currentSlideImageView;
+    @FXML private ImageView preparedSlideImageView;
+    @FXML private ImageView next1SlideImageView;
+    @FXML private ImageView next2SlideImageView;
+    @FXML private ImageView next3SlideImageView;
 
-    @FXML
-    private ImageView vumeterImageView;
+    @FXML private ImageView previewImageView;
+    @FXML private ImageView vumeterImageView;
+    @FXML private ImageView onairImageView;
+    @FXML private ToggleButton previewToggleButton;
 
-    @FXML
-    private ImageView onairImageView;
+    @FXML private Button setupButton;
 
-    @FXML
-    private ToggleButton previewToggleButton;
+    @FXML private Button zoomOutButton;
+    @FXML private Button zoomInButton;
+    @FXML private Button panLeftButton;
+    @FXML private Button panRightButton;
+    @FXML private Button tiltUpButton;
+    @FXML private Button tiltDownButton;
 
-    @FXML
-    private Button setupButton;
+    @FXML private ToggleButton preset1ToggleButton;
+    @FXML private ToggleButton preset2ToggleButton;
+    @FXML private ToggleButton preset3ToggleButton;
+    @FXML private ToggleButton preset4ToggleButton;
 
-    @FXML
-    private Button zoomOutButton;
-
-    @FXML
-    private Button zoomInButton;
-
-    @FXML
-    private Button panLeftButton;
-
-    @FXML
-    private Button panRightButton;
-
-    @FXML
-    private Button tiltUpButton;
-
-    @FXML
-    private Button tiltDownButton;
-
-    @FXML
-    private ToggleButton recordToggleButton;
-
-    @FXML
-    private ToggleButton pauseToggleButton;
-
-    @FXML
-    private Button stopButton;
-
-    @FXML
-    private ToggleButton preset1ToggleButton;
-
-    @FXML
-    private ToggleButton preset2ToggleButton;
-
-    @FXML
-    private ToggleButton preset3ToggleButton;
-
-    @FXML
-    private ToggleButton preset4ToggleButton;
+    @FXML private ToggleButton recordToggleButton;
+    @FXML private ToggleButton pauseToggleButton;
+    @FXML private Button stopButton;
 
     private List<ToggleButton> toggleButtons;
 
@@ -103,9 +80,10 @@ public class CamCtrlController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // IOC to inject the implementations of Camera and Recorder
+        // IOC to inject the implementations of Camera, Recorder, and Projector
         camera = IOC.queryUtility(Camera.class);
         recorder = IOC.queryUtility(Recorder.class);
+        projector = IOC.queryUtility(Projector.class);
 
         toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
 
@@ -119,7 +97,9 @@ public class CamCtrlController implements Initializable {
                 refreshPreview();
             }
         }));
-        //timeline.play();
+        
+        projector.show();
+        refreshSlides();
     }
 
     private void configHandlers() {
@@ -167,6 +147,7 @@ public class CamCtrlController implements Initializable {
         preset4ToggleButton.setOnAction(handlerPreset);
     }
 
+    /* Preview */
     private void refreshPreview() {
         try {
             previewImageView.setImage(new Image(camera.snapshot()));
@@ -188,6 +169,17 @@ public class CamCtrlController implements Initializable {
         for( ToggleButton button: toggleButtons ){
             button.setSelected(false);
         }
+    }
+
+    /* Slides */
+    private void refreshSlides(){
+        projector.shownSlide().ifPresent(s -> currentSlideImageView.setImage(s.createPreview()));
+        projector.preparedSlide().ifPresent(s -> preparedSlideImageView.setImage(s.createPreview()));
+        projector.slideDelta(1).ifPresent(s -> next1SlideImageView.setImage(s.createPreview()));
+        projector.slideDelta(2).ifPresent(s -> next2SlideImageView.setImage(s.createPreview()));
+        projector.slideDelta(3).ifPresent(s -> next3SlideImageView.setImage(s.createPreview()));
+
+        preparedSlideImageView.setImage(projector.preparedSlide().get().createPreview());
     }
 
 

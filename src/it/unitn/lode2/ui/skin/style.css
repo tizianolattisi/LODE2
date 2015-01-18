@@ -33,11 +33,20 @@
 }
 
 #currentSlideImageView {
-    -fx-image: url("../images/no-image.png");
+
 }
 
-#nextSlideImageView {
-    -fx-image: url("../images/no-image.png");
+#preparedSlideImageView {
+    -fx-alignment: center;
+}
+
+#next1SlideImageView {
+}
+
+#next2SlideImageView {
+}
+
+#next3SlideImageView {
 }
 
 /* Standard buttons */

@@ -6,6 +6,8 @@ import it.unitn.lode2.cam.ipcam.Cmds;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
+import it.unitn.lode2.slide.Projector;
+import it.unitn.lode2.slide.raster.RasterProjectorBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -63,6 +65,12 @@ public class Main extends Application {
                 .output("/Users/tiziano/movie.mp4")
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
+
+        // Slide
+        Projector projector = RasterProjectorBuilder.create()
+                .slidesPath("/Users/tiziano/_LODE/COURSES/Test_2014/Acquisition/12_Test12_2014-12-31/Slides")
+                .build();
+        IOC.registerUtility(projector, Projector.class);
 
         launch(args);
     }
