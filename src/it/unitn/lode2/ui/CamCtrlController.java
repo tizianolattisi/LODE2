@@ -3,11 +3,7 @@ package it.unitn.lode2.ui;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.cam.Camera;
 import it.unitn.lode2.cam.Capability;
-import it.unitn.lode2.cam.ipcam.CameraIPBuilder;
-import it.unitn.lode2.cam.ipcam.Cmds;
 import it.unitn.lode2.recorder.Recorder;
-import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
-import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
 import it.unitn.lode2.slide.Projector;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -50,6 +46,12 @@ public class CamCtrlController implements Initializable {
     @FXML private ImageView next2SlideImageView;
     @FXML private ImageView next3SlideImageView;
 
+    @FXML private Button firstSlideButton;
+    @FXML private Button prevSlideButton;
+    @FXML private Button showSlideButton;
+    @FXML private Button nextSlideButton;
+    @FXML private Button lastSlideButton;
+
     @FXML private ImageView previewImageView;
     @FXML private ImageView onairImageView;
     @FXML private ToggleButton previewToggleButton;
@@ -73,6 +75,7 @@ public class CamCtrlController implements Initializable {
     @FXML private Button stopButton;
 
     private List<ToggleButton> toggleButtons;
+    private List<ImageView> nextImageViews;
 
     private Timeline timeline;
 
@@ -85,6 +88,8 @@ public class CamCtrlController implements Initializable {
         projector = IOC.queryUtility(Projector.class);
 
         toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
+
+        nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView, next3SlideImageView);
 
         configHandlers();
 
@@ -144,6 +149,12 @@ public class CamCtrlController implements Initializable {
         preset2ToggleButton.setOnAction(handlerPreset);
         preset3ToggleButton.setOnAction(handlerPreset);
         preset4ToggleButton.setOnAction(handlerPreset);
+
+        firstSlideButton.setOnAction(handlerFirstSlide);
+        prevSlideButton.setOnAction(handlerPrevSlide);
+        showSlideButton.setOnAction(handlerShowSlide);
+        nextSlideButton.setOnAction(handlerNextSlide);
+        lastSlideButton.setOnAction(handlerLastSlide);
     }
 
     /* Preview */
@@ -174,11 +185,13 @@ public class CamCtrlController implements Initializable {
     private void refreshSlides(){
         projector.shownSlide().ifPresent(s -> currentSlideImageView.setImage(s.createPreview()));
         projector.preparedSlide().ifPresent(s -> preparedSlideImageView.setImage(s.createPreview()));
-        projector.slideDelta(1).ifPresent(s -> next1SlideImageView.setImage(s.createPreview()));
-        projector.slideDelta(2).ifPresent(s -> next2SlideImageView.setImage(s.createPreview()));
-        projector.slideDelta(3).ifPresent(s -> next3SlideImageView.setImage(s.createPreview()));
-
-        preparedSlideImageView.setImage(projector.preparedSlide().get().createPreview());
+        for( Integer i=0; i<nextImageViews.size(); i++ ) {
+            final Integer j=i;
+            projector.slideDelta(i+1).ifPresent(s -> nextImageViews.get(j).setImage(s.createPreview()));
+            if (!projector.slideDelta(i+1).isPresent()) {
+                nextImageViews.get(i).setImage(null);
+            }
+        }
     }
 
 
@@ -461,6 +474,44 @@ public class CamCtrlController implements Initializable {
                     }
                 }
             }
+        }
+    };
+
+    private EventHandler<ActionEvent> handlerFirstSlide = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            if( !projector.isFirst() ){
+                projector.first();
+                refreshSlides();
+            }
+        }
+    };
+    private EventHandler<ActionEvent> handlerPrevSlide = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            projector.previous();
+            refreshSlides();
+        }
+    };
+    private EventHandler<ActionEvent> handlerShowSlide = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            projector.show();
+            refreshSlides();
+        }
+    };
+    private EventHandler<ActionEvent> handlerNextSlide = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            projector.next();
+            refreshSlides();
+        }
+    };
+    private EventHandler<ActionEvent> handlerLastSlide = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            projector.last();
+            refreshSlides();
         }
     };
 
