@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private final static String HOST = "192.168.1.3";
+    private final static String HOST = "192.168.2.3";
     private final static Integer PORT = 88;
     private final static String USER = "admin";
     private final static String PASSWORD = "admin";
@@ -62,7 +62,7 @@ public class Main extends Application {
                 .url("/videoMain")
                 .user(USER)
                 .password(PASSWORD)
-                .output("/Users/tiziano/movie.mp4")
+                .output("/Users/tiziano/_LODE/COURSES/Test_2014/Acquisition/12_Test12_2014-12-31/movie0.avi")
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
 

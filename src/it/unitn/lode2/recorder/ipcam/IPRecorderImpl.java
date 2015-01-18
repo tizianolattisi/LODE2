@@ -62,9 +62,8 @@ public class IPRecorderImpl implements Recorder {
                 url,
                 "-strict",
                 "-2",
-                "-acodec", "aac",
+                "-acodec", "copy",
                 "-vcodec", "copy",
-                "-b:a", "32k",
                 output).start();
         System.out.println("record");
         status = RecorderStatus.RECORDING;
