@@ -19,7 +19,8 @@ public class RasterSlideImpl implements Slide {
     }
 
     @Override
-    public Image createPreview(){
-        return new Image(url);
+    public Image createPreview(Double width, Double height){
+        Image image = new Image(url, width, height, true, true);
+        return image;
     }
 }

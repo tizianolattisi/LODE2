@@ -18,7 +18,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,6 +43,7 @@ public class CamCtrlController implements Initializable {
     private Recorder recorder=null;
     private Projector projector;
     ImageView slideImageView=null;
+    Rectangle2D slideScreenBounds;
 
 
     @FXML private ImageView currentSlideImageView;
@@ -88,21 +88,21 @@ public class CamCtrlController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // Second screen
+        // Second screen (to move in Projector)
         ObservableList<Screen> screens = Screen.getScreens();
         if( screens.size()>1 ){
             Screen screen = screens.get(1);
-            Rectangle2D bounds = screen.getBounds();
+            slideScreenBounds = screen.getBounds();
             slideImageView = new ImageView();
             Pane slidePane = new Pane();
             slidePane.getChildren().add(slideImageView);
             Scene scene = new Scene(slidePane);
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setX(bounds.getMinX());
-            stage.setY(bounds.getMinY());
-            stage.setWidth(bounds.getWidth());
-            stage.setHeight(bounds.getHeight());
+            stage.setX(slideScreenBounds.getMinX());
+            stage.setY(slideScreenBounds.getMinY());
+            stage.setWidth(slideScreenBounds.getWidth());
+            stage.setHeight(slideScreenBounds.getHeight());
             stage.setFullScreen(true);
             stage.toFront();
             stage.show();
@@ -209,11 +209,11 @@ public class CamCtrlController implements Initializable {
 
     /* Slides */
     private void refreshSlides(){
-        projector.shownSlide().ifPresent(s -> currentSlideImageView.setImage(s.createPreview()));
-        projector.preparedSlide().ifPresent(s -> preparedSlideImageView.setImage(s.createPreview()));
+        projector.shownSlide().ifPresent(s -> currentSlideImageView.setImage(s.createPreview(320.0, 200.0)));
+        projector.preparedSlide().ifPresent(s -> preparedSlideImageView.setImage(s.createPreview(320.0, 200.0)));
         for( Integer i=0; i<nextImageViews.size(); i++ ) {
             final Integer j=i;
-            projector.slideDelta(i+1).ifPresent(s -> nextImageViews.get(j).setImage(s.createPreview()));
+            projector.slideDelta(i+1).ifPresent(s -> nextImageViews.get(j).setImage(s.createPreview(160.0, 100.0)));
             if (!projector.slideDelta(i+1).isPresent()) {
                 nextImageViews.get(i).setImage(null);
             }
@@ -523,7 +523,7 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             projector.show();
-            projector.shownSlide().ifPresent(s -> slideImageView.setImage(s.createPreview()));
+            projector.shownSlide().ifPresent(s -> slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight())));
             refreshSlides();
         }
     };

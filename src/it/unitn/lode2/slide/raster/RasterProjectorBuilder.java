@@ -35,7 +35,7 @@ public class RasterProjectorBuilder {
     public RasterProjectorImpl build(){
         RasterProjectorImpl projector = new RasterProjectorImpl();
         if( slidesPath!=null ){
-            projector.addSlides(fileList(slidesPath).stream().map(s -> new RasterSlideImpl("file://"+s)).collect(Collectors.toList()));
+            projector.addSlides(fileList(slidesPath).stream().map(s -> new RasterSlideImpl("file://" + s)).collect(Collectors.toList()));
         }
         projector.first();
         return projector;
@@ -45,7 +45,9 @@ public class RasterProjectorBuilder {
         List<String> fileNames = new ArrayList<>();
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directory))) {
             for (Path path : directoryStream) {
-                fileNames.add(path.toString());
+                if( path.toString().endsWith(".jpg")) {
+                    fileNames.add(path.toString());
+                }
             }
         } catch (IOException ex) {
 

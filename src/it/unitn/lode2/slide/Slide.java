@@ -9,6 +9,6 @@ import javafx.scene.image.Image;
  */
 public interface Slide {
 
-    public Image createPreview();
+    public Image createPreview(Double width, Double height);
 
 }
