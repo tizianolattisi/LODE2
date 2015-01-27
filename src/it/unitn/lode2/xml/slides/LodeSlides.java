@@ -36,4 +36,12 @@ public class LodeSlides {
     public Groups getGroups() {
         return groups;
     }
+
+    public void setSlides(Slides slides) {
+        this.slides = slides;
+    }
+
+    public void setGroups(Groups groups) {
+        this.groups = groups;
+    }
 }

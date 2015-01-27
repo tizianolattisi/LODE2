@@ -13,10 +13,18 @@ import java.util.List;
 @XmlRootElement(name = "SLIDES")
 public class Slides {
 
-    @XmlElement(name = "SLIDE")
     private List<LodeSlide> slides = new ArrayList<>();
 
     public void addSlide(LodeSlide s){
         slides.add(s);
+    }
+
+    @XmlElement(name = "SLIDE")
+    public List<LodeSlide> getSlides() {
+        return slides;
+    }
+
+    public void setSlides(List<LodeSlide> slides) {
+        this.slides = slides;
     }
 }

@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Date: 26/01/15
  * Time: 20:33
  */
-@XmlRootElement(name = "LODE_SLIDES")
+@XmlRootElement(name = "slidesGroup")
 public class SlidesGroup {
 
     private String fileName;
@@ -37,5 +37,17 @@ public class SlidesGroup {
     @XmlElement(name = "lastSlide")
     public Integer getLastSlide() {
         return lastSlide;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void setFirstSlide(Integer firstSlide) {
+        this.firstSlide = firstSlide;
+    }
+
+    public void setLastSlide(Integer lastSlide) {
+        this.lastSlide = lastSlide;
     }
 }

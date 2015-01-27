@@ -55,6 +55,8 @@ public class LodeSlidesTest {
         StringWriter sw = new StringWriter();
         marshaller.marshal(ls, sw);
 
+        System.out.println(sw.toString());
+
         assert OUTCHECK.equals(sw.toString());
     }
 
@@ -64,11 +66,15 @@ public class LodeSlidesTest {
         JAXBContext context = JAXBContext.newInstance(LodeSlides.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         Reader reader = new StringReader(OUTCHECK);
-        Object unmarshal = unmarshaller.unmarshal(reader);
-        System.out.println(unmarshal);
-        //LodeSlides lodeSlides = (LodeSlides) unmarshaller.unmarshal(reader);
+        LodeSlides lodeSlides = (LodeSlides) unmarshaller.unmarshal(reader);
 
-        //System.out.println(lodeSlides.getGroups().getSlidesGroups().get(0).getFileName());
+        Marshaller marshaller = context.createMarshaller();
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+        StringWriter sw = new StringWriter();
+        marshaller.marshal(lodeSlides, sw);
+
+        assert OUTCHECK.equals(sw.toString());
 
     }
 
