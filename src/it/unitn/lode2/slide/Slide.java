@@ -2,7 +2,7 @@ package it.unitn.lode2.slide;
 
 import javafx.scene.image.Image;
 
-import java.util.List;
+import java.net.URL;
 
 /**
  * User: tiziano
@@ -17,8 +17,6 @@ public interface Slide {
 
     public String getDescription();
 
-    public String getUrl();
-
-    public List<String> getTags();
+    public URL getUrl();
 
 }

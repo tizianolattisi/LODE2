@@ -8,11 +8,22 @@ import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
 import it.unitn.lode2.slide.Projector;
 import it.unitn.lode2.slide.raster.RasterProjectorBuilder;
+import it.unitn.lode2.slide.raster.RasterProjectorImpl;
+import it.unitn.lode2.slide.raster.RasterSlideImpl;
+import it.unitn.lode2.xml.slides.LodeSlide;
+import it.unitn.lode2.xml.slides.LodeSlides;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class Main extends Application {
 
@@ -20,6 +31,8 @@ public class Main extends Application {
     private final static Integer PORT = 88;
     private final static String USER = "admin";
     private final static String PASSWORD = "admin";
+
+    private final static String FOLDER = "/Users/tiziano/_LODE/COURSES/Test_2014/Acquisition/12_Test12_2014-12-31/";
 
 
     @Override
@@ -33,7 +46,7 @@ public class Main extends Application {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws MalformedURLException {
 
         // Camera
         Camera camera = CameraIPBuilder.create()
@@ -62,14 +75,25 @@ public class Main extends Application {
                 .url("/videoMain")
                 .user(USER)
                 .password(PASSWORD)
-                .output("/Users/tiziano/_LODE/COURSES/Test_2014/Acquisition/12_Test12_2014-12-31/movie0.avi")
+                .output(FOLDER + "movie0.avi")
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
 
         // Slide
-        Projector projector = RasterProjectorBuilder.create()
-                .slidesPath("/Users/tiziano/_LODE/COURSES/Test_2014/Acquisition/12_Test12_2014-12-31/Slides")
-                .build();
+        LodeSlides lodeSlides = null;
+        try {
+            JAXBContext context = JAXBContext.newInstance(LodeSlides.class);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            lodeSlides = (LodeSlides) unmarshaller.unmarshal(new File(FOLDER + "SLIDES.XML"));
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+        RasterProjectorBuilder projectorBuilder = RasterProjectorBuilder.create();
+        for( LodeSlide slide: lodeSlides.getSlides().getSlides() ){
+            URL url = (new File(FOLDER + slide.getFileName())).toURI().toURL();
+            projectorBuilder = projectorBuilder.slide(new RasterSlideImpl(url));
+        }
+        RasterProjectorImpl projector = projectorBuilder.build();
         IOC.registerUtility(projector, Projector.class);
 
         launch(args);

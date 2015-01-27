@@ -1,7 +1,5 @@
 package it.unitn.lode2.slide;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: tiziano
@@ -12,12 +10,10 @@ public abstract class AbstractSlide implements Slide {
 
     private String title="";
     private String description="";
-    private List<String> tags = new ArrayList<>();
 
-    public AbstractSlide(String title, String description, List<String> tags) {
+    public AbstractSlide(String title, String description) {
         this.title = title;
         this.description = description;
-        this.tags = tags;
     }
 
     @Override
@@ -28,11 +24,6 @@ public abstract class AbstractSlide implements Slide {
     @Override
     public String getDescription() {
         return description;
-    }
-
-    @Override
-    public List<String> getTags() {
-        return tags;
     }
 
 }

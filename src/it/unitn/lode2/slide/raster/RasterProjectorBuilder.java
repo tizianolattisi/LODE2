@@ -1,12 +1,7 @@
 package it.unitn.lode2.slide.raster;
 
-import it.unitn.lode2.recorder.ipcam.IPRecorderImpl;
-import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
-import it.unitn.lode2.slide.Projector;
 import it.unitn.lode2.slide.Slide;
 
-import java.io.IOException;
-import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,40 +13,23 @@ import java.util.stream.Collectors;
  */
 public class RasterProjectorBuilder {
 
-    private RasterProjectorBuilder projector;
-    private String slidesPath=null;
+    private List<RasterSlideImpl> slides = new ArrayList<>();
 
 
     public static RasterProjectorBuilder create(){
         return new RasterProjectorBuilder();
     }
 
-    public RasterProjectorBuilder slidesPath(String path) {
-        slidesPath = path;
+    public RasterProjectorBuilder slide(RasterSlideImpl slide){
+        slides.add(slide);
         return this;
     }
 
-
     public RasterProjectorImpl build(){
         RasterProjectorImpl projector = new RasterProjectorImpl();
-        if( slidesPath!=null ){
-            projector.addSlides(fileList(slidesPath).stream().map(s -> new RasterSlideImpl("file://" + s)).collect(Collectors.toList()));
-        }
+        projector.addSlides(slides.stream().map(s -> (Slide) s).collect(Collectors.toList()));
         projector.first();
         return projector;
     }
 
-    private List<String> fileList(String directory) {
-        List<String> fileNames = new ArrayList<>();
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directory))) {
-            for (Path path : directoryStream) {
-                if( path.toString().endsWith(".jpg")) {
-                    fileNames.add(path.toString());
-                }
-            }
-        } catch (IOException ex) {
-
-        }
-        return fileNames;
-    }
 }
