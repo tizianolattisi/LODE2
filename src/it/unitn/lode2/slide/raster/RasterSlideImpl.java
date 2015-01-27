@@ -31,6 +31,6 @@ public class RasterSlideImpl extends AbstractSlide {
 
     @Override
     public URL getUrl() {
-        return null;
+        return url;
     }
 }
