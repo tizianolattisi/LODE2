@@ -1,28 +1,44 @@
 package it.unitn.lode2.entities.slide;
 
-import it.unitn.lode2.slide.raster.RasterSlideImpl;
 import it.unitn.lode2.xml.timedslides.TimedSlide;
 import it.unitn.lode2.xml.timedslides.TimedSlides;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import java.io.StringWriter;
 
 public class TimedSlidesTest {
 
+    private static final String OUTCHECK = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
+            "<TIMED_SLIDES>\n" +
+            "    <slide>\n" +
+            "        <immagine>img/1.jpg</immagine>\n" +
+            "        <tempo>14</tempo>\n" +
+            "        <titolo>VCS, DVCS, Git-flow</titolo>\n" +
+            "    </slide>\n" +
+            "    <slide>\n" +
+            "        <immagine>img/2.jpg</immagine>\n" +
+            "        <tempo>21</tempo>\n" +
+            "        <titolo>a cosa serve? (1)</titolo>\n" +
+            "    </slide>\n" +
+            "</TIMED_SLIDES>\n";
+
     @Test
-    public void test() throws Exception {
+    public void producer() throws Exception {
 
         TimedSlides ts = new TimedSlides();
-        ts.addSlide(new TimedSlide(14L, new RasterSlideImpl("img/1.jpg", "VCS, DVCS, Git-flow", "", 1)));
-        ts.addSlide(new TimedSlide(21L, new RasterSlideImpl("img/2.jpg", "a cosa serve? (1)", "", 2)));
+        ts.addSlide(new TimedSlide(14, "VCS, DVCS, Git-flow", "img/1.jpg"));
+        ts.addSlide(new TimedSlide(21, "a cosa serve? (1)", "img/2.jpg"));
 
         JAXBContext context = JAXBContext.newInstance(TimedSlides.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 
+        StringWriter sw = new StringWriter();
+        marshaller.marshal(ts, sw);
 
-        marshaller.marshal(ts, System.out);
+        assert OUTCHECK.equals(sw.toString());
 
     }
 
