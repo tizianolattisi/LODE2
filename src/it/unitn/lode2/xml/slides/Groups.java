@@ -19,4 +19,8 @@ public class Groups {
     public void addSlidesGroup(SlidesGroup sg){
         slidesGroups.add(sg);
     }
+
+    public List<SlidesGroup> getSlidesGroups() {
+        return slidesGroups;
+    }
 }

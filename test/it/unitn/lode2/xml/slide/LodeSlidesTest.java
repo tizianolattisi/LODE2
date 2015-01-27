@@ -1,10 +1,13 @@
-package it.unitn.lode2.entities.slide;
+package it.unitn.lode2.xml.slide;
 
 import it.unitn.lode2.xml.slides.*;
 import org.junit.Test;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.Reader;
+import java.io.StringReader;
 import java.io.StringWriter;
 
 
@@ -53,6 +56,20 @@ public class LodeSlidesTest {
         marshaller.marshal(ls, sw);
 
         assert OUTCHECK.equals(sw.toString());
+    }
+
+    @Test
+    public void consumer() throws Exception {
+
+        JAXBContext context = JAXBContext.newInstance(LodeSlides.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        Reader reader = new StringReader(OUTCHECK);
+        Object unmarshal = unmarshaller.unmarshal(reader);
+        System.out.println(unmarshal);
+        //LodeSlides lodeSlides = (LodeSlides) unmarshaller.unmarshal(reader);
+
+        //System.out.println(lodeSlides.getGroups().getSlidesGroups().get(0).getFileName());
+
     }
 
 }
