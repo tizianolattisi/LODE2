@@ -13,30 +13,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "slide")
 public class TimedSlide {
 
-    private Slide slide;
-
-    private Long time;
+    private Integer time;
+    private String title;
+    private String path;
 
     public TimedSlide() {
     }
 
-    public TimedSlide(Long time, Slide slide) {
+    public TimedSlide(Integer time, String title, String path) {
         this.time = time;
-        this.slide = slide;
+        this.title = title;
+        this.path = path;
     }
 
     @XmlElement(name = "titolo")
     public String getTitle(){
-        return slide.getTitle();
+        return title;
     }
 
     @XmlElement(name = "immagine")
-    public String getUrl(){
-        return slide.getUrl();
+    public String getPath(){
+        return path;
     }
 
     @XmlElement(name = "tempo")
-    public Long getTime() {
+    public Integer getTime() {
         return time;
     }
 }
