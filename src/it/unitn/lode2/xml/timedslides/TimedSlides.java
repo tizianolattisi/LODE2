@@ -1,4 +1,4 @@
-package it.unitn.lode2.entities.slide;
+package it.unitn.lode2.xml.timedslides;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,10 +14,10 @@ import java.util.List;
 @XmlRootElement(name = "TIMED_SLIDES")
 public class TimedSlides {
 
-    @XmlElement
-    private List<TimedSlide> slide = new ArrayList<>();
+    @XmlElement(name = "slide")
+    private List<TimedSlide> slides = new ArrayList<>();
 
     public void addSlide(TimedSlide s){
-        slide.add(s);
+        slides.add(s);
     }
 }

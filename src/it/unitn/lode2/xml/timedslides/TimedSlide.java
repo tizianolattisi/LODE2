@@ -1,4 +1,4 @@
-package it.unitn.lode2.entities.slide;
+package it.unitn.lode2.xml.timedslides;
 
 import it.unitn.lode2.slide.Slide;
 
