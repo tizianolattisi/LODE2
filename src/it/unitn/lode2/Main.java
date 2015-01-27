@@ -91,7 +91,7 @@ public class Main extends Application {
         RasterProjectorBuilder projectorBuilder = RasterProjectorBuilder.create();
         for( LodeSlide slide: lodeSlides.getSlides().getSlides() ){
             URL url = (new File(FOLDER + slide.getFileName())).toURI().toURL();
-            projectorBuilder = projectorBuilder.slide(new RasterSlideImpl(url));
+            projectorBuilder = projectorBuilder.slide(new RasterSlideImpl(url, slide.getTitle(), ""));
         }
         RasterProjectorImpl projector = projectorBuilder.build();
         IOC.registerUtility(projector, Projector.class);
