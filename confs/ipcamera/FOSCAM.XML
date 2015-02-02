@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<CAMERA_IP>
+    <USER>admin</USER>
+    <PASSWORD>admin</PASSWORD>
+    <HOST>192.168.2.3</HOST>
+    <CGI_PORT>88</CGI_PORT>
+    <STREAM_PORT>88</STREAM_PORT>
+    <STREAM_PROTOCOL>RTSP</STREAM_PROTOCOL>
+    <STREAM_URL>/videoMain</STREAM_URL>
+    <ZOOMIN>/cgi-bin/CGIProxy.fcgi?cmd=zoomIn&amp;usr=${user}&amp;pwd=${password}</ZOOMIN>
+    <ZOOMOUT>/cgi-bin/CGIProxy.fcgi?cmd=zoomOut&amp;usr=${user}&amp;pwd=${password}</ZOOMOUT>
+    <ZOOMSTOP>/cgi-bin/CGIProxy.fcgi?cmd=zoomStop&amp;usr=${user}&amp;pwd=${password}</ZOOMSTOP>
+    <PANLEFT>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveLeft&amp;usr=${user}&amp;pwd=${password}</PANLEFT>
+    <PANRIGHT>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveRight&amp;usr=${user}&amp;pwd=${password}</PANRIGHT>
+    <PANSTOP>/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&amp;usr=${user}&amp;pwd=${password}</PANSTOP>
+    <TILTUP>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveUp&amp;usr=${user}&amp;pwd=${password}</TILTUP>
+    <TILTDOWN>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveDown&amp;usr=${user}&amp;pwd=${password}</TILTDOWN>
+    <TILTSTOP>/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&amp;usr=${user}&amp;pwd=${password}</TILTSTOP>
+    <SNAPSHOT>/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=${user}&amp;pwd=${password}</SNAPSHOT>
+</CAMERA_IP>

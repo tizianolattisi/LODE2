@@ -30,8 +30,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
@@ -541,7 +539,9 @@ public class CamCtrlController implements Initializable {
             projector.show();
             projector.shownSlide().ifPresent(s -> {
                 slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight()));
-                timedSlides.addSlide(new TimedSlide(chronometer.elapsed(), s.getTitle(), s.getUrl().getPath()));
+                if( recorder.isRecording() ) {
+                    timedSlides.addSlide(new TimedSlide(chronometer.elapsed(), s.getTitle(), s.getUrl().getPath()));
+                }
             });
             refreshSlides();
         }
