@@ -28,7 +28,7 @@ import java.net.URL;
 public class Main extends Application {
 
     private final static String LECTURE_FOLDER = "/Users/tiziano/_LODE/COURSES/Test_2014/Acquisition/12_Test12_2014-12-31/";
-    private final static String FOSCAM_CONF = "/Users/tiziano/Projects/LODE2/confs/ipcamera/FOSCAM.XML";
+    private final static String CAMERA_CONF = "/Users/tiziano/Projects/LODE2/confs/ipcamera/FOSCAM.XML";
 
 
     @Override
@@ -45,7 +45,7 @@ public class Main extends Application {
     public static void main(String[] args) throws MalformedURLException {
 
         // read ip camera configuration
-        CameraIPConf cameraIPConf = XMLHelper.build(CameraIPConf.class).unmarshal(new File(FOSCAM_CONF));
+        CameraIPConf cameraIPConf = XMLHelper.build(CameraIPConf.class).unmarshal(new File(CAMERA_CONF));
 
         // Camera
         Camera camera = CameraIPBuilder.create()
