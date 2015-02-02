@@ -25,6 +25,8 @@ public class CameraIPImpl extends AbstractCamera {
     private String tiltDownUrl;
     private String tiltStopUrl;
 
+    private String presetUrl;
+
     private String snapshotUrl;
 
     @Override
@@ -74,7 +76,7 @@ public class CameraIPImpl extends AbstractCamera {
 
     @Override
     public void goToPreset(String preset) throws IOException {
-        executeGET("http://192.168.1.142:88/cgi-bin/CGIProxy.fcgi?cmd=ptzGotoPresetPoint&name=" + preset + "&usr=admin&pwd=admin");
+        executeGET(presetUrl + preset);
     }
 
     @Override
@@ -121,6 +123,10 @@ public class CameraIPImpl extends AbstractCamera {
 
     public void setSnapshotUrl(String snapshotUrl) {
         this.snapshotUrl = snapshotUrl;
+    }
+
+    public void setPresetUrl(String presetUrl) {
+        this.presetUrl = presetUrl;
     }
 
     private void executeGET(String sUrl) throws IOException {

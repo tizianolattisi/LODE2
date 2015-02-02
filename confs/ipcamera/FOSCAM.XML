@@ -16,5 +16,6 @@
     <TILTUP>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveUp&amp;usr=${user}&amp;pwd=${password}</TILTUP>
     <TILTDOWN>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveDown&amp;usr=${user}&amp;pwd=${password}</TILTDOWN>
     <TILTSTOP>/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun&amp;usr=${user}&amp;pwd=${password}</TILTSTOP>
+    <PRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzGotoPresetPoint&amp;usr=${user}&amp;pwd=${password}&amp;name=</PRESET>
     <SNAPSHOT>/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=${user}&amp;pwd=${password}</SNAPSHOT>
 </CAMERA_IP>

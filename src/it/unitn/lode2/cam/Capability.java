@@ -7,6 +7,6 @@ package it.unitn.lode2.cam;
  */
 public enum Capability {
 
-    MJPEG, H264, SNAPSHOT, PAN, TILT, ZOOM, PANSTOP, TILTSTOP, ZOOMSTOP
+    MJPEG, H264, SNAPSHOT, PAN, TILT, ZOOM, PANSTOP, TILTSTOP, ZOOMSTOP, PRESETS
 
 }

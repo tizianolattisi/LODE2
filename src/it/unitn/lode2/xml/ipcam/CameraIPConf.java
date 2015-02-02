@@ -32,6 +32,8 @@ public class CameraIPConf {
     private String tiltDown;
     private String tiltStop;
 
+    private String preset;
+
     private String snapshot;
 
     @XmlElement(name = "USER")
@@ -114,6 +116,11 @@ public class CameraIPConf {
         return tiltStop;
     }
 
+    @XmlElement(name = "PRESET")
+    public String getPreset() {
+        return preset;
+    }
+
     @XmlElement(name = "SNAPSHOT")
     public String getSnapshot() {
         return snapshot;
@@ -181,6 +188,10 @@ public class CameraIPConf {
 
     public void setTiltStop(String tiltStop) {
         this.tiltStop = tiltStop;
+    }
+
+    public void setPreset(String preset) {
+        this.preset = preset;
     }
 
     public void setSnapshot(String snapshot) {
