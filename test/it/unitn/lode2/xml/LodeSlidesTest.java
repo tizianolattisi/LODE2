@@ -48,32 +48,28 @@ public class LodeSlidesTest {
         groups.addSlidesGroup(new SlidesGroup("/Users/tiziano/Desktop//vcs.ppt", 1, 13));
         LodeSlides ls = new LodeSlides(slides, groups);
 
-        JAXBContext context = JAXBContext.newInstance(LodeSlides.class);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        Marshaller marshaller = XMLHelper.createMarshaller(LodeSlides.class);
 
         StringWriter sw = new StringWriter();
         marshaller.marshal(ls, sw);
 
         System.out.println(sw.toString());
-
         assert OUTCHECK.equals(sw.toString());
     }
 
     @Test
     public void consumer() throws Exception {
 
-        JAXBContext context = JAXBContext.newInstance(LodeSlides.class);
-        Unmarshaller unmarshaller = context.createUnmarshaller();
+        Unmarshaller unmarshaller = XMLHelper.createUnmarshaller(LodeSlides.class);
         Reader reader = new StringReader(OUTCHECK);
         LodeSlides lodeSlides = (LodeSlides) unmarshaller.unmarshal(reader);
 
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        Marshaller marshaller = XMLHelper.createMarshaller(LodeSlides.class);
 
         StringWriter sw = new StringWriter();
         marshaller.marshal(lodeSlides, sw);
 
+        System.out.println(sw.toString());
         assert OUTCHECK.equals(sw.toString());
 
     }

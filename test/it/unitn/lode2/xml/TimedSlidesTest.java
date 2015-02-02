@@ -31,13 +31,12 @@ public class TimedSlidesTest {
         ts.addSlide(new TimedSlide(14L, "VCS, DVCS, Git-flow", "img/1.jpg"));
         ts.addSlide(new TimedSlide(21L, "a cosa serve? (1)", "img/2.jpg"));
 
-        JAXBContext context = JAXBContext.newInstance(TimedSlides.class);
-        Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        Marshaller marshaller = XMLHelper.createMarshaller(TimedSlides.class);
 
         StringWriter sw = new StringWriter();
         marshaller.marshal(ts, sw);
 
+        System.out.println(sw.toString());
         assert OUTCHECK.equals(sw.toString());
 
     }
