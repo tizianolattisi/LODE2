@@ -1,4 +1,4 @@
-package it.unitn.lode2.slide;
+package it.unitn.lode2.projector;
 
 import javafx.scene.image.Image;
 

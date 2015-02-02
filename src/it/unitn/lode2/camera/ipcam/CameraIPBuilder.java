@@ -1,7 +1,7 @@
-package it.unitn.lode2.cam.ipcam;
+package it.unitn.lode2.camera.ipcam;
 
 import com.axiastudio.mapformat.MessageMapFormat;
-import it.unitn.lode2.cam.Capability;
+import it.unitn.lode2.camera.Capability;
 
 import java.util.HashMap;
 import java.util.Map;

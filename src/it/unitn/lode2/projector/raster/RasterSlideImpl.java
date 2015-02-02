@@ -1,6 +1,6 @@
-package it.unitn.lode2.slide.raster;
+package it.unitn.lode2.projector.raster;
 
-import it.unitn.lode2.slide.AbstractSlide;
+import it.unitn.lode2.projector.AbstractSlide;
 import javafx.scene.image.Image;
 
 import java.net.URL;

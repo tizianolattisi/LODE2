@@ -1,6 +1,6 @@
-package it.unitn.lode2.cam.ipcam;
+package it.unitn.lode2.camera.ipcam;
 
-import it.unitn.lode2.cam.AbstractCamera;
+import it.unitn.lode2.camera.AbstractCamera;
 
 import java.io.*;
 import java.net.HttpURLConnection;

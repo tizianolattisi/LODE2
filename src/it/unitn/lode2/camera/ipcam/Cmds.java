@@ -1,4 +1,4 @@
-package it.unitn.lode2.cam.ipcam;
+package it.unitn.lode2.camera.ipcam;
 
 /**
  * User: tiziano

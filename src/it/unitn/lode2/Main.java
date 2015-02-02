@@ -1,15 +1,15 @@
 package it.unitn.lode2;
 
-import it.unitn.lode2.cam.Camera;
-import it.unitn.lode2.cam.ipcam.CameraIPBuilder;
-import it.unitn.lode2.cam.ipcam.Cmds;
+import it.unitn.lode2.camera.Camera;
+import it.unitn.lode2.camera.ipcam.CameraIPBuilder;
+import it.unitn.lode2.camera.ipcam.Cmds;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
-import it.unitn.lode2.slide.Projector;
-import it.unitn.lode2.slide.raster.RasterProjectorBuilder;
-import it.unitn.lode2.slide.raster.RasterProjectorImpl;
-import it.unitn.lode2.slide.raster.RasterSlideImpl;
+import it.unitn.lode2.projector.Projector;
+import it.unitn.lode2.projector.raster.RasterProjectorBuilder;
+import it.unitn.lode2.projector.raster.RasterProjectorImpl;
+import it.unitn.lode2.projector.raster.RasterSlideImpl;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.ipcam.CameraIPConf;
 import it.unitn.lode2.xml.lecture.Lecture;
@@ -23,7 +23,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Main extends Application {

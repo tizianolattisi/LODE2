@@ -1,4 +1,4 @@
-package it.unitn.lode2.slide;
+package it.unitn.lode2.projector;
 
 import java.util.ArrayList;
 import java.util.List;

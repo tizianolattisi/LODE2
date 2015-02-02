@@ -1,6 +1,6 @@
-package it.unitn.lode2.slide.raster;
+package it.unitn.lode2.projector.raster;
 
-import it.unitn.lode2.slide.Slide;
+import it.unitn.lode2.projector.Slide;
 
 import java.util.ArrayList;
 import java.util.List;

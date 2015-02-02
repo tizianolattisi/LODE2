@@ -1,4 +1,4 @@
-package it.unitn.lode2.cam;
+package it.unitn.lode2.camera;
 
 
 import java.util.Arrays;

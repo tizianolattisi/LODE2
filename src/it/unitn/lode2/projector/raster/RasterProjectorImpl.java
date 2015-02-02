@@ -1,6 +1,6 @@
-package it.unitn.lode2.slide.raster;
+package it.unitn.lode2.projector.raster;
 
-import it.unitn.lode2.slide.AbstractProjector;
+import it.unitn.lode2.projector.AbstractProjector;
 
 /**
  * User: tiziano

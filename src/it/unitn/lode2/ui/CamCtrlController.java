@@ -1,11 +1,11 @@
 package it.unitn.lode2.ui;
 
 import it.unitn.lode2.IOC;
-import it.unitn.lode2.cam.Camera;
-import it.unitn.lode2.cam.Capability;
+import it.unitn.lode2.camera.Camera;
+import it.unitn.lode2.camera.Capability;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
-import it.unitn.lode2.slide.Projector;
+import it.unitn.lode2.projector.Projector;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.timedslides.TimedSlide;
 import it.unitn.lode2.xml.timedslides.TimedSlides;
