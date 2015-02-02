@@ -3,8 +3,12 @@ package it.unitn.lode2.ui;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.cam.Camera;
 import it.unitn.lode2.cam.Capability;
+import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.slide.Projector;
+import it.unitn.lode2.xml.XMLHelper;
+import it.unitn.lode2.xml.timedslides.TimedSlide;
+import it.unitn.lode2.xml.timedslides.TimedSlides;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -26,7 +30,10 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -42,9 +49,10 @@ public class CamCtrlController implements Initializable {
     private Camera camera;
     private Recorder recorder=null;
     private Projector projector;
-    ImageView slideImageView=null;
-    Rectangle2D slideScreenBounds;
-
+    private ImageView slideImageView=null;
+    private Rectangle2D slideScreenBounds;
+    private TimedSlides timedSlides;
+    private Chronometer chronometer = new Chronometer();
 
     @FXML private ImageView currentSlideImageView;
     @FXML private ImageView preparedSlideImageView;
@@ -128,7 +136,7 @@ public class CamCtrlController implements Initializable {
             }
         }));
 
-        projector.show();
+        projector.first();
         refreshSlides();
     }
 
@@ -447,7 +455,9 @@ public class CamCtrlController implements Initializable {
             if( recorder.isIdle() || recorder.isPaused() ) {
                 try {
                     recorder.record();
+                    chronometer.start();
                     onairImageView.setId("onair");
+                    timedSlides = new TimedSlides();
                 } catch (IOException e) {
                     handleIOException(e);
                 }
@@ -461,9 +471,11 @@ public class CamCtrlController implements Initializable {
         public void handle(ActionEvent event) {
             if( recorder.isRecording() ){
                 recorder.pause();
+                chronometer.stop();
                 onairImageView.setId("offair");
             } else if( recorder.isPaused() ){
                 recorder.wakeup();
+                chronometer.start();
                 onairImageView.setId("onair");
             }
             else {
@@ -477,9 +489,18 @@ public class CamCtrlController implements Initializable {
         public void handle(ActionEvent event) {
             if( recorder.isRecording() || recorder.isPaused() ){
                 recorder.stop();
+                chronometer.stop();
                 onairImageView.setId("offair");
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
+                Marshaller marshaller = XMLHelper.createMarshaller(TimedSlides.class);
+                StringWriter sw = new StringWriter();
+                try {
+                    marshaller.marshal(timedSlides, sw);
+                    System.out.println(sw.toString()); // XXX: to file
+                } catch (JAXBException e) {
+                    e.printStackTrace();
+                }
             }
         }
     };
@@ -523,7 +544,10 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             projector.show();
-            projector.shownSlide().ifPresent(s -> slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight())));
+            projector.shownSlide().ifPresent(s -> {
+                slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight()));
+                timedSlides.addSlide(new TimedSlide(chronometer.elapsed(), s.getTitle(), s.getUrl().getPath()));
+            });
             refreshSlides();
         }
     };
