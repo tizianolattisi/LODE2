@@ -493,14 +493,9 @@ public class CamCtrlController implements Initializable {
                 onairImageView.setId("offair");
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
-                Marshaller marshaller = XMLHelper.createMarshaller(TimedSlides.class);
                 StringWriter sw = new StringWriter();
-                try {
-                    marshaller.marshal(timedSlides, sw);
-                    System.out.println(sw.toString()); // XXX: to file
-                } catch (JAXBException e) {
-                    e.printStackTrace();
-                }
+                XMLHelper.build(TimedSlides.class).marshall(timedSlides, sw);
+                System.out.println(sw.toString()); // XXX: to file
             }
         }
     };
