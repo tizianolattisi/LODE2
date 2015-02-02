@@ -28,8 +28,8 @@ public class TimedSlidesTest {
     public void producer() throws Exception {
 
         TimedSlides ts = new TimedSlides();
-        ts.addSlide(new TimedSlide(14, "VCS, DVCS, Git-flow", "img/1.jpg"));
-        ts.addSlide(new TimedSlide(21, "a cosa serve? (1)", "img/2.jpg"));
+        ts.addSlide(new TimedSlide(14L, "VCS, DVCS, Git-flow", "img/1.jpg"));
+        ts.addSlide(new TimedSlide(21L, "a cosa serve? (1)", "img/2.jpg"));
 
         JAXBContext context = JAXBContext.newInstance(TimedSlides.class);
         Marshaller marshaller = context.createMarshaller();
