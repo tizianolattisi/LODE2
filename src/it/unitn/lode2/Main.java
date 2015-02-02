@@ -19,6 +19,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -27,22 +28,21 @@ import java.net.URL;
 
 public class Main extends Application {
 
-    private final static String LECTURE_FOLDER = "/Users/tiziano/_LODE/COURSES/Test_2014/Acquisition/12_Test12_2014-12-31/";
     private final static String CAMERA_CONF = "/Users/tiziano/Projects/LODE2/confs/ipcamera/FOSCAM.XML";
+
+    private String lectureFileName;
+    private String lectureFolder;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/it/unitn/lode2/ui/camctrl.fxml"));
-        primaryStage.setTitle("Cam controller");
-        Scene scene = new Scene(root, 1024, 768);
-        scene.getStylesheets().add("/it/unitn/lode2/ui/skin/style.css");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-    }
 
-
-    public static void main(String[] args) throws MalformedURLException {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Lecture's configuration file (LECTURE.XML)","*.xml");
+        fileChooser.getExtensionFilters().add(extension);
+        File file = fileChooser.showOpenDialog(null);
+        lectureFileName = file.toURI().toURL().getFile();
+        lectureFolder = lectureFileName.substring(0, lectureFileName.lastIndexOf("/"));
 
         // read ip camera configuration
         CameraIPConf cameraIPConf = XMLHelper.build(CameraIPConf.class).unmarshal(new File(CAMERA_CONF));
@@ -75,21 +75,32 @@ public class Main extends Application {
                 .url(cameraIPConf.getStreamUrl())
                 .user(cameraIPConf.getUser())
                 .password(cameraIPConf.getPassword())
-                .output(LECTURE_FOLDER + "movie0.avi")
+                .output(lectureFolder + "movie0.avi")
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
 
         // Lecture and Slide configuration
-        Lecture lecture = XMLHelper.build(Lecture.class).unmarshal(new File(LECTURE_FOLDER + "LECTURE.XML"));
-        LodeSlides lodeSlides = XMLHelper.build(LodeSlides.class).unmarshal(new File(LECTURE_FOLDER + "SLIDES.XML"));
+        Lecture lecture = XMLHelper.build(Lecture.class).unmarshal(new File(lectureFileName));
+        LodeSlides lodeSlides = XMLHelper.build(LodeSlides.class).unmarshal(new File(lectureFolder + "/SLIDES.XML"));
 
         RasterProjectorBuilder projectorBuilder = RasterProjectorBuilder.create();
         for( LodeSlide slide: lodeSlides.getSlides().getSlides() ){
-            URL url = (new File(LECTURE_FOLDER + slide.getFileName())).toURI().toURL();
+            URL url = (new File(lectureFolder + "/" + slide.getFileName())).toURI().toURL();
             projectorBuilder = projectorBuilder.slide(new RasterSlideImpl(url, slide.getTitle(), ""));
         }
         RasterProjectorImpl projector = projectorBuilder.build();
         IOC.registerUtility(projector, Projector.class);
+
+        Parent root = FXMLLoader.load(getClass().getResource("/it/unitn/lode2/ui/camctrl.fxml"));
+        primaryStage.setTitle("Cam controller");
+        Scene scene = new Scene(root, 1024, 768);
+        scene.getStylesheets().add("/it/unitn/lode2/ui/skin/style.css");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+
+    public static void main(String[] args) {
 
         launch(args);
     }
