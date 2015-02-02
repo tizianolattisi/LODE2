@@ -1,4 +1,4 @@
-package it.unitn.lode2.xml.slide;
+package it.unitn.lode2.xml;
 
 import it.unitn.lode2.xml.slides.*;
 import org.junit.Test;
