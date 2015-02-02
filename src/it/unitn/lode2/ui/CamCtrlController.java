@@ -540,7 +540,10 @@ public class CamCtrlController implements Initializable {
             projector.shownSlide().ifPresent(s -> {
                 slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight()));
                 if( recorder.isRecording() ) {
-                    timedSlides.addSlide(new TimedSlide(chronometer.elapsed(), s.getTitle(), "img/"+s.getUrl().getFile()));
+                    String filePath = s.getUrl().getFile();
+                    String fileName = filePath.substring(filePath.lastIndexOf("/"), filePath.length());
+                    System.out.println(fileName);
+                    timedSlides.addSlide(new TimedSlide(chronometer.elapsed(), s.getTitle(), "img"+ fileName));
                 }
             });
             refreshSlides();

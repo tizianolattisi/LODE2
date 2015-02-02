@@ -74,7 +74,7 @@ public class Main extends Application {
                 .url(cameraIPConf.getStreamUrl())
                 .user(cameraIPConf.getUser())
                 .password(cameraIPConf.getPassword())
-                .output(lectureFolder + "movie0.avi")
+                .output(lectureFolder + "/movie0.mp4")
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
 

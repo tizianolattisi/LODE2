@@ -3,7 +3,9 @@ package it.unitn.lode2.recorder.ipcam;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.RecorderStatus;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 /**
  * User: tiziano
@@ -73,7 +75,14 @@ public class IPRecorderImpl implements Recorder {
     @Override
     public void stop() {
         if( recordProcess.isAlive() ) {
-            recordProcess.destroy();
+            BufferedWriter pi = new BufferedWriter(new OutputStreamWriter(recordProcess.getOutputStream()));
+            try {
+                pi.write("q");
+                pi.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //recordProcess.destroy();
             recordProcess=null;
             System.out.println("stop");
             status = RecorderStatus.IDLE;
