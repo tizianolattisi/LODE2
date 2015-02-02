@@ -65,7 +65,7 @@ public class CamCtrlController implements Initializable {
     @FXML private Button lastSlideButton;
 
     @FXML private ImageView previewImageView;
-    @FXML private ImageView onairImageView;
+    @FXML private ImageView offair;
     @FXML private ToggleButton previewToggleButton;
 
     @FXML private Button setupButton;
@@ -454,7 +454,7 @@ public class CamCtrlController implements Initializable {
                 try {
                     recorder.record();
                     chronometer.start();
-                    onairImageView.setId("onair");
+                    offair.setId("onair");
                     timedSlides = new TimedSlides();
                 } catch (IOException e) {
                     handleIOException(e);
@@ -470,11 +470,11 @@ public class CamCtrlController implements Initializable {
             if( recorder.isRecording() ){
                 recorder.pause();
                 chronometer.stop();
-                onairImageView.setId("offair");
+                offair.setId("offair");
             } else if( recorder.isPaused() ){
                 recorder.wakeup();
                 chronometer.start();
-                onairImageView.setId("onair");
+                offair.setId("onair");
             }
             else {
                 pauseToggleButton.setSelected(false);
@@ -488,7 +488,7 @@ public class CamCtrlController implements Initializable {
             if( recorder.isRecording() || recorder.isPaused() ){
                 recorder.stop();
                 chronometer.stop();
-                onairImageView.setId("offair");
+                offair.setId("offair");
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
                 StringWriter sw = new StringWriter();
