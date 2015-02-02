@@ -3,9 +3,6 @@ package it.unitn.lode2.xml;
 import it.unitn.lode2.xml.slides.*;
 import org.junit.Test;
 
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
