@@ -7,8 +7,8 @@ import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
 import it.unitn.lode2.xml.XMLHelper;
-import it.unitn.lode2.xml.timedslides.TimedSlide;
-import it.unitn.lode2.xml.timedslides.TimedSlides;
+import it.unitn.lode2.xml.timedslides.XMLTimedSlidesSlide;
+import it.unitn.lode2.xml.timedslides.XMLTimedSlides;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -49,7 +49,7 @@ public class CamCtrlController implements Initializable {
     private Projector projector;
     private ImageView slideImageView=null;
     private Rectangle2D slideScreenBounds;
-    private TimedSlides timedSlides;
+    private XMLTimedSlides XMLTimedSlides;
     private Chronometer chronometer = new Chronometer();
 
     @FXML private ImageView currentSlideImageView;
@@ -455,7 +455,7 @@ public class CamCtrlController implements Initializable {
                     recorder.record();
                     chronometer.start();
                     offair.setId("onair");
-                    timedSlides = new TimedSlides();
+                    XMLTimedSlides = new XMLTimedSlides();
                 } catch (IOException e) {
                     handleIOException(e);
                 }
@@ -482,7 +482,7 @@ public class CamCtrlController implements Initializable {
         }
     };
 
-    private EventHandler<ActionEvent> handlerStop = new EventHandler<ActionEvent>() {
+    private EventHandler<ActionEvent> handlerStop = new EventHandler<ActionEvent>() { // Chiavegato Elia
         @Override
         public void handle(ActionEvent event) {
             if( recorder.isRecording() || recorder.isPaused() ){
@@ -492,7 +492,7 @@ public class CamCtrlController implements Initializable {
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
                 StringWriter sw = new StringWriter();
-                XMLHelper.build(TimedSlides.class).marshall(timedSlides, sw);
+                XMLHelper.build(XMLTimedSlides.class).marshall(XMLTimedSlides, sw);
                 System.out.println(sw.toString()); // XXX: to file
             }
         }
@@ -543,7 +543,7 @@ public class CamCtrlController implements Initializable {
                     String filePath = s.getUrl().getFile();
                     String fileName = filePath.substring(filePath.lastIndexOf("/"), filePath.length());
                     System.out.println(fileName);
-                    timedSlides.addSlide(new TimedSlide(chronometer.elapsed(), s.getTitle(), "img"+ fileName));
+                    XMLTimedSlides.addSlide(new XMLTimedSlidesSlide(chronometer.elapsed(), s.getTitle(), "img"+ fileName));
                 }
             });
             refreshSlides();

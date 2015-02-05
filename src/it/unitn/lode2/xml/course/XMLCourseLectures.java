@@ -9,7 +9,7 @@ import java.util.List;
  * Date: 05/02/15
  * Time: 11:57
  */
-public class Lectures {
+public class XMLCourseLectures {
 
     @XmlElement(name = "LECTURE")
     private List<String> lectures = new ArrayList<>();

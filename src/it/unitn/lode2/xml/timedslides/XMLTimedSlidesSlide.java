@@ -9,16 +9,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Time: 16:41
  */
 @XmlRootElement(name = "slide")
-public class TimedSlide {
+public class XMLTimedSlidesSlide {
 
     private Long time;
     private String title;
     private String path;
 
-    public TimedSlide() {
+    public XMLTimedSlidesSlide() {
     }
 
-    public TimedSlide(Long time, String title, String path) {
+    public XMLTimedSlidesSlide(Long time, String title, String path) {
         this.time = time;
         this.title = title;
         this.path = path;

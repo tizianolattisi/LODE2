@@ -10,7 +10,7 @@ import java.util.Date;
  * Time: 08:51
  */
 @XmlRootElement(name = "LECTURE")
-public class Lecture {
+public class XMLLecture {
 
     private String name;
     private Date date;

@@ -11,20 +11,20 @@ import java.util.List;
  * Time: 10:48
  */
 @XmlRootElement(name = "SLIDES")
-public class Slides {
+public class XMLLodeSlidesSlides {
 
-    private List<LodeSlide> slides = new ArrayList<>();
+    private List<XMLLodeSlidesSlidesSlide> slides = new ArrayList<>();
 
-    public void addSlide(LodeSlide s){
+    public void addSlide(XMLLodeSlidesSlidesSlide s){
         slides.add(s);
     }
 
     @XmlElement(name = "SLIDE")
-    public List<LodeSlide> getSlides() {
+    public List<XMLLodeSlidesSlidesSlide> getSlides() {
         return slides;
     }
 
-    public void setSlides(List<LodeSlide> slides) {
+    public void setSlides(List<XMLLodeSlidesSlidesSlide> slides) {
         this.slides = slides;
     }
 }

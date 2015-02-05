@@ -9,16 +9,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Time: 20:33
  */
 @XmlRootElement(name = "slidesGroup")
-public class SlidesGroup {
+public class XMLLodeSlidesGroupsGroup {
 
     private String fileName;
     private Integer firstSlide;
     private Integer lastSlide;
 
-    public SlidesGroup() {
+    public XMLLodeSlidesGroupsGroup() {
     }
 
-    public SlidesGroup(String fileName, Integer firstSlide, Integer lastSlide) {
+    public XMLLodeSlidesGroupsGroup(String fileName, Integer firstSlide, Integer lastSlide) {
         this.fileName = fileName;
         this.firstSlide = firstSlide;
         this.lastSlide = lastSlide;

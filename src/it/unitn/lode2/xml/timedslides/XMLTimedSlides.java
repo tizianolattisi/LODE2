@@ -12,12 +12,12 @@ import java.util.List;
  */
 
 @XmlRootElement(name = "TIMED_SLIDES")
-public class TimedSlides {
+public class XMLTimedSlides {
 
     @XmlElement(name = "slide")
-    private List<TimedSlide> slides = new ArrayList<>();
+    private List<XMLTimedSlidesSlide> slides = new ArrayList<>();
 
-    public void addSlide(TimedSlide s){
+    public void addSlide(XMLTimedSlidesSlide s){
         slides.add(s);
     }
 }

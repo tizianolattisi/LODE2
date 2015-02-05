@@ -7,17 +7,17 @@ import javax.xml.bind.annotation.XmlElement;
  * Date: 27/01/15
  * Time: 10:48
  */
-public class LodeSlide {
+public class XMLLodeSlidesSlidesSlide {
 
     private String fileName;
     private Integer sequenceNumber;
     private String title;
     private String text;
 
-    public LodeSlide() {
+    public XMLLodeSlidesSlidesSlide() {
     }
 
-    public LodeSlide(String fileName, Integer sequenceNumber, String title, String text) {
+    public XMLLodeSlidesSlidesSlide(String fileName, Integer sequenceNumber, String title, String text) {
         this.fileName = fileName;
         this.sequenceNumber = sequenceNumber;
         this.title = title;

@@ -12,9 +12,9 @@ import it.unitn.lode2.projector.raster.RasterProjectorImpl;
 import it.unitn.lode2.projector.raster.RasterSlideImpl;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.ipcam.CameraIPConf;
-import it.unitn.lode2.xml.lecture.Lecture;
-import it.unitn.lode2.xml.slides.LodeSlide;
-import it.unitn.lode2.xml.slides.LodeSlides;
+import it.unitn.lode2.xml.lecture.XMLLecture;
+import it.unitn.lode2.xml.slides.XMLLodeSlidesSlidesSlide;
+import it.unitn.lode2.xml.slides.XMLLodeSlides;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -78,12 +78,12 @@ public class Main extends Application {
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
 
-        // Lecture and Slide configuration
-        Lecture lecture = XMLHelper.build(Lecture.class).unmarshal(new File(lectureFileName));
-        LodeSlides lodeSlides = XMLHelper.build(LodeSlides.class).unmarshal(new File(lectureFolder + "/SLIDES.XML"));
+        // XMLLecture and Slide configuration
+        XMLLecture XMLLecture = XMLHelper.build(XMLLecture.class).unmarshal(new File(lectureFileName));
+        XMLLodeSlides lodeSlides = XMLHelper.build(XMLLodeSlides.class).unmarshal(new File(lectureFolder + "/SLIDES.XML"));
 
         RasterProjectorBuilder projectorBuilder = RasterProjectorBuilder.create();
-        for( LodeSlide slide: lodeSlides.getSlides().getSlides() ){
+        for( XMLLodeSlidesSlidesSlide slide: lodeSlides.getXMLLodeSlidesSlides().getSlides() ){
             URL url = (new File(lectureFolder + "/" + slide.getFileName())).toURI().toURL();
             projectorBuilder = projectorBuilder.slide(new RasterSlideImpl(url, slide.getTitle(), ""));
         }

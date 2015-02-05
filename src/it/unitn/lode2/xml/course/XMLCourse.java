@@ -2,8 +2,6 @@ package it.unitn.lode2.xml.course;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * User: tiziano
@@ -11,15 +9,15 @@ import java.util.List;
  * Time: 11:47
  */
 @XmlRootElement(name = "COURSE")
-public class Course {
+public class XMLCourse {
 
     private String name;
 
     private Integer year;
 
-    private Lectures lectures = new Lectures();
+    private XMLCourseLectures XMLCourseLectures = new XMLCourseLectures();
 
-    private Teachers teachers = new Teachers();
+    private XMLCourseTeachers XMLCourseTeachers = new XMLCourseTeachers();
 
     @XmlElement(name = "NAME")
     public String getName() {
@@ -40,21 +38,21 @@ public class Course {
     }
 
     public void addLecture(String title){
-        lectures.addLecture(title);
+        XMLCourseLectures.addLecture(title);
     }
 
     public void addTeacher(String teacher){
-        teachers.addTeacher(teacher);
+        XMLCourseTeachers.addTeacher(teacher);
     }
 
     @XmlElement(name = "LECTURES")
-    public Lectures getLectures() {
-        return lectures;
+    public XMLCourseLectures getXMLCourseLectures() {
+        return XMLCourseLectures;
     }
 
     @XmlElement(name = "TEACHERS")
-    public Teachers getTeachers() {
-        return teachers;
+    public XMLCourseTeachers getXMLCourseTeachers() {
+        return XMLCourseTeachers;
     }
 
 }
