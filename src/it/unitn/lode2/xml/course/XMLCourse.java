@@ -15,6 +15,8 @@ public class XMLCourse {
 
     private Integer year;
 
+    private String courseHome;
+
     private XMLCourseLectures XMLCourseLectures = new XMLCourseLectures();
 
     private XMLCourseTeachers XMLCourseTeachers = new XMLCourseTeachers();
@@ -50,9 +52,25 @@ public class XMLCourse {
         return XMLCourseLectures;
     }
 
+    public void setXMLCourseLectures(XMLCourseLectures XMLCourseLectures) {
+        this.XMLCourseLectures = XMLCourseLectures;
+    }
+
     @XmlElement(name = "TEACHERS")
     public XMLCourseTeachers getXMLCourseTeachers() {
         return XMLCourseTeachers;
     }
 
+    public void setXMLCourseTeachers(XMLCourseTeachers XMLCourseTeachers) {
+        this.XMLCourseTeachers = XMLCourseTeachers;
+    }
+
+    @XmlElement(name = "COURSE_HOME")
+    public String getCourseHome() {
+        return courseHome;
+    }
+
+    public void setCourseHome(String courseHome) {
+        this.courseHome = courseHome;
+    }
 }
