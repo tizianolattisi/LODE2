@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Time: 10:53
  */
 @XmlRootElement(name = "CAMERA_IP")
-public class CameraIPConf {
+public class XMLCameraIPConf {
 
     private String user;
     private String password;

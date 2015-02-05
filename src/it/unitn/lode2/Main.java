@@ -11,7 +11,7 @@ import it.unitn.lode2.projector.raster.RasterProjectorBuilder;
 import it.unitn.lode2.projector.raster.RasterProjectorImpl;
 import it.unitn.lode2.projector.raster.RasterSlideImpl;
 import it.unitn.lode2.xml.XMLHelper;
-import it.unitn.lode2.xml.ipcam.CameraIPConf;
+import it.unitn.lode2.xml.ipcam.XMLCameraIPConf;
 import it.unitn.lode2.xml.lecture.XMLLecture;
 import it.unitn.lode2.xml.slides.XMLLodeSlidesSlidesSlide;
 import it.unitn.lode2.xml.slides.XMLLodeSlides;
@@ -44,7 +44,7 @@ public class Main extends Application {
         lectureFolder = lectureFileName.substring(0, lectureFileName.lastIndexOf("/"));
 
         // read ip camera configuration
-        CameraIPConf cameraIPConf = XMLHelper.build(CameraIPConf.class).unmarshal(new File(CAMERA_CONF));
+        XMLCameraIPConf cameraIPConf = XMLHelper.build(XMLCameraIPConf.class).unmarshal(new File(CAMERA_CONF));
 
         // Camera
         Camera camera = CameraIPBuilder.create()
