@@ -455,6 +455,7 @@ public class CamCtrlController implements Initializable {
             if( recorder.isIdle() || recorder.isPaused() ) {
                 try {
                     recorder.record();
+                    chronometer.reset();
                     chronometer.start();
                     offair.setId("onair");
                     // XXX: clear timed slides?
@@ -490,10 +491,11 @@ public class CamCtrlController implements Initializable {
             if( recorder.isRecording() || recorder.isPaused() ){
                 recorder.stop();
                 chronometer.stop();
+                lecture.setVideoLength(chronometer.elapsed());
+                lecture.save();
                 offair.setId("offair");
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
-                lecture.save();
             }
         }
     };

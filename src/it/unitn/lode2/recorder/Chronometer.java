@@ -1,6 +1,5 @@
 package it.unitn.lode2.recorder;
 
-import java.util.List;
 
 /**
  * User: tiziano
@@ -21,11 +20,18 @@ public class Chronometer {
 
     public void stop(){
         timeElapsed += System.currentTimeMillis() - fromTime;
-        fromTime = null;
     };
 
+    public void reset(){
+        timeElapsed=0L;
+        fromTime = null;
+    }
+
     public Long elapsed(){
-        return (timeElapsed + System.currentTimeMillis() - fromTime)/1000;
+        if( fromTime != null ) {
+            return (timeElapsed + System.currentTimeMillis() - fromTime) / 1000;
+        }
+        return timeElapsed;
     };
 
 }

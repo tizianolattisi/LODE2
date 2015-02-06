@@ -116,12 +116,12 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
 
     @Override
     public Long videoLength() {
-        return null;
+        return lecture.getVideoLength();
     }
 
     @Override
     public void setVideoLength(Long length) {
-
+        lecture.setVideoLength(length);
     }
 
     @Override
