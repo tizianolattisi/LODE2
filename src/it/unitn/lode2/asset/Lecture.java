@@ -34,5 +34,9 @@ public interface Lecture {
 
     public List<Slide> slides();
     public void addSlide(Slide slide);
+    public Slide slide(Integer seqNumber);
+
+    public List<TimedSlide> timedSlides();
+    public void addTimedSlide(Slide slide, Long second);
 
 }

@@ -1,9 +1,6 @@
 package it.unitn.lode2.asset.xml;
 
-import it.unitn.lode2.asset.AbstractLecture;
-import it.unitn.lode2.asset.Course;
-import it.unitn.lode2.asset.Lecture;
-import it.unitn.lode2.asset.Slide;
+import it.unitn.lode2.asset.*;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.lecture.XMLLecture;
 import it.unitn.lode2.xml.slides.XMLLodeSlides;
@@ -26,6 +23,7 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
     private XMLLecture lecture;
     private Course course;
     private XMLLodeSlides slides;
+    private List<TimedSlide> timedSlides = new ArrayList<>();
 
     public XmlLectureImpl(XmlCourseImpl course, String folderName) {
         folderPath = course.getFolderPath() + "Acquisition/" + folderName;
@@ -91,8 +89,28 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
     }
 
     @Override
+    public Slide slide(Integer seqNumber) {
+        return slides.getXMLLodeSlidesSlides().getSlides()
+                .stream()
+                .filter(s -> s.getSequenceNumber().equals(seqNumber))
+                .map(s -> (Slide) new XmlSlideImpl(s.getFileName(), s.getTitle(), s.getText()))
+                .collect(Collectors.toList())
+                .get(0);
+    }
+
+    @Override
     public void addSlide(Slide slide) {
 
+    }
+
+    @Override
+    public void addTimedSlide(Slide slide, Long second) {
+        timedSlides.add(new XmlTimedSlide(slide, second));
+    }
+
+    @Override
+    public List<TimedSlide> timedSlides() {
+        return timedSlides;
     }
 
     @Override
