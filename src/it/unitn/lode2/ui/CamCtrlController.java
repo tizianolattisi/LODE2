@@ -1,6 +1,7 @@
 package it.unitn.lode2.ui;
 
 import it.unitn.lode2.IOC;
+import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Capability;
 import it.unitn.lode2.recorder.Chronometer;
@@ -47,9 +48,9 @@ public class CamCtrlController implements Initializable {
     private Camera camera;
     private Recorder recorder=null;
     private Projector projector;
+    private Lecture lecture;
     private ImageView slideImageView=null;
     private Rectangle2D slideScreenBounds;
-    private XMLTimedSlides XMLTimedSlides;
     private Chronometer chronometer = new Chronometer();
 
     @FXML private ImageView currentSlideImageView;
@@ -118,6 +119,7 @@ public class CamCtrlController implements Initializable {
         camera = IOC.queryUtility(Camera.class);
         recorder = IOC.queryUtility(Recorder.class);
         projector = IOC.queryUtility(Projector.class);
+        lecture = IOC.queryUtility(Lecture.class);
 
         toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
 
@@ -455,7 +457,7 @@ public class CamCtrlController implements Initializable {
                     recorder.record();
                     chronometer.start();
                     offair.setId("onair");
-                    XMLTimedSlides = new XMLTimedSlides();
+                    // XXX: clear timed slides?
                 } catch (IOException e) {
                     handleIOException(e);
                 }
@@ -491,9 +493,7 @@ public class CamCtrlController implements Initializable {
                 offair.setId("offair");
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
-                StringWriter sw = new StringWriter();
-                XMLHelper.build(XMLTimedSlides.class).marshall(XMLTimedSlides, sw);
-                System.out.println(sw.toString()); // XXX: to file
+                // XXX: write TIMED_SLIDES.XML
             }
         }
     };
@@ -540,10 +540,7 @@ public class CamCtrlController implements Initializable {
             projector.shownSlide().ifPresent(s -> {
                 slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight()));
                 if( recorder.isRecording() ) {
-                    String filePath = s.getUrl().getFile();
-                    String fileName = filePath.substring(filePath.lastIndexOf("/"), filePath.length());
-                    System.out.println(fileName);
-                    XMLTimedSlides.addSlide(new XMLTimedSlidesSlide(chronometer.elapsed(), s.getTitle(), "img"+ fileName));
+                    projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), chronometer.elapsed()));
                 }
             });
             refreshSlides();

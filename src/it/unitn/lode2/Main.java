@@ -83,6 +83,8 @@ public class Main extends Application {
 
         Course course = new XmlCourseImpl(courseFolder);
         Lecture lecture = course.lectures().get(0);
+        IOC.registerUtility(lecture, Lecture.class);
+
         RasterProjectorBuilder projectorBuilder = RasterProjectorBuilder.create();
         for( Slide slide: lecture.slides() ){
             URL url = (new File(lectureFolder + "/" + slide.filename())).toURI().toURL();

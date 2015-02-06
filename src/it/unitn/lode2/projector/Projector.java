@@ -14,6 +14,7 @@ public interface Projector {
     public void addSlides(List<Slide> slides);
 
     public Optional<Slide> shownSlide();
+    public Optional<Integer> shownSlideSeqNumber();
     public Optional<Slide> preparedSlide();
     public Optional<Slide> slideNr(Integer n);
     public Optional<Slide> slideDelta(Integer n);
