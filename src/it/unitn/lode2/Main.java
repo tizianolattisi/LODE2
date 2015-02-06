@@ -1,5 +1,9 @@
 package it.unitn.lode2;
 
+import it.unitn.lode2.asset.Course;
+import it.unitn.lode2.asset.Lecture;
+import it.unitn.lode2.asset.Slide;
+import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.ipcam.CameraIPBuilder;
 import it.unitn.lode2.camera.ipcam.Cmds;
@@ -19,6 +23,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -29,10 +34,6 @@ public class Main extends Application {
 
     private final static String CAMERA_CONF = "/Users/tiziano/Projects/LODE2/confs/ipcamera/FOSCAM.XML";
 
-    private String lectureFileName;
-    private String lectureFolder;
-
-
     @Override
     public void start(Stage primaryStage) throws Exception{
 
@@ -40,8 +41,10 @@ public class Main extends Application {
         FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Lecture's configuration file (LECTURE.XML)","*.xml");
         fileChooser.getExtensionFilters().add(extension);
         File file = fileChooser.showOpenDialog(null);
-        lectureFileName = file.toURI().toURL().getFile();
-        lectureFolder = lectureFileName.substring(0, lectureFileName.lastIndexOf("/"));
+        String lectureFileName = file.toURI().toURL().getFile();
+        String lectureFolder = lectureFileName.substring(0, lectureFileName.lastIndexOf("/"));
+        String courseFolder = lectureFolder.substring(0, lectureFolder.lastIndexOf("Acquisition"));
+
 
         // read ip camera configuration
         XMLCameraIPConf cameraIPConf = XMLHelper.build(XMLCameraIPConf.class).unmarshal(new File(CAMERA_CONF));
@@ -78,14 +81,12 @@ public class Main extends Application {
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
 
-        // XMLLecture and Slide configuration
-        XMLLecture XMLLecture = XMLHelper.build(XMLLecture.class).unmarshal(new File(lectureFileName));
-        XMLLodeSlides lodeSlides = XMLHelper.build(XMLLodeSlides.class).unmarshal(new File(lectureFolder + "/SLIDES.XML"));
-
+        Course course = new XmlCourseImpl(courseFolder);
+        Lecture lecture = course.lectures().get(0);
         RasterProjectorBuilder projectorBuilder = RasterProjectorBuilder.create();
-        for( XMLLodeSlidesSlidesSlide slide: lodeSlides.getXMLLodeSlidesSlides().getSlides() ){
-            URL url = (new File(lectureFolder + "/" + slide.getFileName())).toURI().toURL();
-            projectorBuilder = projectorBuilder.slide(new RasterSlideImpl(url, slide.getTitle(), ""));
+        for( Slide slide: lecture.slides() ){
+            URL url = (new File(lectureFolder + "/" + slide.filename())).toURI().toURL();
+            projectorBuilder = projectorBuilder.slide(new RasterSlideImpl(url, slide.title(), slide.text()));
         }
         RasterProjectorImpl projector = projectorBuilder.build();
         IOC.registerUtility(projector, Projector.class);
