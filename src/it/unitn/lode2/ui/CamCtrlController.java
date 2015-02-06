@@ -484,7 +484,7 @@ public class CamCtrlController implements Initializable {
         }
     };
 
-    private EventHandler<ActionEvent> handlerStop = new EventHandler<ActionEvent>() { // Chiavegato Elia
+    private EventHandler<ActionEvent> handlerStop = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             if( recorder.isRecording() || recorder.isPaused() ){
