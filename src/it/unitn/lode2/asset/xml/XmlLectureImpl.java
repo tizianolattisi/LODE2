@@ -4,7 +4,8 @@ import it.unitn.lode2.asset.*;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.lecture.XMLLecture;
 import it.unitn.lode2.xml.slides.XMLLodeSlides;
-import it.unitn.lode2.xml.slides.XMLLodeSlidesSlidesSlide;
+import it.unitn.lode2.xml.timedslides.XMLTimedSlides;
+import it.unitn.lode2.xml.timedslides.XMLTimedSlidesSlide;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -142,4 +143,22 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
     public void setHasPostProcessing4iTunesU(Boolean b) {
 
     }
+
+    @Override
+    public void save() {
+        XMLHelper.build(XMLLecture.class).marshall(lecture, new File(folderPath + "/LECTURE.XML"));
+        XMLHelper.build(XMLLodeSlides.class).marshall(slides, new File(folderPath + "/SLIDES.XML"));
+        XMLTimedSlides xmlTimedSlides = new XMLTimedSlides();
+        for( TimedSlide s: timedSlides() ) {
+            XMLTimedSlidesSlide xmlTimedSlidesSlide = new XMLTimedSlidesSlide();
+            xmlTimedSlidesSlide.setTitle(s.slide().title());
+            xmlTimedSlidesSlide.setTime(s.time());
+            String filename = s.slide().filename();
+            String newFilename = "img" + filename.substring(filename.lastIndexOf("/"), filename.length());
+            xmlTimedSlidesSlide.setPath(newFilename);
+            xmlTimedSlides.addSlide(xmlTimedSlidesSlide);
+        }
+        XMLHelper.build(XMLTimedSlides.class).marshall(xmlTimedSlides, new File(folderPath + "/TIMED_SLIDES.XML"));
+    }
+
 }

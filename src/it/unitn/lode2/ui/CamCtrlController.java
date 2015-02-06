@@ -493,7 +493,7 @@ public class CamCtrlController implements Initializable {
                 offair.setId("offair");
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
-                // XXX: write TIMED_SLIDES.XML
+                lecture.save();
             }
         }
     };

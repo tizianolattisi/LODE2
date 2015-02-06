@@ -17,5 +17,6 @@ public interface Course {
     public void addLecture(Lecture lecture);
     public List<String> teachers();
     public void addTeacher(String teacher);
+    public void save();
 
 }

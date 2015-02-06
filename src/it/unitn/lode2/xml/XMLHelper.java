@@ -27,6 +27,14 @@ public class XMLHelper<T> {
         return helper;
     }
 
+    public void marshall(T t, File f){
+        try {
+            createMarshaller().marshal(t, f);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void marshall(T t, StringWriter sw){
         try {
             createMarshaller().marshal(t, sw);

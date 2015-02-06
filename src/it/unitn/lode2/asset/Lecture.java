@@ -39,4 +39,6 @@ public interface Lecture {
     public List<TimedSlide> timedSlides();
     public void addTimedSlide(Slide slide, Long second);
 
+    public void save();
+
 }

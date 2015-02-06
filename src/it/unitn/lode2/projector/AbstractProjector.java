@@ -40,7 +40,7 @@ public abstract class AbstractProjector implements Projector {
     @Override
     public Optional<Integer> shownSlideSeqNumber() {
         if( shownIndex != null ) {
-            return Optional.of(shownIndex);
+            return Optional.of(shownIndex+1);
         }
         return Optional.empty();
     }

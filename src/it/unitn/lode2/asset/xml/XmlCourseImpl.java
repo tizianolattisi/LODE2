@@ -5,10 +5,8 @@ import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.course.XMLCourse;
-import it.unitn.lode2.xml.lecture.XMLLecture;
 
 import java.io.File;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,5 +72,10 @@ public class XmlCourseImpl extends AbstractCourse implements Course {
     @Override
     public void addTeacher(String teacher) {
         course.getXMLCourseTeachers().addTeacher(teacher);
+    }
+
+    @Override
+    public void save() {
+
     }
 }

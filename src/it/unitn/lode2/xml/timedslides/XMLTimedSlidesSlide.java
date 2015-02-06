@@ -38,4 +38,16 @@ public class XMLTimedSlidesSlide {
     public Long getTime() {
         return time;
     }
+
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }
