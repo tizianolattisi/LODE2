@@ -1,6 +1,7 @@
 package it.unitn.lode2.asset;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * User: tiziano
@@ -30,5 +31,8 @@ public interface Lecture {
     public void setHasPostProcessing(Boolean b);
     public Boolean hasPostProcessing4iTunesU();
     public void setHasPostProcessing4iTunesU(Boolean b);
+
+    public List<Slide> slides();
+    public void addSlide(Slide slide);
 
 }

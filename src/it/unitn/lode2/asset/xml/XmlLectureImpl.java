@@ -3,12 +3,17 @@ package it.unitn.lode2.asset.xml;
 import it.unitn.lode2.asset.AbstractLecture;
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
+import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.lecture.XMLLecture;
+import it.unitn.lode2.xml.slides.XMLLodeSlides;
+import it.unitn.lode2.xml.slides.XMLLodeSlidesSlidesSlide;
 
 import java.io.File;
-import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * User: tiziano
@@ -20,10 +25,12 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
     private String folderPath;
     private XMLLecture lecture;
     private Course course;
+    private XMLLodeSlides slides;
 
     public XmlLectureImpl(XmlCourseImpl course, String folderName) {
         folderPath = course.getFolderPath() + "Acquisition/" + folderName;
         lecture = XMLHelper.build(XMLLecture.class).unmarshal(new File(folderPath + "/LECTURE.XML"));
+        slides = XMLHelper.build(XMLLodeSlides.class).unmarshal(new File(this.folderPath + "/SLIDES.XML"));
         this.course = course;
     }
 
@@ -73,6 +80,19 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
     @Override
     public Course course() {
         return course;
+    }
+
+    @Override
+    public List<Slide> slides() {
+        return slides.getXMLLodeSlidesSlides().getSlides()
+                .stream()
+                .map(s -> (Slide) new XmlSlideImpl(s.getFileName(), s.getTitle(), s.getText()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addSlide(Slide slide) {
+
     }
 
     @Override
