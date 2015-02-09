@@ -540,7 +540,9 @@ public class CamCtrlController implements Initializable {
         public void handle(ActionEvent event) {
             projector.show();
             projector.shownSlide().ifPresent(s -> {
-                slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight()));
+                if( slideImageView != null ) {
+                    slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight()));
+                }
                 if( recorder.isRecording() ) {
                     projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), chronometer.elapsed()));
                 }
