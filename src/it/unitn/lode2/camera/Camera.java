@@ -27,6 +27,8 @@ public interface Camera {
     public void tiltStop() throws IOException;
 
     public void goToPreset(String preset) throws IOException;
+    public void delPreset(String preset) throws IOException;
+    public void addPreset(String preset) throws IOException;
 
     public InputStream snapshot() throws IOException;
 }

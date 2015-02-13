@@ -76,7 +76,7 @@
             <Font size="9.0" />
          </font></ToggleButton>
       <ImageView fx:id="offair" fitHeight="47.0" fitWidth="88.0" layoutX="792.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
-      <ToggleButton fx:id="preset4ToggleButton1" layoutX="607.0" layoutY="505.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET&#10;SCENE" textAlignment="CENTER">
+      <ToggleButton fx:id="setPreset4ToggleButton" layoutX="607.0" layoutY="505.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET&#10;SCENE" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>

@@ -66,6 +66,8 @@ public class Main extends Application {
                 .template(Cmds.TILTSTOP, cameraIPConf.getTiltStop())
                 .template(Cmds.SNAPSHOT, cameraIPConf.getSnapshot())
                 .template(Cmds.PRESET, cameraIPConf.getPreset())
+                .template(Cmds.ADDPRESET, cameraIPConf.getAddPreset())
+                .template(Cmds.DELPRESET, cameraIPConf.getDelPreset())
                 .build();
         IOC.registerUtility(camera, Camera.class);
 

@@ -96,6 +96,8 @@ public class CameraIPBuilder {
         // PRESETS
         if( urls.containsKey(Cmds.PRESET) ){
             cameraIP.setPresetUrl(urls.get(Cmds.PRESET));
+            cameraIP.setPresetAddUrl(urls.get(Cmds.ADDPRESET));
+            cameraIP.setPresetDelUrl(urls.get(Cmds.DELPRESET));
             cameraIP.addCapability(Capability.PRESETS);
         }
         // SNAPSHOT

@@ -33,6 +33,8 @@ public class XMLCameraIPConf {
     private String tiltStop;
 
     private String preset;
+    private String delPreset;
+    private String addPreset;
 
     private String snapshot;
 
@@ -121,6 +123,16 @@ public class XMLCameraIPConf {
         return preset;
     }
 
+    @XmlElement(name = "DELPRESET")
+    public String getDelPreset() {
+        return delPreset;
+    }
+
+    @XmlElement(name = "ADDPRESET")
+    public String getAddPreset() {
+        return addPreset;
+    }
+
     @XmlElement(name = "SNAPSHOT")
     public String getSnapshot() {
         return snapshot;
@@ -192,6 +204,14 @@ public class XMLCameraIPConf {
 
     public void setPreset(String preset) {
         this.preset = preset;
+    }
+
+    public void setDelPreset(String delPreset) {
+        this.delPreset = delPreset;
+    }
+
+    public void setAddPreset(String addPreset) {
+        this.addPreset = addPreset;
     }
 
     public void setSnapshot(String snapshot) {

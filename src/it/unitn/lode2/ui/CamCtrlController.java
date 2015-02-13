@@ -12,6 +12,7 @@ import it.unitn.lode2.xml.timedslides.XMLTimedSlidesSlide;
 import it.unitn.lode2.xml.timedslides.XMLTimedSlides;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -31,6 +32,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import javax.script.Bindings;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
@@ -52,6 +54,7 @@ public class CamCtrlController implements Initializable {
     private ImageView slideImageView=null;
     private Rectangle2D slideScreenBounds;
     private Chronometer chronometer = new Chronometer();
+
 
     @FXML private ImageView currentSlideImageView;
     @FXML private ImageView preparedSlideImageView;
@@ -78,6 +81,7 @@ public class CamCtrlController implements Initializable {
     @FXML private Button tiltUpButton;
     @FXML private Button tiltDownButton;
 
+    @FXML private ToggleButton setPreset4ToggleButton;
     @FXML private ToggleButton preset1ToggleButton;
     @FXML private ToggleButton preset2ToggleButton;
     @FXML private ToggleButton preset3ToggleButton;
@@ -91,6 +95,7 @@ public class CamCtrlController implements Initializable {
     private List<ImageView> nextImageViews;
 
     private Timeline timeline;
+    private final SimpleBooleanProperty setSceneMode = new SimpleBooleanProperty();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -121,6 +126,7 @@ public class CamCtrlController implements Initializable {
         projector = IOC.queryUtility(Projector.class);
         lecture = IOC.queryUtility(Lecture.class);
 
+        setSceneMode.bindBidirectional(setPreset4ToggleButton.selectedProperty());
         toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
 
         nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView, next3SlideImageView);
@@ -510,7 +516,13 @@ public class CamCtrlController implements Initializable {
                 button.setSelected(button == pressedButton);
                 if( button == pressedButton ) {
                     try {
-                        camera.goToPreset(i.toString());
+                        if( setSceneMode.getValue() ){
+                                camera.delPreset(i.toString());
+                                camera.addPreset(i.toString());
+                                setSceneMode.setValue(Boolean.FALSE);
+                        } else {
+                                camera.goToPreset(i.toString());
+                        }
                     } catch (IOException e) {
                         handleIOException(e);
                     }
