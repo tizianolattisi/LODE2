@@ -7,9 +7,6 @@ import it.unitn.lode2.camera.Capability;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
-import it.unitn.lode2.xml.XMLHelper;
-import it.unitn.lode2.xml.timedslides.XMLTimedSlidesSlide;
-import it.unitn.lode2.xml.timedslides.XMLTimedSlides;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -32,9 +29,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import javax.script.Bindings;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -95,7 +90,13 @@ public class CamCtrlController implements Initializable {
     private List<ImageView> nextImageViews;
 
     private Timeline timeline;
-    private final SimpleBooleanProperty setSceneMode = new SimpleBooleanProperty();
+    private final SimpleBooleanProperty setPresetMode = new SimpleBooleanProperty();
+
+    private enum ZoomMode {
+        NONE, WIDE, NARROW
+    }
+    private ZoomMode presetZoomMode = ZoomMode.NONE;
+    private List<ZoomMode> presetsZoomMode;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -126,9 +127,10 @@ public class CamCtrlController implements Initializable {
         projector = IOC.queryUtility(Projector.class);
         lecture = IOC.queryUtility(Lecture.class);
 
-        setSceneMode.bindBidirectional(setPreset4ToggleButton.selectedProperty());
-        toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
+        setPresetMode.bindBidirectional(setPreset4ToggleButton.selectedProperty());
 
+        toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
+        presetsZoomMode = Arrays.asList(ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE);
         nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView, next3SlideImageView);
 
         configHandlers();
@@ -189,6 +191,7 @@ public class CamCtrlController implements Initializable {
         preset2ToggleButton.setOnAction(handlerPreset);
         preset3ToggleButton.setOnAction(handlerPreset);
         preset4ToggleButton.setOnAction(handlerPreset);
+        setPreset4ToggleButton.setOnAction(handlerSetPreset);
 
         firstSlideButton.setOnAction(handlerFirstSlide);
         prevSlideButton.setOnAction(handlerPrevSlide);
@@ -249,6 +252,10 @@ public class CamCtrlController implements Initializable {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    if( setPresetMode.getValue() ){
+                        presetZoomMode = ZoomMode.NARROW;
+                        return;
+                    }
                     try {
                         camera.zoomIn();
                     } catch (IOException e) {
@@ -273,6 +280,10 @@ public class CamCtrlController implements Initializable {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    if( setPresetMode.getValue() ){
+                        presetZoomMode = ZoomMode.WIDE;
+                        return;
+                    }
                     try {
                         camera.zoomOut();
                     } catch (IOException e) {
@@ -516,18 +527,33 @@ public class CamCtrlController implements Initializable {
                 button.setSelected(button == pressedButton);
                 if( button == pressedButton ) {
                     try {
-                        if( setSceneMode.getValue() ){
-                                camera.delPreset(i.toString());
-                                camera.addPreset(i.toString());
-                                setSceneMode.setValue(Boolean.FALSE);
+                        if( setPresetMode.getValue() ){
+                            camera.delPreset(i.toString());
+                            camera.addPreset(i.toString());
+                            presetsZoomMode.set(i-1, presetZoomMode);
+                            setPresetMode.setValue(Boolean.FALSE);
+                            presetZoomMode = ZoomMode.NONE;
                         } else {
-                                camera.goToPreset(i.toString());
+                            camera.goToPreset(i.toString());
+                            if( ZoomMode.NARROW.equals(presetsZoomMode.get(i-1)) ){
+                                camera.zoomIn();
+                            } else if( ZoomMode.WIDE.equals(presetsZoomMode.get(i-1)) ){
+                                camera.zoomOut();
+                            }
                         }
                     } catch (IOException e) {
                         handleIOException(e);
                     }
                 }
             }
+        }
+    };
+
+    private EventHandler<ActionEvent> handlerSetPreset = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            resetPresetButtons();
+            presetZoomMode = ZoomMode.NONE;
         }
     };
 
