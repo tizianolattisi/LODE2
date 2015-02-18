@@ -8,30 +8,42 @@ package it.unitn.lode2.recorder;
  */
 public class Chronometer {
 
-    private Long timeElapsed=0L;
-    private Long fromTime;
+    private enum Status {
+        STOPPED, STARTED
+    }
+
+    private Long startTime=null;
+    private Long endTime=null;
+    private Status status=Status.STOPPED;
+
 
 
     public void start(){
-        if( fromTime == null ){
-            fromTime = System.currentTimeMillis();
+        if( Status.STOPPED.equals(status) ){
+            startTime = System.currentTimeMillis();
+            status = Status.STARTED;
         }
-    };
+    }
 
     public void stop(){
-        timeElapsed += System.currentTimeMillis() - fromTime;
-    };
+        if( Status.STARTED.equals(status) ){
+            endTime = System.currentTimeMillis();
+            status = Status.STOPPED;
+        }
+
+    }
 
     public void reset(){
-        timeElapsed=0L;
-        fromTime = null;
+        startTime=null;
+        endTime=null;
+        status=Status.STOPPED;
     }
 
     public Long elapsed(){
-        if( fromTime != null ) {
-            return (timeElapsed + System.currentTimeMillis() - fromTime) / 1000;
+        if( Status.STARTED.equals(status) ){
+            return System.currentTimeMillis() - startTime;
         }
-        return timeElapsed;
-    };
+        return endTime - startTime;
+    }
 
 }

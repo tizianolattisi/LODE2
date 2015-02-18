@@ -508,7 +508,7 @@ public class CamCtrlController implements Initializable {
             if( recorder.isRecording() || recorder.isPaused() ){
                 recorder.stop();
                 chronometer.stop();
-                lecture.setVideoLength(chronometer.elapsed());
+                lecture.setVideoLength(chronometer.elapsed()/1000);
                 lecture.save();
                 offair.setId("offair");
                 recordToggleButton.setSelected(false);
@@ -582,7 +582,7 @@ public class CamCtrlController implements Initializable {
                     slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight()));
                 }
                 if( recorder.isRecording() ) {
-                    projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), chronometer.elapsed()));
+                    projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), chronometer.elapsed()/1000));
                 }
             });
             refreshSlides();
