@@ -21,9 +21,12 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -146,6 +149,21 @@ public class CamCtrlController implements Initializable {
 
         projector.first();
         refreshSlides();
+    }
+
+    public void keyBindings() {
+        setKeyButtonBinding(KeyCode.UP, showSlideButton);
+        setKeyButtonBinding(KeyCode.ENTER, showSlideButton);
+        setKeyButtonBinding(KeyCode.LEFT, prevSlideButton);
+        setKeyButtonBinding(KeyCode.RIGHT, nextSlideButton);
+        setKeyButtonBinding(KeyCode.DIGIT1, preset1ToggleButton);
+        setKeyButtonBinding(KeyCode.DIGIT2, preset2ToggleButton);
+        setKeyButtonBinding(KeyCode.DIGIT3, preset3ToggleButton);
+        setKeyButtonBinding(KeyCode.DIGIT4, preset4ToggleButton);
+    }
+
+    private void setKeyButtonBinding(KeyCode code, ButtonBase button){
+        button.getScene().getAccelerators().put(new KeyCodeCombination(code), () -> button.fire());
     }
 
     private void configHandlers() {
