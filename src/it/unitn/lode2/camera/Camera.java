@@ -2,6 +2,7 @@ package it.unitn.lode2.camera;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Optional;
 
 /**
  * User: tiziano
@@ -30,5 +31,5 @@ public interface Camera {
     public void delPreset(String preset) throws IOException;
     public void addPreset(String preset) throws IOException;
 
-    public InputStream snapshot() throws IOException;
+    public Optional<InputStream> snapshot() throws IOException;
 }

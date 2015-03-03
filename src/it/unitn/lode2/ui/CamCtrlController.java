@@ -33,9 +33,11 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -221,7 +223,7 @@ public class CamCtrlController implements Initializable {
     /* Preview */
     private void refreshPreview() {
         try {
-            previewImageView.setImage(new Image(camera.snapshot()));
+            camera.snapshot().ifPresent(s -> previewImageView.setImage(new Image(s)));
         } catch (IOException e) {
             handleIOException(e);
         }

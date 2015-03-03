@@ -4,7 +4,10 @@ import it.unitn.lode2.camera.AbstractCamera;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.Optional;
 
 /**
  * User: tiziano
@@ -30,6 +33,8 @@ public class CameraIPImpl extends AbstractCamera {
     private String presetDelUrl;
 
     private String snapshotUrl;
+
+    private Boolean isShooting=Boolean.FALSE;
 
     @Override
     public void zoomIn() throws IOException {
@@ -93,9 +98,24 @@ public class CameraIPImpl extends AbstractCamera {
     }
 
     @Override
-    public InputStream snapshot() throws IOException {
+    public Optional<InputStream> snapshot() throws IOException {
+        InputStream inputStream = threadSafeSnapshot();
+        if( inputStream==null ){
+            return Optional.empty();
+        }
+        return Optional.of(inputStream);
+    }
+
+    private synchronized InputStream threadSafeSnapshot() throws IOException {
         URL url = new URL(snapshotUrl);
-        return url.openStream();
+        URLConnection connection = url.openConnection();
+        connection.setConnectTimeout(200);
+        connection.setReadTimeout(200);
+        try {
+            return connection.getInputStream();
+        } catch (SocketTimeoutException ex) {
+            return null;
+        }
     }
 
     public void setZoomInUrl(String zoomInUrl) {
