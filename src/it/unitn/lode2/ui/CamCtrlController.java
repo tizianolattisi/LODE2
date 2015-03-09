@@ -30,14 +30,13 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -473,12 +472,17 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/it/unitn/lode2/ui/camsetup.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/logs.fxml"));
+                Parent root = loader.load();
+                LogsController controller = loader.getController();
                 Scene scene = new Scene(root, 600, 700);
                 Stage stage = new Stage();
-                stage.setTitle("Camera config");
+                stage.setTitle("Acquisition logs");
                 stage.setScene(scene);
                 stage.show();
+                if( recorder.isRecording() ) {
+                    //controller.logRecorder(recorder);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -620,6 +624,12 @@ public class CamCtrlController implements Initializable {
         public void handle(ActionEvent event) {
             projector.last();
             refreshSlides();
+        }
+    };
+    public EventHandler<WindowEvent> handlerClose = new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent event) {
+            System.out.println("bye bye!");
         }
     };
 

@@ -37,6 +37,7 @@ public class XMLCameraIPConf {
     private String addPreset;
 
     private String snapshot;
+    private String recordCommand;
 
     @XmlElement(name = "USER")
     public String getUser() {
@@ -138,6 +139,11 @@ public class XMLCameraIPConf {
         return snapshot;
     }
 
+    @XmlElement(name = "RECORD_COMMAND")
+    public String getRecordCommand() {
+        return recordCommand;
+    }
+
     public void setUser(String user) {
         this.user = user;
     }
@@ -216,5 +222,9 @@ public class XMLCameraIPConf {
 
     public void setSnapshot(String snapshot) {
         this.snapshot = snapshot;
+    }
+
+    public void setRecordCommand(String recordCommand) {
+        this.recordCommand = recordCommand;
     }
 }

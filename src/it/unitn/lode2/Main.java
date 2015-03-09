@@ -103,6 +103,7 @@ public class Main extends Application {
                 .url(cameraIPConf.getStreamUrl())
                 .user(cameraIPConf.getUser())
                 .password(cameraIPConf.getPassword())
+                .recordCommand(cameraIPConf.getRecordCommand())
                 .output(lectureFolder + "/movie0.mp4")
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
@@ -127,6 +128,7 @@ public class Main extends Application {
         scene.getStylesheets().add("/it/unitn/lode2/ui/skin/style.css");
         controller.keyBindings();
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(controller.handlerClose);
         primaryStage.show();
     }
 
