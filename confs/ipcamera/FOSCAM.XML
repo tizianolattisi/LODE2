@@ -20,4 +20,5 @@
     <ADDPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzAddPresetPoint&amp;usr=${user}&amp;pwd=${password}&amp;name=</ADDPRESET>
     <DELPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzDeletePresetPoint&amp;usr=${user}&amp;pwd=${password}&amp;name=</DELPRESET>
     <SNAPSHOT>/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2&amp;usr=${user}&amp;pwd=${password}</SNAPSHOT>
+    <RECORD_COMMAND>${ffmpeg} -i ${input} -strict -2 -acodec aac -vcodec copy -b:a 32k -y ${output}</RECORD_COMMAND>
 </CAMERA_IP>
