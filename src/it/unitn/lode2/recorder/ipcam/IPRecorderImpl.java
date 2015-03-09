@@ -31,8 +31,6 @@ public class IPRecorderImpl implements Recorder {
     private final String output;
 
     private String url;
-    private StreamGobbler standardStreamGobbler;
-    private StreamGobbler errorStreamGobbler;
 
 
     public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password, String recordTemplate, String output) {
@@ -64,11 +62,6 @@ public class IPRecorderImpl implements Recorder {
         System.out.println("record");
         status = RecorderStatus.RECORDING;
 
-        standardStreamGobbler = new StreamGobbler(recordProcess.getInputStream());
-        errorStreamGobbler = new StreamGobbler(recordProcess.getErrorStream());
-        standardStreamGobbler.start();
-        errorStreamGobbler.start();
-
     }
 
     @Override
@@ -81,9 +74,6 @@ public class IPRecorderImpl implements Recorder {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            standardStreamGobbler.terminate();
-            errorStreamGobbler.terminate();
-            while( standardStreamGobbler.isAlive() || errorStreamGobbler.isAlive());
             //recordProcess.destroy();
             recordProcess=null;
             status = RecorderStatus.IDLE;

@@ -7,6 +7,7 @@ import it.unitn.lode2.camera.Capability;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
+import it.unitn.lode2.recorder.ipcam.StreamGobbler;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -95,6 +96,10 @@ public class CamCtrlController implements Initializable {
 
     private Timeline timeline;
     private final SimpleBooleanProperty setPresetMode = new SimpleBooleanProperty();
+    //private LogsController logsController;
+
+    private StreamGobbler errorStreamGobbler = new StreamGobbler();
+    private StreamGobbler standardStreamGobbler = new StreamGobbler();
 
     private enum ZoomMode {
         NONE, WIDE, NARROW
@@ -472,14 +477,18 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             try {
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/logs.fxml"));
                 Parent root = loader.load();
-                LogsController controller = loader.getController();
+                //logsController = loader.getController();
                 Scene scene = new Scene(root, 600, 700);
                 Stage stage = new Stage();
                 stage.setTitle("Acquisition logs");
                 stage.setScene(scene);
                 stage.show();
+                //logsController.logRecorder(recorder);
+                recorder.errorLog().ifPresent(s -> errorStreamGobbler.stream(s).start());
+                recorder.outputLog().ifPresent(s -> standardStreamGobbler.stream(s).start());
                 if( recorder.isRecording() ) {
                     //controller.logRecorder(recorder);
                 }
@@ -532,14 +541,25 @@ public class CamCtrlController implements Initializable {
             if( recorder.isRecording() || recorder.isPaused() ){
                 recorder.stop();
                 chronometer.stop();
-                lecture.setVideoLength(chronometer.elapsed()/1000);
+                lecture.setVideoLength(chronometer.elapsed() / 1000);
                 lecture.save();
+                terminateGobblers();
+                //logsController.stop();
                 offair.setId("offair");
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
             }
         }
     };
+
+    private void terminateGobblers() {
+        if( errorStreamGobbler != null && errorStreamGobbler.isAlive() ) {
+            errorStreamGobbler.terminate();
+        }
+        if( standardStreamGobbler != null && standardStreamGobbler.isAlive() ) {
+            standardStreamGobbler.terminate();
+        }
+    }
 
     private EventHandler<ActionEvent> handlerPreset = new EventHandler<ActionEvent>() {
         @Override
@@ -629,7 +649,7 @@ public class CamCtrlController implements Initializable {
     public EventHandler<WindowEvent> handlerClose = new EventHandler<WindowEvent>() {
         @Override
         public void handle(WindowEvent event) {
-            System.out.println("bye bye!");
+            terminateGobblers();
         }
     };
 

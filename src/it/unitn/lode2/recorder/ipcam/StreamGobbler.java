@@ -9,17 +9,22 @@ import java.io.*;
  */
 public class StreamGobbler extends Thread {
 
-    InputStream is;
+    InputStream inputStream;
     Boolean toTerminate = Boolean.FALSE;
 
-    public StreamGobbler(InputStream is) {
-        this.is = is;
+    public StreamGobbler() {
+
+    }
+
+    public StreamGobbler stream(InputStream inputStream) {
+        this.inputStream = inputStream;
+        return this;
     }
 
     @Override
     public void run() {
         try {
-            InputStreamReader isr = new InputStreamReader(is);
+            InputStreamReader isr = new InputStreamReader(inputStream);
             BufferedReader br = new BufferedReader(isr);
             String line = null;
             while( !toTerminate && (line = br.readLine()) != null ) {
