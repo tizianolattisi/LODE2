@@ -1,7 +1,5 @@
 package it.unitn.lode2.recorder.ipcam;
 
-import javafx.scene.control.TextArea;
-
 import java.io.*;
 
 /**
