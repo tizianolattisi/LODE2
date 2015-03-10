@@ -22,9 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBase;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -39,6 +37,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -657,9 +656,23 @@ public class CamCtrlController implements Initializable {
     public EventHandler<WindowEvent> handlerClose = new EventHandler<WindowEvent>() {
         @Override
         public void handle(WindowEvent event) {
-            terminateGobblers();
-            previewer.stop();
-            recorder.stop();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm exit");
+            alert.setHeaderText("Do you really want to exit?");
+            alert.setContentText("The current recording session will end.");
+            Optional<ButtonType> result = alert.showAndWait();
+            if( ButtonType.OK.equals(result.get()) ) {
+                terminateGobblers();
+                previewer.stop();
+                if( recorder.isRecording() ){
+                    recorder.stop();
+                    chronometer.stop();
+                    lecture.setVideoLength(chronometer.elapsed() / 1000);
+                    lecture.save();
+                }
+            } else {
+                event.consume();
+            }
         }
     };
 
