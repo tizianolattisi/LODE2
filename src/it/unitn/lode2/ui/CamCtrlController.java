@@ -162,7 +162,10 @@ public class CamCtrlController implements Initializable {
 
     public void keyBindings() {
         setKeyButtonBinding(KeyCode.UP, showSlideButton);
+        setKeyButtonBinding(KeyCode.KP_UP, showSlideButton);
         setKeyButtonBinding(KeyCode.ENTER, showSlideButton);
+        setKeyButtonBinding(KeyCode.KP_LEFT, prevSlideButton);
+        setKeyButtonBinding(KeyCode.KP_RIGHT, nextSlideButton);
         setKeyButtonBinding(KeyCode.LEFT, prevSlideButton);
         setKeyButtonBinding(KeyCode.RIGHT, nextSlideButton);
         setKeyButtonBinding(KeyCode.DIGIT1, preset1ToggleButton);
