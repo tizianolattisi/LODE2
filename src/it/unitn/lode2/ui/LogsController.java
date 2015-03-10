@@ -46,4 +46,11 @@ public class LogsController implements Initializable {
         }
     }
 
+    public TextArea getStdoutTextArea() {
+        return stdoutTextArea;
+    }
+
+    public TextArea getStderrorTextArea() {
+        return stderrorTextArea;
+    }
 }

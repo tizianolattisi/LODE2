@@ -10,6 +10,7 @@ import it.unitn.lode2.projector.Projector;
 import it.unitn.lode2.recorder.ipcam.StreamGobbler;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -96,7 +97,7 @@ public class CamCtrlController implements Initializable {
 
     private Timeline timeline;
     private final SimpleBooleanProperty setPresetMode = new SimpleBooleanProperty();
-    //private LogsController logsController;
+    private LogsController logsController;
 
     private StreamGobbler errorStreamGobbler = new StreamGobbler();
     private StreamGobbler standardStreamGobbler = new StreamGobbler();
@@ -480,15 +481,15 @@ public class CamCtrlController implements Initializable {
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/logs.fxml"));
                 Parent root = loader.load();
-                //logsController = loader.getController();
+                logsController = loader.getController();
                 Scene scene = new Scene(root, 600, 700);
                 Stage stage = new Stage();
                 stage.setTitle("Acquisition logs");
                 stage.setScene(scene);
                 stage.show();
                 //logsController.logRecorder(recorder);
-                recorder.errorLog().ifPresent(s -> errorStreamGobbler.stream(s).start());
-                recorder.outputLog().ifPresent(s -> standardStreamGobbler.stream(s).start());
+                recorder.errorLog().ifPresent(s -> errorStreamGobbler.stream(s).widget(logsController.getStderrorTextArea()).start());
+                recorder.outputLog().ifPresent(s -> standardStreamGobbler.stream(s).widget(logsController.getStdoutTextArea()).start());
                 if( recorder.isRecording() ) {
                     //controller.logRecorder(recorder);
                 }

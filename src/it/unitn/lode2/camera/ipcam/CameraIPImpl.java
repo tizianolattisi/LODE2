@@ -109,8 +109,8 @@ public class CameraIPImpl extends AbstractCamera {
     private synchronized InputStream threadSafeSnapshot() throws IOException {
         URL url = new URL(snapshotUrl);
         URLConnection connection = url.openConnection();
-        connection.setConnectTimeout(200);
-        connection.setReadTimeout(200);
+        connection.setConnectTimeout(500);
+        connection.setReadTimeout(500);
         try {
             return connection.getInputStream();
         } catch (SocketTimeoutException ex) {
