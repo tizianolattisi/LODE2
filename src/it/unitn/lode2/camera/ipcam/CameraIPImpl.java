@@ -4,10 +4,7 @@ import it.unitn.lode2.camera.AbstractCamera;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.Optional;
 
 /**
  * User: tiziano
@@ -32,9 +29,6 @@ public class CameraIPImpl extends AbstractCamera {
     private String presetAddUrl;
     private String presetDelUrl;
 
-    private String snapshotUrl;
-
-    private Boolean isShooting=Boolean.FALSE;
 
     @Override
     public void zoomIn() throws IOException {
@@ -97,27 +91,6 @@ public class CameraIPImpl extends AbstractCamera {
         executeGET(presetAddUrl + preset);
     }
 
-    @Override
-    public Optional<InputStream> snapshot() throws IOException {
-        InputStream inputStream = threadSafeSnapshot();
-        if( inputStream==null ){
-            return Optional.empty();
-        }
-        return Optional.of(inputStream);
-    }
-
-    private synchronized InputStream threadSafeSnapshot() throws IOException {
-        URL url = new URL(snapshotUrl);
-        URLConnection connection = url.openConnection();
-        connection.setConnectTimeout(500);
-        connection.setReadTimeout(500);
-        try {
-            return connection.getInputStream();
-        } catch (SocketTimeoutException ex) {
-            return null;
-        }
-    }
-
     public void setZoomInUrl(String zoomInUrl) {
         this.zoomInUrl = zoomInUrl;
     }
@@ -152,10 +125,6 @@ public class CameraIPImpl extends AbstractCamera {
 
     public void setTiltStopUrl(String tiltStopUrl) {
         this.tiltStopUrl = tiltStopUrl;
-    }
-
-    public void setSnapshotUrl(String snapshotUrl) {
-        this.snapshotUrl = snapshotUrl;
     }
 
     public void setPresetUrl(String presetUrl) {

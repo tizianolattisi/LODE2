@@ -59,14 +59,13 @@ public class IPRecorderImpl implements Recorder {
     @Override
     public void record() throws IOException {
         recordProcess  = new ProcessBuilder(recordCommand.split(" ")).start();
-        System.out.println("record");
         status = RecorderStatus.RECORDING;
 
     }
 
     @Override
     public void stop() {
-        if( recordProcess.isAlive() ) {
+        if( recordProcess!=null && recordProcess.isAlive() ) {
             BufferedWriter pi = new BufferedWriter(new OutputStreamWriter(recordProcess.getOutputStream()));
             try {
                 pi.write("q");

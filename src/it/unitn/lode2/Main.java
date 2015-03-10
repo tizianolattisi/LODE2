@@ -5,8 +5,10 @@ import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.camera.Camera;
+import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.camera.ipcam.CameraIPBuilder;
 import it.unitn.lode2.camera.ipcam.Cmds;
+import it.unitn.lode2.camera.ipcam.PreviewerIPBuilder;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
@@ -88,12 +90,23 @@ public class Main extends Application {
                 .template(Cmds.TILTUP, cameraIPConf.getTiltUp())
                 .template(Cmds.TILTDOWN, cameraIPConf.getTiltDown())
                 .template(Cmds.TILTSTOP, cameraIPConf.getTiltStop())
-                .template(Cmds.SNAPSHOT, cameraIPConf.getSnapshot())
+                //.template(Cmds.SNAPSHOT, cameraIPConf.getSnapshot())
                 .template(Cmds.PRESET, cameraIPConf.getPreset())
                 .template(Cmds.ADDPRESET, cameraIPConf.getAddPreset())
                 .template(Cmds.DELPRESET, cameraIPConf.getDelPreset())
                 .build();
         IOC.registerUtility(camera, Camera.class);
+
+        // Previewer
+        Previewer previewer = PreviewerIPBuilder.create()
+                .user(cameraIPConf.getUser())
+                .password(cameraIPConf.getPassword())
+                .host(cameraIPConf.getHost())
+                .port(cameraIPConf.getCgiPort())
+                .snapshotUrl(cameraIPConf.getSnapshot())
+                .build();
+        IOC.registerUtility(previewer, Previewer.class);
+
 
         // Recorder
         Recorder recorder = IPRecorderBuilder.create()

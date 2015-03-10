@@ -31,5 +31,4 @@ public interface Camera {
     public void delPreset(String preset) throws IOException;
     public void addPreset(String preset) throws IOException;
 
-    public Optional<InputStream> snapshot() throws IOException;
 }

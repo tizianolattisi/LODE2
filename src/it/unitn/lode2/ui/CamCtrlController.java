@@ -4,13 +4,13 @@ import it.unitn.lode2.IOC;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Capability;
+import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
 import it.unitn.lode2.recorder.ipcam.StreamGobbler;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,6 +49,7 @@ import java.util.ResourceBundle;
 public class CamCtrlController implements Initializable {
 
     private Camera camera;
+    private Previewer previewer;
     private Recorder recorder=null;
     private Projector projector;
     private Lecture lecture;
@@ -133,6 +134,7 @@ public class CamCtrlController implements Initializable {
 
         // IOC to inject the implementations of Camera, Recorder, and Projector
         camera = IOC.queryUtility(Camera.class);
+        previewer = IOC.queryUtility(Previewer.class);
         recorder = IOC.queryUtility(Recorder.class);
         projector = IOC.queryUtility(Projector.class);
         lecture = IOC.queryUtility(Lecture.class);
@@ -147,7 +149,7 @@ public class CamCtrlController implements Initializable {
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(40), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 refreshPreview();
@@ -228,18 +230,20 @@ public class CamCtrlController implements Initializable {
     /* Preview */
     private void refreshPreview() {
         try {
-            camera.snapshot().ifPresent(s -> previewImageView.setImage(new Image(s)));
+            previewer.snapshot().ifPresent(s -> previewImageView.setImage(new Image(s)));
         } catch (IOException e) {
             handleIOException(e);
         }
     }
 
     private void playPreview() {
+        previewer.start();
         timeline.play();
     }
 
     private void stopPreview() {
         timeline.stop();
+        previewer.stop();
         previewImageView.setImage(null);
     }
 
@@ -651,6 +655,8 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(WindowEvent event) {
             terminateGobblers();
+            previewer.stop();
+            recorder.stop();
         }
     };
 
