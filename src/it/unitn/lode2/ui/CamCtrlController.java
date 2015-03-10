@@ -237,11 +237,13 @@ public class CamCtrlController implements Initializable {
     }
 
     private void playPreview() {
+        previewer.start();
         timeline.play();
     }
 
     private void stopPreview() {
         timeline.stop();
+        previewer.stop();
         previewImageView.setImage(null);
     }
 
@@ -653,6 +655,8 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(WindowEvent event) {
             terminateGobblers();
+            previewer.stop();
+            recorder.stop();
         }
     };
 
