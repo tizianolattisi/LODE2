@@ -11,5 +11,10 @@ public interface Previewer {
 
     public Optional<InputStream> snapshot() throws IOException;
 
+    public void setPreviewMode(PreviewMode mode);
+
+    public void start();
+
+    public void stop();
 
 }

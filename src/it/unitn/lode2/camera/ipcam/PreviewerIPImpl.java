@@ -1,7 +1,10 @@
 package it.unitn.lode2.camera.ipcam;
 
+import it.unitn.lode2.camera.PreviewMode;
 import it.unitn.lode2.camera.Previewer;
+import it.unitn.lode2.recorder.ipcam.PreviewerThread;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
@@ -15,15 +18,50 @@ import java.util.Optional;
 public class PreviewerIPImpl implements Previewer {
 
     private String snapshotUrl;
+    private PreviewMode mode=PreviewMode.ONDEMAND;
+    private PreviewerThread previewerThread;
 
 
     @Override
     public Optional<InputStream> snapshot() throws IOException {
-        InputStream inputStream = threadSafeSnapshot();
-        if( inputStream==null ){
-            return Optional.empty();
+        InputStream inputStream=null;
+        if( PreviewMode.ONDEMAND.equals(mode) ) {
+            inputStream = threadSafeSnapshot();
+            if (inputStream == null) {
+                return Optional.empty();
+            }
+        } else {
+            if( previewerThread == null ){
+                return Optional.empty();
+            }
+            byte[] cache = previewerThread.getCache();
+            if( cache == null ) {
+                return Optional.empty();
+            }
+            inputStream = new ByteArrayInputStream(cache);
         }
         return Optional.of(inputStream);
+    }
+
+    @Override
+    public void setPreviewMode(PreviewMode mode) {
+        this.mode = mode;
+    }
+
+    @Override
+    public void start() {
+        if( PreviewMode.CONTINUOUS.equals(mode) && (previewerThread==null || !previewerThread.isAlive()) ) {
+            previewerThread = new PreviewerThread(snapshotUrl);
+            previewerThread.start();
+        }
+    }
+
+    @Override
+    public void stop() {
+        if( previewerThread != null && previewerThread.isAlive() ){
+            previewerThread.terminate();
+            previewerThread = null;
+        }
     }
 
     private synchronized InputStream threadSafeSnapshot() throws IOException {
@@ -41,5 +79,7 @@ public class PreviewerIPImpl implements Previewer {
     public void setSnapshotUrl(String snapshotUrl) {
         this.snapshotUrl = snapshotUrl;
     }
+
+
 
 }

@@ -2,6 +2,7 @@ package it.unitn.lode2.camera.ipcam;
 
 import com.axiastudio.mapformat.MessageMapFormat;
 import it.unitn.lode2.camera.Capability;
+import it.unitn.lode2.camera.PreviewMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,8 +59,9 @@ public class PreviewerIPBuilder {
         String relativeUrl = mmp.format(map);
         String url = "http://" + host + ":" + port + relativeUrl;
         PreviewerIPImpl previewerIP = new PreviewerIPImpl();
-
         previewerIP.setSnapshotUrl(url);
+        previewerIP.setPreviewMode(PreviewMode.CONTINUOUS); // XXX: parametrize...
+
         return previewerIP;
     }
 }
