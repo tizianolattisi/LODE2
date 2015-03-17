@@ -10,7 +10,6 @@ import it.unitn.lode2.projector.Projector;
 import it.unitn.lode2.recorder.ipcam.StreamGobbler;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -78,6 +77,10 @@ public class MainController implements Initializable {
     @FXML private ToggleButton preset2ToggleButton;
     @FXML private ToggleButton preset3ToggleButton;
     @FXML private ToggleButton preset4ToggleButton;
+    @FXML private ToggleButton preset1SlideToggleButton;
+    @FXML private ToggleButton preset2SlideToggleButton;
+    @FXML private ToggleButton preset3SlideToggleButton;
+    @FXML private ToggleButton preset4SlideToggleButton;
 
     @FXML private CheckBox preset1zoomCheckBox;
     @FXML private CheckBox preset2zoomCheckBox;
@@ -88,16 +91,22 @@ public class MainController implements Initializable {
     @FXML private ToggleButton pauseToggleButton;
     @FXML private Button stopButton;
 
-    private List<ToggleButton> toggleButtons;
-    private List<CheckBox> checkBoxes;
+    private List<ToggleButton> presetsToggleButtons;
+    private List<ToggleButton> presetsSlideButtons;
+    private List<CheckBox> presetsZoomCheckBoxes;
     private List<ImageView> nextImageViews;
 
     private Timeline timeline;
-    private final SimpleBooleanProperty setPresetMode = new SimpleBooleanProperty();
     private LogsController logsController;
 
     private StreamGobbler errorStreamGobbler = new StreamGobbler();
     private StreamGobbler standardStreamGobbler = new StreamGobbler();
+
+    enum SecondDisplayMode {
+        SLIDES, PREVIEW
+    }
+
+    SecondDisplayMode secondDisplayMode = SecondDisplayMode.SLIDES;
 
 
     @Override
@@ -130,8 +139,9 @@ public class MainController implements Initializable {
         projector = IOC.queryUtility(Projector.class);
         lecture = IOC.queryUtility(Lecture.class);
 
-        toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
-        checkBoxes = Arrays.asList(preset1zoomCheckBox, preset2zoomCheckBox, preset3zoomCheckBox, preset4zoomCheckBox);
+        presetsToggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
+        presetsSlideButtons = Arrays.asList(preset1SlideToggleButton, preset2SlideToggleButton, preset3SlideToggleButton, preset4SlideToggleButton);
+        presetsZoomCheckBoxes = Arrays.asList(preset1zoomCheckBox, preset2zoomCheckBox, preset3zoomCheckBox, preset4zoomCheckBox);
         nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView);
 
         configHandlers();
@@ -200,6 +210,9 @@ public class MainController implements Initializable {
     private void refreshPreview() {
         try {
             previewer.snapshot().ifPresent(s -> previewImageView.setImage(new Image(s)));
+            if( SecondDisplayMode.PREVIEW.equals(secondDisplayMode) ){
+                previewer.snapshot().ifPresent(s -> slideImageView.setImage(new Image(s)));
+            }
         } catch (IOException e) {
             handleIOException(e);
         }
@@ -217,7 +230,7 @@ public class MainController implements Initializable {
     }
 
     private void resetPresetButtons() {
-        for( ToggleButton button: toggleButtons ){
+        for( ToggleButton button: presetsToggleButtons){
             button.setSelected(false);
         }
     }
@@ -532,23 +545,24 @@ public class MainController implements Initializable {
         public void handle(ActionEvent event) {
             ToggleButton pressedButton = (ToggleButton) event.getSource();
             Integer i = 0;
-            for( ToggleButton button: toggleButtons ){
+            for( ToggleButton button: presetsToggleButtons){
                 i++;
                 button.setSelected(button == pressedButton);
                 if( button == pressedButton ) {
                     try {
-                        if( setPresetMode.getValue() ){
-                            camera.delPreset(i.toString());
-                            camera.addPreset(i.toString());
+                        camera.goToPreset(i.toString());
+                        if( presetsZoomCheckBoxes.get(i-1).isSelected() ){
+                            camera.zoomIn();
+                        } else if( !presetsZoomCheckBoxes.get(i-1).isSelected() ){
+                            camera.zoomOut();
+                        } else if (presetsZoomCheckBoxes.get(i-1).isIndeterminate() ){
+                            // NOP
+                        }
+                        if( presetsSlideButtons.get(i-1).isSelected() ){
+                            secondDisplayMode = SecondDisplayMode.SLIDES;
+                            projector.shownSlide().ifPresent(s -> slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight())));
                         } else {
-                            camera.goToPreset(i.toString());
-                            if( checkBoxes.get(i-1).isSelected() ){
-                                camera.zoomIn();
-                            } else if( !checkBoxes.get(i-1).isSelected() ){
-                                camera.zoomOut();
-                            } else if (checkBoxes.get(i-1).isIndeterminate() ){
-                                // NOP
-                            }
+                            secondDisplayMode = SecondDisplayMode.PREVIEW;
                         }
                     } catch (IOException e) {
                         handleIOException(e);

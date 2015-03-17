@@ -82,16 +82,16 @@
 <font>
 <Font size="9.0" />
 </font>
-</Button><CheckBox fx:id="preset1zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="593.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset2zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="696.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset4zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="903.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset3zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="800.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><ToggleButton layoutX="592.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+</Button><CheckBox fx:id="preset1zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="593.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset2zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="696.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset4zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="903.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset3zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="800.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><ToggleButton fx:id="preset1SlideToggleButton" layoutX="592.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
 <font>
 <Font size="9.0" />
-</font></ToggleButton><ToggleButton layoutX="696.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+</font></ToggleButton><ToggleButton fx:id="preset2SlideToggleButton" layoutX="696.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
 <font>
 <Font size="9.0" />
-</font></ToggleButton><ToggleButton layoutX="904.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+</font></ToggleButton><ToggleButton fx:id="preset4SlideToggleButton" layoutX="904.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
 <font>
 <Font size="9.0" />
-</font></ToggleButton><ToggleButton layoutX="800.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+</font></ToggleButton><ToggleButton fx:id="preset3SlideToggleButton" layoutX="800.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
 <font>
 <Font size="9.0" />
 </font></ToggleButton>
