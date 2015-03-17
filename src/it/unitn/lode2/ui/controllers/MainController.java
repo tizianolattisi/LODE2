@@ -99,11 +99,6 @@ public class MainController implements Initializable {
     private StreamGobbler errorStreamGobbler = new StreamGobbler();
     private StreamGobbler standardStreamGobbler = new StreamGobbler();
 
-    private enum ZoomMode {
-        NONE, WIDE, NARROW
-    }
-    private ZoomMode presetZoomMode = ZoomMode.NONE;
-    private List<ZoomMode> presetsZoomMode;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -137,7 +132,6 @@ public class MainController implements Initializable {
 
         toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
         checkBoxes = Arrays.asList(preset1zoomCheckBox, preset2zoomCheckBox, preset3zoomCheckBox, preset4zoomCheckBox);
-        presetsZoomMode = Arrays.asList(ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE);
         nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView);
 
         configHandlers();
@@ -256,10 +250,6 @@ public class MainController implements Initializable {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if( setPresetMode.getValue() ){
-                        presetZoomMode = ZoomMode.NARROW;
-                        return;
-                    }
                     try {
                         camera.zoomIn();
                     } catch (IOException e) {
@@ -284,10 +274,6 @@ public class MainController implements Initializable {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if( setPresetMode.getValue() ){
-                        presetZoomMode = ZoomMode.WIDE;
-                        return;
-                    }
                     try {
                         camera.zoomOut();
                     } catch (IOException e) {
@@ -554,24 +540,15 @@ public class MainController implements Initializable {
                         if( setPresetMode.getValue() ){
                             camera.delPreset(i.toString());
                             camera.addPreset(i.toString());
-                            //presetsZoomMode.set(i-1, presetZoomMode);
-                            //setPresetMode.setValue(Boolean.FALSE);
-                            //presetZoomMode = ZoomMode.NONE;
                         } else {
                             camera.goToPreset(i.toString());
-                            if( checkBoxes.get(i).isSelected() ){
+                            if( checkBoxes.get(i-1).isSelected() ){
                                 camera.zoomIn();
-                            } else if( !checkBoxes.get(i).isSelected() ){
+                            } else if( !checkBoxes.get(i-1).isSelected() ){
                                 camera.zoomOut();
-                            } else if (checkBoxes.get(i).isIndeterminate() ){
-                                
+                            } else if (checkBoxes.get(i-1).isIndeterminate() ){
+                                // NOP
                             }
-                            /*
-                            if( ZoomMode.NARROW.equals(presetsZoomMode.get(i-1)) ){
-                                camera.zoomIn();
-                            } else if( ZoomMode.WIDE.equals(presetsZoomMode.get(i-1)) ){
-                                camera.zoomOut();
-                            }*/
                         }
                     } catch (IOException e) {
                         handleIOException(e);
