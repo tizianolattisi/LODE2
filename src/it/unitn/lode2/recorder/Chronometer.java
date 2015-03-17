@@ -14,6 +14,7 @@ public class Chronometer {
 
     private Long startTime=null;
     private Long endTime=null;
+    private Long milliseconds=0L;
     private Status status=Status.STOPPED;
 
 
@@ -28,6 +29,7 @@ public class Chronometer {
     public void stop(){
         if( Status.STARTED.equals(status) ){
             endTime = System.currentTimeMillis();
+            milliseconds += endTime-startTime;
             status = Status.STOPPED;
         }
 
@@ -36,14 +38,15 @@ public class Chronometer {
     public void reset(){
         startTime=null;
         endTime=null;
+        milliseconds=0L;
         status=Status.STOPPED;
     }
 
     public Long elapsed(){
         if( Status.STARTED.equals(status) ){
-            return System.currentTimeMillis() - startTime;
+            return milliseconds + (System.currentTimeMillis() - startTime);
         }
-        return endTime - startTime;
+        return milliseconds;
     }
 
 }
