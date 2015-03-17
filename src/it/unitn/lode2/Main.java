@@ -123,7 +123,13 @@ public class Main extends Application {
         IOC.registerUtility(recorder, Recorder.class);
 
         Course course = new XmlCourseImpl(courseFolder);
-        Lecture lecture = course.lectures().get(0);
+        Lecture lecture=null;
+        int i = Integer.parseInt(lectureFolderName.substring(0, 2)); // XXX: bruttura
+        for( Lecture l: course.lectures() ){
+            if( l.number().equals(i) ) {
+                lecture = l;
+            }
+        }
         IOC.registerUtility(lecture, Lecture.class);
 
         RasterProjectorBuilder projectorBuilder = RasterProjectorBuilder.create();
