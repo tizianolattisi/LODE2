@@ -79,11 +79,17 @@ public class MainController implements Initializable {
     @FXML private ToggleButton preset3ToggleButton;
     @FXML private ToggleButton preset4ToggleButton;
 
+    @FXML private CheckBox preset1zoomCheckBox;
+    @FXML private CheckBox preset2zoomCheckBox;
+    @FXML private CheckBox preset3zoomCheckBox;
+    @FXML private CheckBox preset4zoomCheckBox;
+
     @FXML private ToggleButton recordToggleButton;
     @FXML private ToggleButton pauseToggleButton;
     @FXML private Button stopButton;
 
     private List<ToggleButton> toggleButtons;
+    private List<CheckBox> checkBoxes;
     private List<ImageView> nextImageViews;
 
     private Timeline timeline;
@@ -130,6 +136,7 @@ public class MainController implements Initializable {
         lecture = IOC.queryUtility(Lecture.class);
 
         toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
+        checkBoxes = Arrays.asList(preset1zoomCheckBox, preset2zoomCheckBox, preset3zoomCheckBox, preset4zoomCheckBox);
         presetsZoomMode = Arrays.asList(ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE);
         nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView);
 
@@ -547,16 +554,24 @@ public class MainController implements Initializable {
                         if( setPresetMode.getValue() ){
                             camera.delPreset(i.toString());
                             camera.addPreset(i.toString());
-                            presetsZoomMode.set(i-1, presetZoomMode);
-                            setPresetMode.setValue(Boolean.FALSE);
-                            presetZoomMode = ZoomMode.NONE;
+                            //presetsZoomMode.set(i-1, presetZoomMode);
+                            //setPresetMode.setValue(Boolean.FALSE);
+                            //presetZoomMode = ZoomMode.NONE;
                         } else {
                             camera.goToPreset(i.toString());
+                            if( checkBoxes.get(i).isSelected() ){
+                                camera.zoomIn();
+                            } else if( !checkBoxes.get(i).isSelected() ){
+                                camera.zoomOut();
+                            } else if (checkBoxes.get(i).isIndeterminate() ){
+                                
+                            }
+                            /*
                             if( ZoomMode.NARROW.equals(presetsZoomMode.get(i-1)) ){
                                 camera.zoomIn();
                             } else if( ZoomMode.WIDE.equals(presetsZoomMode.get(i-1)) ){
                                 camera.zoomOut();
-                            }
+                            }*/
                         }
                     } catch (IOException e) {
                         handleIOException(e);

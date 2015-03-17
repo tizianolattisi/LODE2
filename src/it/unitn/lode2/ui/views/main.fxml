@@ -9,11 +9,11 @@
 <AnchorPane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.controllers.MainController">
    <children>
       <ImageView fx:id="previewImageView" fitHeight="200.0" fitWidth="320.0" layoutX="672.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
-      <ToggleButton fx:id="previewToggleButton" layoutX="949.0" layoutY="280.0" maxHeight="48.0" maxWidth="48.0" minHeight="48.0" minWidth="48.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="VIDEO">
+      <ToggleButton fx:id="previewToggleButton" layoutX="593.0" layoutY="187.0" maxHeight="48.0" maxWidth="48.0" minHeight="48.0" minWidth="48.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="VIDEO">
          <font>
             <Font size="9.0" />
          </font></ToggleButton>
-      <Button fx:id="setupButton" layoutX="649.0" layoutY="460.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="LOGS">
+      <Button fx:id="setupButton" layoutX="895.0" layoutY="279.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="LOGS">
          <font>
             <Font size="9.0" />
          </font></Button>
@@ -78,10 +78,22 @@
          <font>
             <Font size="9.0" />
          </font>
-      </Button><Button fx:id="setupSceneButton" layoutX="593.0" layoutY="460.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="SETUP&#10;SCENE">
+      </Button><Button fx:id="setupSceneButton" layoutX="951.0" layoutY="279.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="SETUP&#10;SCENE">
 <font>
 <Font size="9.0" />
 </font>
-</Button>
+</Button><CheckBox fx:id="preset1zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="593.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset2zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="696.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset4zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="903.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset3zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="800.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><ToggleButton layoutX="592.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+<font>
+<Font size="9.0" />
+</font></ToggleButton><ToggleButton layoutX="696.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+<font>
+<Font size="9.0" />
+</font></ToggleButton><ToggleButton layoutX="904.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+<font>
+<Font size="9.0" />
+</font></ToggleButton><ToggleButton layoutX="800.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+<font>
+<Font size="9.0" />
+</font></ToggleButton>
    </children>
 </AnchorPane>
