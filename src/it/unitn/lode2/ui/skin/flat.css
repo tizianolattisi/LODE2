@@ -1,0 +1,27 @@
+#offair {
+    -fx-image: url("../images/off-air.gif");
+}
+
+#onair {
+    -fx-image: url("../images/on-air.gif");
+}
+
+#currentSlideImageView {
+    -fx-alignment: center;
+}
+
+#preparedSlideImageView {
+    -fx-alignment: center;
+}
+
+#next1SlideImageView {
+    -fx-alignment: center;
+}
+
+#next2SlideImageView {
+    -fx-alignment: center;
+}
+
+#next3SlideImageView {
+    -fx-alignment: center;
+}

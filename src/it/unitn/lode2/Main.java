@@ -145,7 +145,7 @@ public class Main extends Application {
         CamCtrlController controller = loader.getController();
         primaryStage.setTitle("Cam controller");
         Scene scene = new Scene(root, 1024, 768);
-        scene.getStylesheets().add("/it/unitn/lode2/ui/skin/style.css");
+        scene.getStylesheets().add("/it/unitn/lode2/ui/skin/flat.css");
         controller.keyBindings();
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(controller.handlerClose);
