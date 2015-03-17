@@ -8,7 +8,7 @@
 
 <AnchorPane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.controllers.MainController">
    <children>
-      <ImageView fx:id="previewImageView" fitHeight="200.0" fitWidth="320.0" layoutX="672.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="previewImageView" fitHeight="200.0" fitWidth="320.0" layoutX="672.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
       <ToggleButton fx:id="previewToggleButton" layoutX="593.0" layoutY="187.0" maxHeight="48.0" maxWidth="48.0" minHeight="48.0" minWidth="48.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="VIDEO">
          <font>
             <Font size="9.0" />
@@ -50,10 +50,10 @@
             <Font size="9.0" />
          </font></ToggleButton>
       <ImageView fx:id="offair" fitHeight="47.0" fitWidth="88.0" layoutX="762.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="preparedSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="18.0" layoutY="375.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="currentSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="18.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="next1SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="612.0" layoutY="599.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="next2SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="793.0" layoutY="599.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="preparedSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="18.0" layoutY="375.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
+      <ImageView fx:id="currentSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="18.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
+      <ImageView fx:id="next1SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="612.0" layoutY="599.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
+      <ImageView fx:id="next2SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="793.0" layoutY="599.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
       <Button fx:id="prevSlideButton" layoutX="649.0" layoutY="526.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="PREV" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
