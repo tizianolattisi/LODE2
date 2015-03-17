@@ -1,4 +1,4 @@
-package it.unitn.lode2.ui;
+package it.unitn.lode2.ui.controllers;
 
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.ipcam.StreamGobbler;

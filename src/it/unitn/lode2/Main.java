@@ -16,7 +16,7 @@ import it.unitn.lode2.projector.Projector;
 import it.unitn.lode2.projector.raster.RasterProjectorBuilder;
 import it.unitn.lode2.projector.raster.RasterProjectorImpl;
 import it.unitn.lode2.projector.raster.RasterSlideImpl;
-import it.unitn.lode2.ui.CamCtrlController;
+import it.unitn.lode2.ui.controllers.MainController;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.course.XMLCourse;
 import it.unitn.lode2.xml.ipcam.XMLCameraIPConf;
@@ -140,9 +140,9 @@ public class Main extends Application {
         RasterProjectorImpl projector = projectorBuilder.build();
         IOC.registerUtility(projector, Projector.class);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/camctrl.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/views/main.fxml"));
         Parent root = loader.load();
-        CamCtrlController controller = loader.getController();
+        MainController controller = loader.getController();
         primaryStage.setTitle("Cam controller");
         Scene scene = new Scene(root, 1024, 768);
         scene.getStylesheets().add("/it/unitn/lode2/ui/skin/flat.css");

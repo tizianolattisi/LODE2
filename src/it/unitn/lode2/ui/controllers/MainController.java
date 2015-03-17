@@ -1,9 +1,8 @@
-package it.unitn.lode2.ui;
+package it.unitn.lode2.ui.controllers;
 
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.camera.Camera;
-import it.unitn.lode2.camera.Capability;
 import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
@@ -45,7 +44,7 @@ import java.util.ResourceBundle;
  * Date: 07/11/14
  * Time: 09:39
  */
-public class CamCtrlController implements Initializable {
+public class MainController implements Initializable {
 
     private Camera camera;
     private Previewer previewer;
@@ -74,14 +73,7 @@ public class CamCtrlController implements Initializable {
 
     @FXML private Button setupButton;
 
-    @FXML private Button zoomOutButton;
-    @FXML private Button zoomInButton;
-    @FXML private Button panLeftButton;
-    @FXML private Button panRightButton;
-    @FXML private Button tiltUpButton;
-    @FXML private Button tiltDownButton;
-
-    @FXML private ToggleButton setPreset4ToggleButton;
+    @FXML private Button setupSceneButton;
     @FXML private ToggleButton preset1ToggleButton;
     @FXML private ToggleButton preset2ToggleButton;
     @FXML private ToggleButton preset3ToggleButton;
@@ -137,8 +129,6 @@ public class CamCtrlController implements Initializable {
         projector = IOC.queryUtility(Projector.class);
         lecture = IOC.queryUtility(Lecture.class);
 
-        setPresetMode.bindBidirectional(setPreset4ToggleButton.selectedProperty());
-
         toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
         presetsZoomMode = Arrays.asList(ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE);
         nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView);
@@ -186,39 +176,7 @@ public class CamCtrlController implements Initializable {
     }
 
     private void configHandlers() {
-        if( camera.hasCapability(Capability.ZOOM) ){
-            if( camera.hasCapability(Capability.ZOOMSTOP) ){
-                zoomInButton.setOnMousePressed(handlerZoomIn);
-                zoomOutButton.setOnMousePressed(handlerZoomOut);
-                zoomInButton.setOnMouseReleased(handlerZoomStop);
-                zoomOutButton.setOnMouseReleased(handlerZoomStop);
-            } else {
-                zoomInButton.setOnAction(handlerZoomInAction);
-                zoomOutButton.setOnAction(handlerZoomOutAction);
-            }
-        }
-        if( camera.hasCapability(Capability.PAN) ){
-            if( camera.hasCapability(Capability.PANSTOP) ){
-                panLeftButton.setOnMousePressed(handlerPanLeft);
-                panLeftButton.setOnMouseReleased(handlerPanStop);
-                panRightButton.setOnMousePressed(handlerPanRight);
-                panRightButton.setOnMouseReleased(handlerPanStop);
-            } else {
-                panLeftButton.setOnAction(handlerPanLeftAction);
-                panRightButton.setOnAction(handlerPanRightAction);
-            }
-        }
-        if( camera.hasCapability(Capability.TILT) ){
-            if( camera.hasCapability(Capability.TILTSTOP) ){
-                tiltUpButton.setOnMousePressed(handlerTiltUp);
-                tiltUpButton.setOnMouseReleased(handlerTiltStop);
-                tiltDownButton.setOnMousePressed(handlerTiltDown);
-                tiltDownButton.setOnMouseReleased(handlerTiltStop);
-            } else {
-                tiltUpButton.setOnAction(handlerTiltUpAction);
-                tiltDownButton.setOnAction(handlerTiltDownAction);
-            }
-        }
+
         previewToggleButton.setOnAction(handlerPreview);
         setupButton.setOnAction(handlerSetup);
         recordToggleButton.setOnAction(handlerRecord);
@@ -228,7 +186,7 @@ public class CamCtrlController implements Initializable {
         preset2ToggleButton.setOnAction(handlerPreset);
         preset3ToggleButton.setOnAction(handlerPreset);
         preset4ToggleButton.setOnAction(handlerPreset);
-        setPreset4ToggleButton.setOnAction(handlerSetPreset);
+        setupSceneButton.setOnAction(handlerSetupScene);
 
         firstSlideButton.setOnAction(handlerFirstSlide);
         prevSlideButton.setOnAction(handlerPrevSlide);
@@ -492,8 +450,7 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             try {
-
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/logs.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/views/logs.fxml"));
                 Parent root = loader.load();
                 logsController = loader.getController();
                 Scene scene = new Scene(root, 600, 700);
@@ -501,16 +458,11 @@ public class CamCtrlController implements Initializable {
                 stage.setTitle("Acquisition logs");
                 stage.setScene(scene);
                 stage.show();
-                //logsController.logRecorder(recorder);
                 recorder.errorLog().ifPresent(s -> errorStreamGobbler.stream(s).widget(logsController.getStderrorTextArea()).start());
                 recorder.outputLog().ifPresent(s -> standardStreamGobbler.stream(s).widget(logsController.getStdoutTextArea()).start());
-                if( recorder.isRecording() ) {
-                    //controller.logRecorder(recorder);
-                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
     };
 
@@ -614,11 +566,21 @@ public class CamCtrlController implements Initializable {
         }
     };
 
-    private EventHandler<ActionEvent> handlerSetPreset = new EventHandler<ActionEvent>() {
+    private EventHandler<ActionEvent> handlerSetupScene = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            resetPresetButtons();
-            presetZoomMode = ZoomMode.NONE;
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/views/camera.fxml"));
+                Parent root = loader.load();
+                Scene scene = new Scene(root, 350, 230);
+                Stage stage = new Stage();
+                stage.setTitle("Camera controller");
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     };
 
