@@ -18,7 +18,8 @@ public class IPRecorderImpl implements Recorder {
 
     // ffmpeg -i "concat:movie001.ts|movie002.ts|movie003.ts|movie004.ts" -c copy -bsf:a aac_adtstoasc movie0.mp4
 
-    private static final String FFMPEG_COMMAND = "/Applications/ffmpeg/bin/ffmpeg";
+    private static final String FFMPEG = "/Applications/ffmpeg/bin/ffmpeg";
+    //private static final String CONCAT_COMMAND = FFMPEG + " -i \"concat:${ts}\" -c copy -bsf:a aac_adtstoasc movie0.mp4";
 
     private Process recordProcess=null;
     RecorderStatus status = RecorderStatus.IDLE;
@@ -53,7 +54,7 @@ public class IPRecorderImpl implements Recorder {
 
         MessageMapFormat mmp = new MessageMapFormat(recordTemplate);
         Map<String, Object> map = new HashMap();
-        map.put("ffmpeg", FFMPEG_COMMAND);
+        map.put("ffmpeg", FFMPEG);
         map.put("input", url);
         map.put("output", "${output}");
         this.recordPartialCommand = mmp.format(map);
@@ -65,17 +66,6 @@ public class IPRecorderImpl implements Recorder {
             startProcess();
             status = RecorderStatus.RECORDING;
         }
-    }
-
-    private void startProcess() throws IOException {
-        // fragment file name
-        numOfFragments++;
-        String fileName = "movie" + String.format("%03d", numOfFragments) + ".ts";
-        MessageMapFormat mmp = new MessageMapFormat(recordPartialCommand);
-        Map<String, Object> map = new HashMap();
-        map.put("output", output + "/" + fileName);
-        String recordCommand = mmp.format(map);
-        recordProcess = new ProcessBuilder(recordCommand.split(" ")).start();
     }
 
     @Override
@@ -94,17 +84,6 @@ public class IPRecorderImpl implements Recorder {
         }
     }
 
-    private void stopProcess() {
-        BufferedWriter pi = new BufferedWriter(new OutputStreamWriter(recordProcess.getOutputStream()));
-        try {
-            pi.write("q");
-            pi.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //recordProcess.destroy();
-        recordProcess=null;
-    }
 
     @Override
     public void wakeup() throws IOException {
@@ -148,6 +127,54 @@ public class IPRecorderImpl implements Recorder {
             return Optional.of(recordProcess.getErrorStream());
         }
         return Optional.empty();
-
     }
+
+
+    private void startProcess() throws IOException {
+        // fragment file name
+        numOfFragments++;
+        String fileName = "movie" + String.format("%03d", numOfFragments) + ".ts";
+        MessageMapFormat mmp = new MessageMapFormat(recordPartialCommand);
+        Map<String, Object> map = new HashMap();
+        map.put("output", output + "/" + fileName);
+        String recordCommand = mmp.format(map);
+        recordProcess = new ProcessBuilder(recordCommand.split(" ")).start();
+    }
+
+
+    private void stopProcess() {
+        BufferedWriter pi = new BufferedWriter(new OutputStreamWriter(recordProcess.getOutputStream()));
+        try {
+            pi.write("q");
+            pi.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //recordProcess.destroy();
+        recordProcess=null;
+    }
+
+
+    /*
+    private void finalizeMovie() {
+        String ts=null;
+        for( Integer i=1; i<=numOfFragments; i++ ){
+            if( ts==null ){
+                ts = "";
+            } else {
+                ts = ts + "|";
+            }
+            ts = ts + "movie" + String.format("%03d", i) + ".ts";
+        }
+        MessageMapFormat mmp = new MessageMapFormat(CONCAT_COMMAND);
+        Map<String, Object> map = new HashMap();
+        map.put("ts", ts);
+        String command = mmp.format(map);
+        try {
+            Process process = new ProcessBuilder(command.split(" ")).start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    */
 }

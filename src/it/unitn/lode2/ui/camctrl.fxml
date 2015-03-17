@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.web.*?>
-<?import javafx.scene.control.*?>
 <?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <AnchorPane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.CamCtrlController">
    <children>
-      <ImageView fx:id="monitorImageView" fitHeight="250.0" fitWidth="350.0" layoutX="607.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" styleClass="monitor" />
       <Button fx:id="zoomInButton" layoutX="908.0" layoutY="373.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="ZOOM&#10;IN" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
@@ -47,22 +45,22 @@
          <font>
             <Font size="9.0" />
          </font></Button>
-      <ToggleButton fx:id="preset1ToggleButton" layoutX="740.0" layoutY="506.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SCENE&#10;1" textAlignment="CENTER">
+      <ToggleButton fx:id="preset1ToggleButton" layoutX="741.0" layoutY="490.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SCENE&#10;1" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </ToggleButton>
-      <ToggleButton fx:id="preset2ToggleButton" layoutX="796.0" layoutY="506.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SCENE&#10;2" textAlignment="CENTER">
+      <ToggleButton fx:id="preset2ToggleButton" layoutX="797.0" layoutY="490.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SCENE&#10;2" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </ToggleButton>
-      <ToggleButton fx:id="preset4ToggleButton" layoutX="908.0" layoutY="506.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SCENE&#10;4" textAlignment="CENTER">
+      <ToggleButton fx:id="preset4ToggleButton" layoutX="909.0" layoutY="490.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SCENE&#10;4" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </ToggleButton>
-      <ToggleButton fx:id="preset3ToggleButton" layoutX="852.0" layoutY="506.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SCENE&#10;3" textAlignment="CENTER">
+      <ToggleButton fx:id="preset3ToggleButton" layoutX="853.0" layoutY="490.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SCENE&#10;3" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
@@ -76,42 +74,36 @@
             <Font size="9.0" />
          </font></ToggleButton>
       <ImageView fx:id="offair" fitHeight="47.0" fitWidth="88.0" layoutX="792.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
-      <ToggleButton fx:id="setPreset4ToggleButton" layoutX="607.0" layoutY="505.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET&#10;SCENE" textAlignment="CENTER">
+      <ToggleButton fx:id="setPreset4ToggleButton" layoutX="608.0" layoutY="489.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET&#10;SCENE" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </ToggleButton>
-      <ImageView fx:id="monitorImageView1" fitHeight="250.0" fitWidth="350.0" layoutX="68.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" styleClass="monitor" />
-      <ImageView fx:id="monitorImageView11" fitHeight="250.0" fitWidth="350.0" layoutX="66.0" layoutY="486.0" pickOnBounds="true" preserveRatio="true" styleClass="monitor" />
-      <ImageView fx:id="preparedSlideImageView" fitHeight="200.0" fitWidth="320.0" layoutX="81.0" layoutY="511.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="monitorImageView111" fitHeight="125.0" fitWidth="175.0" layoutX="421.0" layoutY="611.0" pickOnBounds="true" preserveRatio="true" styleClass="monitor" />
-      <ImageView fx:id="monitorImageView1111" fitHeight="125.0" fitWidth="175.0" layoutX="602.0" layoutY="611.0" pickOnBounds="true" preserveRatio="true" styleClass="monitor" />
-      <ImageView fx:id="monitorImageView11111" fitHeight="125.0" fitWidth="175.0" layoutX="782.0" layoutY="611.0" pickOnBounds="true" preserveRatio="true" styleClass="monitor" />
-      <ImageView fx:id="currentSlideImageView" fitHeight="200.0" fitWidth="320.0" layoutX="83.0" layoutY="49.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="next1SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="429.0" layoutY="624.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="next2SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="610.0" layoutY="624.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="next3SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="790.0" layoutY="624.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="prevSlideButton" layoutX="122.0" layoutY="430.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="PREV" textAlignment="CENTER">
+      <ImageView fx:id="preparedSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="70.0" layoutY="397.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="currentSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="70.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="next1SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="612.0" layoutY="624.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="next2SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="793.0" layoutY="624.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="prevSlideButton" layoutX="668.0" layoutY="556.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="PREV" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="showSlideButton" layoutX="178.0" layoutY="430.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="SHOW&#10;CURR." textAlignment="CENTER">
+      <Button fx:id="showSlideButton" layoutX="724.0" layoutY="556.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="SHOW&#10;CURR." textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="firstSlideButton" layoutX="66.0" layoutY="430.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="FIRST" textAlignment="CENTER">
+      <Button fx:id="firstSlideButton" layoutX="612.0" layoutY="556.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="FIRST" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="lastSlideButton" layoutX="290.0" layoutY="430.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="LAST" textAlignment="CENTER">
+      <Button fx:id="lastSlideButton" layoutX="836.0" layoutY="556.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="LAST" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="nextSlideButton" layoutX="234.0" layoutY="430.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="NEXT" textAlignment="CENTER">
+      <Button fx:id="nextSlideButton" layoutX="780.0" layoutY="556.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="NEXT" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
