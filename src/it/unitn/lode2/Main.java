@@ -117,7 +117,8 @@ public class Main extends Application {
                 .user(cameraIPConf.getUser())
                 .password(cameraIPConf.getPassword())
                 .recordCommand(cameraIPConf.getRecordCommand())
-                .output(lectureFolder + "/movie0.mp4")
+                //.output(lectureFolder + "/movie0.mp4")
+                .output(lectureFolder)
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
 

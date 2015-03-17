@@ -16,6 +16,8 @@ import java.util.Optional;
  */
 public class IPRecorderImpl implements Recorder {
 
+    // ffmpeg -i "concat:movie001.ts|movie002.ts|movie003.ts|movie004.ts" -c copy -bsf:a aac_adtstoasc movie0.mp4
+
     private static final String FFMPEG_COMMAND = "/Applications/ffmpeg/bin/ffmpeg";
 
     private Process recordProcess=null;
@@ -27,10 +29,11 @@ public class IPRecorderImpl implements Recorder {
     private final String path;
     private final String user;
     private final String password;
-    private final String recordCommand;
+    private final String recordPartialCommand;
     private final String output;
 
     private String url;
+    private Integer numOfFragments=0;
 
 
     public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password, String recordTemplate, String output) {
@@ -52,41 +55,61 @@ public class IPRecorderImpl implements Recorder {
         Map<String, Object> map = new HashMap();
         map.put("ffmpeg", FFMPEG_COMMAND);
         map.put("input", url);
-        map.put("output", output);
-        this.recordCommand = mmp.format(map);
+        map.put("output", "${output}");
+        this.recordPartialCommand = mmp.format(map);
     }
 
     @Override
     public void record() throws IOException {
-        recordProcess  = new ProcessBuilder(recordCommand.split(" ")).start();
-        status = RecorderStatus.RECORDING;
+        if( RecorderStatus.IDLE.equals(status) || RecorderStatus.PAUSED.equals(status) ) {
+            startProcess();
+            status = RecorderStatus.RECORDING;
+        }
+    }
 
+    private void startProcess() throws IOException {
+        // fragment file name
+        numOfFragments++;
+        String fileName = "movie" + String.format("%03d", numOfFragments) + ".ts";
+        MessageMapFormat mmp = new MessageMapFormat(recordPartialCommand);
+        Map<String, Object> map = new HashMap();
+        map.put("output", output + "/" + fileName);
+        String recordCommand = mmp.format(map);
+        recordProcess = new ProcessBuilder(recordCommand.split(" ")).start();
     }
 
     @Override
     public void stop() {
-        if( recordProcess!=null && recordProcess.isAlive() ) {
-            BufferedWriter pi = new BufferedWriter(new OutputStreamWriter(recordProcess.getOutputStream()));
-            try {
-                pi.write("q");
-                pi.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            //recordProcess.destroy();
-            recordProcess=null;
+        if( RecorderStatus.RECORDING.equals(status) || RecorderStatus.PAUSED.equals(status) ) {
+            stopProcess();
             status = RecorderStatus.IDLE;
         }
     }
 
     @Override
     public void pause() {
-        status = RecorderStatus.PAUSED;
+        if( RecorderStatus.RECORDING.equals(status) ) {
+            stopProcess();
+            status = RecorderStatus.PAUSED;
+        }
+    }
+
+    private void stopProcess() {
+        BufferedWriter pi = new BufferedWriter(new OutputStreamWriter(recordProcess.getOutputStream()));
+        try {
+            pi.write("q");
+            pi.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //recordProcess.destroy();
+        recordProcess=null;
     }
 
     @Override
-    public void wakeup() {
+    public void wakeup() throws IOException {
         if( RecorderStatus.PAUSED.equals(status) ) {
+            startProcess();
             status = RecorderStatus.RECORDING;
         }
     }

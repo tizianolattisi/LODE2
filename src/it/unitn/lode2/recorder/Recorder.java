@@ -19,7 +19,7 @@ public interface Recorder {
 
     public void pause();
 
-    public void wakeup();
+    public void wakeup() throws IOException;
 
     public RecorderStatus status();
 

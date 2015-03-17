@@ -61,7 +61,6 @@ public class CamCtrlController implements Initializable {
     @FXML private ImageView preparedSlideImageView;
     @FXML private ImageView next1SlideImageView;
     @FXML private ImageView next2SlideImageView;
-    @FXML private ImageView next3SlideImageView;
 
     @FXML private Button firstSlideButton;
     @FXML private Button prevSlideButton;
@@ -142,7 +141,7 @@ public class CamCtrlController implements Initializable {
 
         toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
         presetsZoomMode = Arrays.asList(ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE, ZoomMode.NONE);
-        nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView, next3SlideImageView);
+        nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView);
 
         configHandlers();
 
@@ -257,8 +256,8 @@ public class CamCtrlController implements Initializable {
 
     /* Slides */
     private void refreshSlides(){
-        projector.shownSlide().ifPresent(s -> currentSlideImageView.setImage(s.createPreview(320.0, 200.0)));
-        projector.preparedSlide().ifPresent(s -> preparedSlideImageView.setImage(s.createPreview(320.0, 200.0)));
+        projector.shownSlide().ifPresent(s -> currentSlideImageView.setImage(s.createPreview(520.0, 325.0)));
+        projector.preparedSlide().ifPresent(s -> preparedSlideImageView.setImage(s.createPreview(520.0, 325.0)));
         for( Integer i=0; i<nextImageViews.size(); i++ ) {
             final Integer j=i;
             projector.slideDelta(i+1).ifPresent(s -> nextImageViews.get(j).setImage(s.createPreview(160.0, 100.0)));
@@ -532,7 +531,11 @@ public class CamCtrlController implements Initializable {
                 chronometer.stop();
                 offair.setId("offair");
             } else if( recorder.isPaused() ){
-                recorder.wakeup();
+                try {
+                    recorder.wakeup();
+                } catch (IOException e) {
+                    handleIOException(e);
+                }
                 chronometer.start();
                 offair.setId("onair");
             }
@@ -548,7 +551,9 @@ public class CamCtrlController implements Initializable {
             if( recorder.isRecording() || recorder.isPaused() ){
                 recorder.stop();
                 chronometer.stop();
-                lecture.setVideoLength(chronometer.elapsed() / 1000);
+                long length = chronometer.elapsed() / 1000;
+                System.out.println(length);
+                lecture.setVideoLength(length);
                 lecture.save();
                 terminateGobblers();
                 //logsController.stop();
@@ -659,7 +664,7 @@ public class CamCtrlController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirm exit");
             alert.setHeaderText("Do you really want to exit?");
-            alert.setContentText("The current recording session will end.");
+            alert.setContentText("The current recording session will end.\n\n");
             Optional<ButtonType> result = alert.showAndWait();
             if( ButtonType.OK.equals(result.get()) ) {
                 terminateGobblers();
