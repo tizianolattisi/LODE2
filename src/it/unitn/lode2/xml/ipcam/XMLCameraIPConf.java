@@ -1,5 +1,7 @@
 package it.unitn.lode2.xml.ipcam;
 
+import it.unitn.lode2.camera.ipcam.AuthMode;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -13,6 +15,7 @@ public class XMLCameraIPConf {
 
     private String user;
     private String password;
+    private AuthMode authMode;
 
     private String host;
     private Integer cgiPort;
@@ -47,6 +50,11 @@ public class XMLCameraIPConf {
     @XmlElement(name = "PASSWORD")
     public String getPassword() {
         return password;
+    }
+
+    @XmlElement(name = "AUTH")
+    public AuthMode getAuthMode() {
+        return authMode;
     }
 
     @XmlElement(name = "HOST")
@@ -226,5 +234,9 @@ public class XMLCameraIPConf {
 
     public void setRecordCommand(String recordCommand) {
         this.recordCommand = recordCommand;
+    }
+
+    public void setAuthMode(AuthMode authMode) {
+        this.authMode = authMode;
     }
 }
