@@ -64,8 +64,6 @@ public class PreviewerIPBuilder {
         url += relativeUrl;
         PreviewerIPImpl previewerIP = new PreviewerIPImpl();
         previewerIP.setSnapshotUrl(url);
-        previewerIP.setUsername(user);
-        previewerIP.setPassword(password);
         previewerIP.setPreviewMode(PreviewMode.CONTINUOUS); // XXX: parametrize...
 
         return previewerIP;
