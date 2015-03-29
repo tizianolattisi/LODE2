@@ -1,8 +1,5 @@
 package it.unitn.lode2.recorder.ipcam;
 
-import it.unitn.lode2.recorder.Recorder;
-
-import java.io.IOException;
 
 /**
  * User: tiziano
