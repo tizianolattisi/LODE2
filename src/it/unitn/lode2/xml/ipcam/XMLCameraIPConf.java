@@ -16,6 +16,7 @@ public class XMLCameraIPConf {
     private String user;
     private String password;
     private AuthMode authMode;
+    private String authQuery;
 
     private String host;
     private Integer cgiPort;
@@ -55,6 +56,11 @@ public class XMLCameraIPConf {
     @XmlElement(name = "AUTH")
     public AuthMode getAuthMode() {
         return authMode;
+    }
+
+    @XmlElement(name = "AUTHQUERY")
+    public String getAuthQuery() {
+        return authQuery;
     }
 
     @XmlElement(name = "HOST")
@@ -238,5 +244,9 @@ public class XMLCameraIPConf {
 
     public void setAuthMode(AuthMode authMode) {
         this.authMode = authMode;
+    }
+
+    public void setAuthQuery(String authQuery) {
+        this.authQuery = authQuery;
     }
 }
