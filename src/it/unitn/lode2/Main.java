@@ -79,7 +79,7 @@ public class Main extends Application {
         if(AuthMode.BASIC.equals(cameraIPConf.getAuthMode()) ) {
             connProvider = new BasicConnectionProvider(cameraIPConf.getUser(), cameraIPConf.getPassword());
         } else if(AuthMode.QUERY.equals(cameraIPConf.getAuthMode()) ) {
-            connProvider = new QueryConnectionProvider(cameraIPConf.getUser(), cameraIPConf.getPassword());
+            connProvider = new QueryConnectionProvider(cameraIPConf.getUser(), cameraIPConf.getPassword(), "usr=${user}&amp;pwd=${password}");
         } else {
             connProvider = new NoAuthConnectionProvider();
         }
