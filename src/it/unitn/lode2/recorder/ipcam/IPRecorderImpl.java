@@ -5,6 +5,7 @@ import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.RecorderStatus;
 
 import java.io.*;
+import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.Optional;
  * Date: 14/12/14
  * Time: 14:18
  */
-public class IPRecorderImpl implements Recorder {
+public class IPRecorderImpl implements Recorder, EventListener {
 
     // ffmpeg -i "concat:movie001.ts|movie002.ts|movie003.ts|movie004.ts" -c copy -bsf:a aac_adtstoasc movie0.mp4
 
@@ -144,6 +145,7 @@ public class IPRecorderImpl implements Recorder {
         map.put("output", output + "/" + fileName);
         String recordCommand = mmp.format(map);
         recordProcess = new ProcessBuilder(recordCommand.split(" ")).start();
+        (new RecorderObserver(recordProcess, this)).start();
     }
 
 
@@ -157,6 +159,17 @@ public class IPRecorderImpl implements Recorder {
         }
         //recordProcess.destroy();
         recordProcess=null;
+    }
+
+    public void timeoutHandle() {
+        if( RecorderStatus.RECORDING.equals(status) ){
+            try {
+                status = RecorderStatus.PAUSED;
+                record();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
