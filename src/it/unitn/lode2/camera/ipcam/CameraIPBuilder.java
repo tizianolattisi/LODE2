@@ -2,6 +2,7 @@ package it.unitn.lode2.camera.ipcam;
 
 import com.axiastudio.mapformat.MessageMapFormat;
 import it.unitn.lode2.camera.Capability;
+import it.unitn.lode2.camera.ipcam.connection.AuthMode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +18,7 @@ public class CameraIPBuilder {
     private Integer port = 80;
     private String user = "admin";
     private String password = "";
+    private AuthMode authMode = AuthMode.NONE;
     private Map<Cmds, String> templates = new HashMap<>();
 
 
@@ -44,6 +46,10 @@ public class CameraIPBuilder {
         return this;
     }
 
+    public CameraIPBuilder authMode(AuthMode authMode) {
+        this.authMode = authMode;
+        return this;
+    }
 
     public CameraIPBuilder template(Cmds cmds, String template) {
         templates.put(cmds, template);

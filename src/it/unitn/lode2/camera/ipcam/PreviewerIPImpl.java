@@ -1,7 +1,9 @@
 package it.unitn.lode2.camera.ipcam;
 
+import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.PreviewMode;
 import it.unitn.lode2.camera.Previewer;
+import it.unitn.lode2.camera.ipcam.connection.ConnectionProvider;
 import it.unitn.lode2.recorder.ipcam.PreviewerThread;
 
 import java.io.ByteArrayInputStream;
@@ -66,11 +68,12 @@ public class PreviewerIPImpl implements Previewer {
 
     private synchronized InputStream threadSafeSnapshot() throws IOException {
         URL url = new URL(snapshotUrl);
-        URLConnection connection = url.openConnection();
+        URLConnection connection = IOC.queryUtility(ConnectionProvider.class).createConnection(url);
         connection.setConnectTimeout(500);
         connection.setReadTimeout(500);
         try {
-            return connection.getInputStream();
+            InputStream inputStream = connection.getInputStream();
+            return inputStream;
         } catch (SocketTimeoutException ex) {
             return null;
         }
@@ -79,7 +82,6 @@ public class PreviewerIPImpl implements Previewer {
     public void setSnapshotUrl(String snapshotUrl) {
         this.snapshotUrl = snapshotUrl;
     }
-
 
 
 }

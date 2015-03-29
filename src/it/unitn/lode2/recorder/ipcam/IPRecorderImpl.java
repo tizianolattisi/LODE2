@@ -44,13 +44,18 @@ public class IPRecorderImpl implements Recorder {
         this.path = path;
         this.user = user;
         this.password = password;
+        // TODO: uri to escape
         this.output = output;
 
         url = protocol.toString().toLowerCase() + "://";
         if( user!=null && password!=null ){
             url += user+ ":" + password + "@";
         }
-        url += host + ":" + port + path;
+        if( "".equals(port) || "80".equals(port) ) {
+            url += host + ":" + port + path;
+        } else {
+            url += host + path;
+        }
 
         MessageMapFormat mmp = new MessageMapFormat(recordTemplate);
         Map<String, Object> map = new HashMap();

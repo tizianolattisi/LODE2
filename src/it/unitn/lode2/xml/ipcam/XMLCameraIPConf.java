@@ -1,6 +1,6 @@
 package it.unitn.lode2.xml.ipcam;
 
-import it.unitn.lode2.camera.ipcam.AuthMode;
+import it.unitn.lode2.camera.ipcam.connection.AuthMode;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

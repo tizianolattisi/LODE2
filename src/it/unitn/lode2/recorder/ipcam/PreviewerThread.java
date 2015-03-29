@@ -1,11 +1,13 @@
 package it.unitn.lode2.recorder.ipcam;
 
+import it.unitn.lode2.IOC;
+import it.unitn.lode2.camera.ipcam.connection.ConnectionProvider;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.Calendar;
 
 /**
  * Created by tiziano on 10/03/15.
@@ -28,7 +30,7 @@ public class PreviewerThread extends Thread {
             try {
                 long initTime = System.currentTimeMillis();
                 URL url = new URL(snapshotUrl);
-                URLConnection connection = url.openConnection();
+                HttpURLConnection connection = IOC.queryUtility(ConnectionProvider.class).createConnection(url);
                 cachePreview(connection.getInputStream());
                 long toWait = maxMillisecs - (System.currentTimeMillis() - initTime);
                 if( toWait>0 ) {

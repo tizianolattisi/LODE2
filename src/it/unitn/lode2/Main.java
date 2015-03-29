@@ -6,9 +6,8 @@ import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Previewer;
-import it.unitn.lode2.camera.ipcam.CameraIPBuilder;
-import it.unitn.lode2.camera.ipcam.Cmds;
-import it.unitn.lode2.camera.ipcam.PreviewerIPBuilder;
+import it.unitn.lode2.camera.ipcam.*;
+import it.unitn.lode2.camera.ipcam.connection.*;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
@@ -36,7 +35,7 @@ import java.util.List;
 public class Main extends Application {
 
     //private final static String CAMERA_CONF = "/Users/tiziano/Projects/LODE2/confs/ipcamera/FOSCAM.XML";
-    private final static String CAMERA_CONF = System.getProperty("user.home") + "/_LODE/FOSCAM.XML";
+    private final static String CAMERA_CONF = System.getProperty("user.home") + "/_LODE/DLINK.XML";
     private final static String LODE_PREFS = System.getProperty("user.home") + "/_LODE/.LODE_PREFS.XML";
 
     @Override
@@ -75,22 +74,47 @@ public class Main extends Application {
         // read ip camera configuration
         XMLCameraIPConf cameraIPConf = XMLHelper.build(XMLCameraIPConf.class).unmarshal(new File(CAMERA_CONF));
 
+        // ConnectionProvider
+        ConnectionProvider connProvider;
+        if(AuthMode.BASIC.equals(cameraIPConf.getAuthMode()) ) {
+            connProvider = new BasicConnectionProvider(cameraIPConf.getUser(), cameraIPConf.getPassword());
+        } else if(AuthMode.QUERY.equals(cameraIPConf.getAuthMode()) ) {
+            connProvider = new QueryConnectionProvider(cameraIPConf.getUser(), cameraIPConf.getPassword());
+        } else {
+            connProvider = new NoAuthConnectionProvider();
+        }
+        IOC.registerUtility(connProvider, ConnectionProvider.class);
+
+
         // Camera
-        Camera camera = CameraIPBuilder.create()
+        CameraIPBuilder builder = CameraIPBuilder.create()
                 .user(cameraIPConf.getUser())
                 .password(cameraIPConf.getPassword())
                 .host(cameraIPConf.getHost())
-                .port(cameraIPConf.getCgiPort())
-                .template(Cmds.ZOOMIN, cameraIPConf.getZoomIn())
-                .template(Cmds.ZOOMOUT, cameraIPConf.getZoomOut())
-                .template(Cmds.ZOOMSTOP, cameraIPConf.getZoomStop())
-                .template(Cmds.PANLEFT, cameraIPConf.getPanLeft())
-                .template(Cmds.PANRIGHT, cameraIPConf.getPanRight())
-                .template(Cmds.PANSTOP, cameraIPConf.getPanStop())
-                .template(Cmds.TILTUP, cameraIPConf.getTiltUp())
-                .template(Cmds.TILTDOWN, cameraIPConf.getTiltDown())
-                .template(Cmds.TILTSTOP, cameraIPConf.getTiltStop())
-                //.template(Cmds.SNAPSHOT, cameraIPConf.getSnapshot())
+                .port(cameraIPConf.getCgiPort());
+        if( cameraIPConf.getZoomIn()!=null && cameraIPConf.getZoomOut()!=null ){
+            builder = builder.template(Cmds.ZOOMIN, cameraIPConf.getZoomIn());
+            builder = builder.template(Cmds.ZOOMOUT, cameraIPConf.getZoomOut());
+        }
+        if( cameraIPConf.getZoomStop()!=null ){
+            builder = builder.template(Cmds.ZOOMSTOP, cameraIPConf.getZoomStop());
+        }
+        if( cameraIPConf.getPanLeft()!=null && cameraIPConf.getPanRight()!=null ){
+            builder = builder.template(Cmds.PANLEFT, cameraIPConf.getPanLeft());
+            builder = builder.template(Cmds.PANRIGHT, cameraIPConf.getPanRight());
+        }
+        if( cameraIPConf.getPanStop()!=null ){
+            builder = builder.template(Cmds.PANSTOP, cameraIPConf.getPanStop());
+        }
+        if( cameraIPConf.getTiltUp()!=null && cameraIPConf.getTiltDown()!=null){
+            builder = builder.template(Cmds.TILTUP, cameraIPConf.getTiltUp());
+            builder = builder.template(Cmds.TILTDOWN, cameraIPConf.getTiltDown());
+        }
+        if( cameraIPConf.getTiltStop()!=null ){
+            builder = builder.template(Cmds.TILTSTOP, cameraIPConf.getTiltStop());
+        }
+        Camera camera = builder
+                .template(Cmds.SNAPSHOT, cameraIPConf.getSnapshot())
                 .template(Cmds.PRESET, cameraIPConf.getPreset())
                 .template(Cmds.ADDPRESET, cameraIPConf.getAddPreset())
                 .template(Cmds.DELPRESET, cameraIPConf.getDelPreset())

@@ -1,6 +1,8 @@
 package it.unitn.lode2.camera.ipcam;
 
+import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.AbstractCamera;
+import it.unitn.lode2.camera.ipcam.connection.ConnectionProvider;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -141,7 +143,7 @@ public class CameraIPImpl extends AbstractCamera {
 
     private void executeGET(String sUrl) throws IOException {
         URL url = new URL(sUrl);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection = IOC.queryUtility(ConnectionProvider.class).createConnection(url);
         connection.setRequestMethod("GET");
         connection.connect();
         connection.getContent();

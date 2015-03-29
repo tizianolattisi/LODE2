@@ -57,9 +57,15 @@ public class PreviewerIPBuilder {
         map.put("user", user);
         map.put("password", password);
         String relativeUrl = mmp.format(map);
-        String url = "http://" + host + ":" + port + relativeUrl;
+        String url = "http://" + host;
+        if( port != 80 ){
+            url += ":" + port;
+        }
+        url += relativeUrl;
         PreviewerIPImpl previewerIP = new PreviewerIPImpl();
         previewerIP.setSnapshotUrl(url);
+        previewerIP.setUsername(user);
+        previewerIP.setPassword(password);
         previewerIP.setPreviewMode(PreviewMode.CONTINUOUS); // XXX: parametrize...
 
         return previewerIP;
