@@ -582,6 +582,8 @@ public class MainController implements Initializable {
                 Stage stage = new Stage();
                 stage.setTitle("Camera controller");
                 stage.setScene(scene);
+                stage.setX(100);
+                stage.setY(100);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
