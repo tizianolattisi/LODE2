@@ -35,7 +35,7 @@ import java.util.List;
 public class Main extends Application {
 
     //private final static String CAMERA_CONF = "/Users/tiziano/Projects/LODE2/confs/ipcamera/FOSCAM.XML";
-    private final static String CAMERA_CONF = System.getProperty("user.home") + "/_LODE/DLINK.XML";
+    private final static String CAMERA_CONF = System.getProperty("user.home") + "/_LODE/IPCAM.XML";
     private final static String LODE_PREFS = System.getProperty("user.home") + "/_LODE/.LODE_PREFS.XML";
 
     @Override
