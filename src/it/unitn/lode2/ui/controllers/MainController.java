@@ -66,6 +66,11 @@ public class MainController implements Initializable {
     @FXML private Button nextSlideButton;
     @FXML private Button lastSlideButton;
 
+    @FXML private Label currentSlideLabel;
+    @FXML private Label preparedSlideLabel;
+    @FXML private Label next1SlideLabel;
+    @FXML private Label next2SlideLabel;
+
     @FXML private ImageView previewImageView;
     @FXML private ImageView offair;
     @FXML private ToggleButton previewToggleButton;
@@ -95,6 +100,7 @@ public class MainController implements Initializable {
     private List<ToggleButton> presetsSlideButtons;
     private List<CheckBox> presetsZoomCheckBoxes;
     private List<ImageView> nextImageViews;
+    private List<Label> nextLabels;
 
     private Timeline timeline;
     private LogsController logsController;
@@ -143,6 +149,8 @@ public class MainController implements Initializable {
         presetsSlideButtons = Arrays.asList(preset1SlideToggleButton, preset2SlideToggleButton, preset3SlideToggleButton, preset4SlideToggleButton);
         presetsZoomCheckBoxes = Arrays.asList(preset1zoomCheckBox, preset2zoomCheckBox, preset3zoomCheckBox, preset4zoomCheckBox);
         nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView);
+        nextLabels = Arrays.asList(next1SlideLabel, next2SlideLabel);
+
 
         configHandlers();
 
@@ -235,13 +243,30 @@ public class MainController implements Initializable {
         }
     }
 
+    private void setSlideLabel(Label label, Integer n){
+        if( n==-1 ){
+            label.setText("--");
+        } else {
+            label.setText(n.toString());
+        }
+    }
+
     /* Slides */
     private void refreshSlides(){
-        projector.shownSlide().ifPresent(s -> currentSlideImageView.setImage(s.createPreview(520.0, 325.0)));
-        projector.preparedSlide().ifPresent(s -> preparedSlideImageView.setImage(s.createPreview(520.0, 325.0)));
+
+        // XXX: questo è veramente brutto...
+        currentSlideLabel.setText("--");
+        preparedSlideLabel.setText("--");
+
+        projector.shownSlide().ifPresent(s -> {currentSlideImageView.setImage(s.createPreview(520.0, 325.0));
+            projector.showSlideNumber(s).ifPresent(n -> currentSlideLabel.setText(n.toString()));});
+        projector.preparedSlide().ifPresent(s -> {preparedSlideImageView.setImage(s.createPreview(520.0, 325.0));
+            projector.showSlideNumber(s).ifPresent(n -> preparedSlideLabel.setText(n.toString()));});
         for( Integer i=0; i<nextImageViews.size(); i++ ) {
             final Integer j=i;
-            projector.slideDelta(i+1).ifPresent(s -> nextImageViews.get(j).setImage(s.createPreview(160.0, 100.0)));
+            nextLabels.get(j).setText("--");
+            projector.slideDelta(i+1).ifPresent(s -> {nextImageViews.get(j).setImage(s.createPreview(160.0, 100.0));
+                projector.showSlideNumber(s).ifPresent(n -> nextLabels.get(j).setText(n.toString()));});
             if (!projector.slideDelta(i+1).isPresent()) {
                 nextImageViews.get(i).setImage(null);
             }

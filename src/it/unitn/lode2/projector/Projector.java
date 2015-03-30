@@ -10,24 +10,26 @@ import java.util.Optional;
  */
 public interface Projector {
 
-    public void addSlides(Slide... slides);
-    public void addSlides(List<Slide> slides);
+    void addSlides(Slide... slides);
+    void addSlides(List<Slide> slides);
 
-    public Optional<Slide> shownSlide();
-    public Optional<Integer> shownSlideSeqNumber();
-    public Optional<Slide> preparedSlide();
-    public Optional<Slide> slideNr(Integer n);
-    public Optional<Slide> slideDelta(Integer n);
+    Optional<Slide> shownSlide();
+    Optional<Integer> shownSlideSeqNumber();
+    Optional<Slide> preparedSlide();
+    Optional<Slide> slideNr(Integer n);
+    Optional<Slide> slideDelta(Integer n);
+
+    Optional<Integer> showSlideNumber(Slide s);
 
     /* Prepared slide controls */
-    public void first();
-    public void previous();
-    public void next();
-    public void last();
-    public Boolean isFirst();
-    public Boolean isLast();
+    void first();
+    void previous();
+    void next();
+    void last();
+    Boolean isFirst();
+    Boolean isLast();
 
     /* shows the prepared slide (that becomes shown) */
-    public void show();
+    void show();
 
 }
