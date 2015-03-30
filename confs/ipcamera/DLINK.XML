@@ -2,21 +2,22 @@
 <CAMERA_IP>
     <USER>admin</USER>
     <PASSWORD>admin</PASSWORD>
-    <AUTH>DIGEST</AUTH>
+    <AUTH>BASIC</AUTH>
+    <AUTHQUERY></AUTHQUERY>
     <HOST>192.168.1.2</HOST>
     <CGI_PORT>80</CGI_PORT>
     <STREAM_PORT>80</STREAM_PORT>
     <STREAM_PROTOCOL>RTSP</STREAM_PROTOCOL>
     <STREAM_URL>/live1.sdp</STREAM_URL>
-    <ZOOMIN>/cgi-bin/CGIProxy.fcgi?cmd=zoomIn&amp;usr=${user}&amp;pwd=${password}</ZOOMIN>
-    <ZOOMOUT>/cgi-bin/CGIProxy.fcgi?cmd=zoomOut&amp;usr=${user}&amp;pwd=${password}</ZOOMOUT>
-    <PANLEFT>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=-10&amp;posY=0</PANLEFT>
-    <PANRIGHT>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=10&amp;posY=0</PANRIGHT>
-    <TILTUP>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=0&amp;posY=10</TILTUP>
-    <TILTDOWN>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=0&amp;posY=-10</TILTDOWN>
-    <PRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzGotoPresetPoint&amp;usr=${user}&amp;pwd=${password}&amp;name=</PRESET>
-    <ADDPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzAddPresetPoint&amp;usr=${user}&amp;pwd=${password}&amp;name=</ADDPRESET>
-    <DELPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzDeletePresetPoint&amp;usr=${user}&amp;pwd=${password}&amp;name=</DELPRESET>
+    <ZOOMIN></ZOOMIN>
+    <ZOOMOUT></ZOOMOUT>
+    <PANLEFT>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=-5&amp;posY=0</PANLEFT>
+    <PANRIGHT>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=5&amp;posY=0</PANRIGHT>
+    <TILTUP>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=0&amp;posY=5</TILTUP>
+    <TILTDOWN>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=0&amp;posY=-5</TILTDOWN>
+    <PRESET></PRESET>
+    <ADDPRESET></ADDPRESET>
+    <DELPRESET></DELPRESET>
     <SNAPSHOT>/image/jpeg.cgi</SNAPSHOT>
     <!--RECORD_COMMAND>${ffmpeg} -i ${input} -strict -2 -acodec aac -vcodec copy -b:a 32k -y ${output}</RECORD_COMMAND-->
     <RECORD_COMMAND>${ffmpeg} -i ${input} -strict -2 -acodec aac -vcodec copy -b:a 8k -y -f mpegts ${output}</RECORD_COMMAND>
