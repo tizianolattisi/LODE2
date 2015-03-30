@@ -168,7 +168,7 @@ public class Main extends Application {
         Parent root = loader.load();
         MainController controller = loader.getController();
         primaryStage.setTitle("Cam controller");
-        Scene scene = new Scene(root, 1024, 768);
+        Scene scene = new Scene(root, 1024, 720);
         scene.getStylesheets().add("/it/unitn/lode2/ui/skin/flat.css");
         controller.keyBindings();
         primaryStage.setScene(scene);
