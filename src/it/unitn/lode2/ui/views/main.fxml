@@ -8,90 +8,90 @@
 
 <AnchorPane fx:id="backgroundPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.controllers.MainController">
    <children>
-      <ImageView fx:id="previewImageView" fitHeight="200.0" fitWidth="320.0" layoutX="672.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
-      <ToggleButton fx:id="previewToggleButton" layoutX="593.0" layoutY="187.0" maxHeight="48.0" maxWidth="48.0" minHeight="48.0" minWidth="48.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="VIDEO">
+      <ImageView fx:id="previewImageView" fitHeight="200.0" fitWidth="320.0" layoutX="94.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
+      <ToggleButton fx:id="previewToggleButton" layoutX="15.0" layoutY="171.0" maxHeight="48.0" maxWidth="48.0" minHeight="48.0" minWidth="48.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="VIDEO">
          <font>
             <Font size="9.0" />
          </font></ToggleButton>
-      <Button fx:id="setupButton" layoutX="895.0" layoutY="279.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="LOGS">
+      <Button fx:id="setupButton" layoutX="317.0" layoutY="263.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="LOGS">
          <font>
             <Font size="9.0" />
          </font></Button>
-      <Button fx:id="stopButton" layoutX="702.0" layoutY="279.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="STOP">
+      <Button fx:id="stopButton" layoutX="124.0" layoutY="263.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="STOP">
          <font>
             <Font size="9.0" />
          </font></Button>
-      <ToggleButton fx:id="preset1ToggleButton" layoutX="593.0" layoutY="347.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="96.0" styleClass="preset" text="SCENE&#10;1" textAlignment="CENTER">
+      <ToggleButton fx:id="preset1ToggleButton" layoutX="15.0" layoutY="331.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="96.0" styleClass="preset" text="SCENE&#10;1" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </ToggleButton>
-      <ToggleButton fx:id="preset2ToggleButton" layoutX="696.0" layoutY="347.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="96.0" styleClass="preset" text="SCENE&#10;2" textAlignment="CENTER">
+      <ToggleButton fx:id="preset2ToggleButton" layoutX="118.0" layoutY="331.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="96.0" styleClass="preset" text="SCENE&#10;2" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </ToggleButton>
-      <ToggleButton fx:id="preset4ToggleButton" layoutX="903.0" layoutY="347.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="96.0" styleClass="preset" text="SCENE&#10;4" textAlignment="CENTER">
+      <ToggleButton fx:id="preset4ToggleButton" layoutX="325.0" layoutY="331.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="96.0" styleClass="preset" text="SCENE&#10;4" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </ToggleButton>
-      <ToggleButton fx:id="preset3ToggleButton" layoutX="799.0" layoutY="347.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="96.0" styleClass="preset" text="SCENE&#10;3" textAlignment="CENTER">
+      <ToggleButton fx:id="preset3ToggleButton" layoutX="221.0" layoutY="331.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="96.0" styleClass="preset" text="SCENE&#10;3" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </ToggleButton>
-      <ToggleButton fx:id="pauseToggleButton" layoutX="647.0" layoutY="279.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="PAUSE" textAlignment="CENTER">
+      <ToggleButton fx:id="pauseToggleButton" layoutX="69.0" layoutY="263.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="PAUSE" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font></ToggleButton>
-      <ToggleButton fx:id="recordToggleButton" layoutX="593.0" layoutY="279.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="REC" textAlignment="CENTER">
+      <ToggleButton fx:id="recordToggleButton" layoutX="15.0" layoutY="263.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="REC" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font></ToggleButton>
-      <ImageView fx:id="offair" fitHeight="47.0" fitWidth="88.0" layoutX="762.0" layoutY="280.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="preparedSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="18.0" layoutY="375.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
-      <ImageView fx:id="currentSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="18.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
-      <ImageView fx:id="next1SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="612.0" layoutY="599.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
-      <ImageView fx:id="next2SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="793.0" layoutY="599.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
-      <Button fx:id="prevSlideButton" layoutX="649.0" layoutY="526.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="PREV" textAlignment="CENTER">
+      <ImageView fx:id="offair" fitHeight="47.0" fitWidth="88.0" layoutX="184.0" layoutY="264.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="preparedSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="490.0" layoutY="376.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
+      <ImageView fx:id="currentSlideImageView" fitHeight="325.0" fitWidth="520.0" layoutX="490.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
+      <ImageView fx:id="next1SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="231.0" layoutY="585.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
+      <ImageView fx:id="next2SlideImageView" fitHeight="100.0" fitWidth="160.0" layoutX="15.0" layoutY="585.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
+      <Button fx:id="prevSlideButton" layoutX="71.0" layoutY="510.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="PREV" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="showSlideButton" layoutX="705.0" layoutY="526.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="SHOW&#10;CURR." textAlignment="CENTER">
+      <Button fx:id="showSlideButton" layoutX="127.0" layoutY="510.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="SHOW&#10;CURR." textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="firstSlideButton" layoutX="593.0" layoutY="526.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="FIRST" textAlignment="CENTER">
+      <Button fx:id="firstSlideButton" layoutX="15.0" layoutY="510.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="FIRST" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="lastSlideButton" layoutX="817.0" layoutY="526.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="LAST" textAlignment="CENTER">
+      <Button fx:id="lastSlideButton" layoutX="239.0" layoutY="510.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="LAST" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="nextSlideButton" layoutX="761.0" layoutY="526.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="NEXT" textAlignment="CENTER">
+      <Button fx:id="nextSlideButton" layoutX="183.0" layoutY="510.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="NEXT" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
-      </Button><Button fx:id="setupSceneButton" layoutX="951.0" layoutY="279.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="SETUP&#10;SCENE">
+      </Button><Button fx:id="setupSceneButton" layoutX="373.0" layoutY="263.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="SETUP&#10;SCENE">
 <font>
 <Font size="9.0" />
 </font>
-</Button><CheckBox fx:id="preset1zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="593.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset2zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="696.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset4zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="903.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset3zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="800.0" layoutY="450.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><ToggleButton fx:id="preset1SlideToggleButton" layoutX="592.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+</Button><CheckBox fx:id="preset1zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="15.0" layoutY="434.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset2zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="118.0" layoutY="434.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset4zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="325.0" layoutY="434.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><CheckBox fx:id="preset3zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="222.0" layoutY="434.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" /><ToggleButton fx:id="preset1SlideToggleButton" layoutX="14.0" layoutY="460.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
 <font>
 <Font size="9.0" />
-</font></ToggleButton><ToggleButton fx:id="preset2SlideToggleButton" layoutX="696.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+</font></ToggleButton><ToggleButton fx:id="preset2SlideToggleButton" layoutX="118.0" layoutY="460.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
 <font>
 <Font size="9.0" />
-</font></ToggleButton><ToggleButton fx:id="preset4SlideToggleButton" layoutX="904.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+</font></ToggleButton><ToggleButton fx:id="preset4SlideToggleButton" layoutX="326.0" layoutY="460.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
 <font>
 <Font size="9.0" />
-</font></ToggleButton><ToggleButton fx:id="preset3SlideToggleButton" layoutX="800.0" layoutY="476.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
+</font></ToggleButton><ToggleButton fx:id="preset3SlideToggleButton" layoutX="222.0" layoutY="460.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
 <font>
 <Font size="9.0" />
 </font></ToggleButton>
