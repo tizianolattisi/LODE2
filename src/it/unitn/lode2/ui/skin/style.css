@@ -6,14 +6,6 @@
     -fx-image: url("../images/monitor.png");
 }
 
-#offair {
-    -fx-image: url("../images/off-air.gif");
-}
-
-#onair {
-    -fx-image: url("../images/on-air.gif");
-}
-
 #previewImageView {
     -fx-image: url("../images/no-image.png");
 }

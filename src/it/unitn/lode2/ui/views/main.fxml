@@ -121,7 +121,11 @@
                   <Font size="9.0" />
                </font>
             </ToggleButton>
-            <ImageView fx:id="offair" fitHeight="47.0" fitWidth="88.0" layoutX="179.0" layoutY="267.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="recordingLabel" alignment="CENTER" layoutX="178.0" layoutY="274.0" prefHeight="33.0" prefWidth="108.0">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -44,6 +45,13 @@ import java.util.ResourceBundle;
  * Time: 09:39
  */
 public class MainController implements Initializable {
+
+    private final String RECORDING_COLOR = "red";
+    private final String PAUSE_COLOR = "yellow";
+    private final String IDLE_COLOR = "black";
+    private final String RECORD_LABEL = "REC";
+    private final String PAUSE_LABEL = "PAUSE";
+    private final String IDLE_LABEL = "";
 
     private Camera camera;
     private Previewer previewer;
@@ -72,7 +80,6 @@ public class MainController implements Initializable {
     @FXML private Label next2SlideLabel;
 
     @FXML private ImageView previewImageView;
-    @FXML private ImageView offair;
     @FXML private ToggleButton previewToggleButton;
 
     @FXML private Button setupButton;
@@ -104,6 +111,8 @@ public class MainController implements Initializable {
 
     private Timeline timeline;
     private LogsController logsController;
+
+    @FXML private Label recordingLabel;
 
     private StreamGobbler errorStreamGobbler = new StreamGobbler();
     private StreamGobbler standardStreamGobbler = new StreamGobbler();
@@ -258,8 +267,10 @@ public class MainController implements Initializable {
         currentSlideLabel.setText("--");
         preparedSlideLabel.setText("--");
 
-        projector.shownSlide().ifPresent(s -> {currentSlideImageView.setImage(s.createPreview(400.0, 300.0));
-            projector.showSlideNumber(s).ifPresent(n -> currentSlideLabel.setText(n.toString()));});
+        projector.shownSlide().ifPresent(s -> {
+            currentSlideImageView.setImage(s.createPreview(400.0, 300.0));
+            projector.showSlideNumber(s).ifPresent(n -> currentSlideLabel.setText(n.toString()));
+        });
         projector.preparedSlide().ifPresent(s -> {preparedSlideImageView.setImage(s.createPreview(400.0, 300.0));
             projector.showSlideNumber(s).ifPresent(n -> preparedSlideLabel.setText(n.toString()));});
         for( Integer i=0; i<nextImageViews.size(); i++ ) {
@@ -505,7 +516,8 @@ public class MainController implements Initializable {
                     recorder.record();
                     chronometer.reset();
                     chronometer.start();
-                    offair.setId("onair");
+                    recordingLabel.setText(RECORD_LABEL);
+                    recordingLabel.setTextFill(Paint.valueOf(RECORDING_COLOR));
                     // XXX: clear timed slides?
                 } catch (IOException e) {
                     handleIOException(e);
@@ -521,15 +533,17 @@ public class MainController implements Initializable {
             if( recorder.isRecording() ){
                 recorder.pause();
                 chronometer.stop();
-                offair.setId("offair");
+                recordingLabel.setText(PAUSE_LABEL);
+                recordingLabel.setTextFill(Paint.valueOf(PAUSE_COLOR));
             } else if( recorder.isPaused() ){
                 try {
                     recorder.wakeup();
+                    recordingLabel.setText(RECORD_LABEL);
+                    recordingLabel.setTextFill(Paint.valueOf(RECORDING_COLOR));
                 } catch (IOException e) {
                     handleIOException(e);
                 }
                 chronometer.start();
-                offair.setId("onair");
             }
             else {
                 pauseToggleButton.setSelected(false);
@@ -549,7 +563,8 @@ public class MainController implements Initializable {
                 lecture.save();
                 terminateGobblers();
                 //logsController.stop();
-                offair.setId("offair");
+                recordingLabel.setText(IDLE_LABEL);
+                recordingLabel.setTextFill(Paint.valueOf(IDLE_COLOR));
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
             }
