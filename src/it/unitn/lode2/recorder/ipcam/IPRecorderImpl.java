@@ -150,6 +150,9 @@ public class IPRecorderImpl implements Recorder, EventListener {
 
 
     private void stopProcess() {
+        if( recordProcess == null ){
+            return;
+        }
         BufferedWriter pi = new BufferedWriter(new OutputStreamWriter(recordProcess.getOutputStream()));
         try {
             pi.write("q");
