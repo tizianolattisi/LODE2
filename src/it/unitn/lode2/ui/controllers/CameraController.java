@@ -3,7 +3,6 @@ package it.unitn.lode2.ui.controllers;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Capability;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -30,16 +29,20 @@ public class CameraController implements Initializable {
     @FXML private Button tiltUpButton;
     @FXML private Button tiltDownButton;
 
-    @FXML private ToggleButton setPresetToggleButton;
-    @FXML private ToggleButton preset1ToggleButton;
-    @FXML private ToggleButton preset2ToggleButton;
-    @FXML private ToggleButton preset3ToggleButton;
-    @FXML private ToggleButton preset4ToggleButton;
+    @FXML private Button preset1ToggleButton;
+    @FXML private Button preset2ToggleButton;
+    @FXML private Button preset3ToggleButton;
+    @FXML private Button preset4ToggleButton;
+
+    @FXML private ToggleButton view1ToggleButton;
+    @FXML private ToggleButton view2ToggleButton;
+    @FXML private ToggleButton view3ToggleButton;
+    @FXML private ToggleButton view4ToggleButton;
 
     private Camera camera;
 
-    private final SimpleBooleanProperty setPresetMode = new SimpleBooleanProperty();
-    private List<ToggleButton> toggleButtons;
+    private List<Button> presetToggleButtons;
+    private List<ToggleButton> viewToggleButtons;
 
 
 
@@ -47,8 +50,8 @@ public class CameraController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         camera = IOC.queryUtility(Camera.class);
-        setPresetMode.bindBidirectional(setPresetToggleButton.selectedProperty());
-        toggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
+        presetToggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
+        viewToggleButtons = Arrays.asList(view1ToggleButton, view2ToggleButton, view3ToggleButton, view4ToggleButton);
         configHandlers();
     }
 
@@ -86,16 +89,20 @@ public class CameraController implements Initializable {
                 tiltDownButton.setOnAction(handlerTiltDownAction);
             }
         }
-        preset1ToggleButton.setOnAction(handlerPreset);
-        preset2ToggleButton.setOnAction(handlerPreset);
-        preset3ToggleButton.setOnAction(handlerPreset);
-        preset4ToggleButton.setOnAction(handlerPreset);
-        setPresetToggleButton.setOnAction(handlerSetPreset);
+        preset1ToggleButton.setOnAction(handlerSetPreset);
+        preset2ToggleButton.setOnAction(handlerSetPreset);
+        preset3ToggleButton.setOnAction(handlerSetPreset);
+        preset4ToggleButton.setOnAction(handlerSetPreset);
+
+        view1ToggleButton.setOnAction(handlerViewPreset);
+        view2ToggleButton.setOnAction(handlerViewPreset);
+        view3ToggleButton.setOnAction(handlerViewPreset);
+        view4ToggleButton.setOnAction(handlerViewPreset);
 
     }
 
     private void resetPresetButtons() {
-        for( ToggleButton button: toggleButtons ){
+        for( ToggleButton button: viewToggleButtons){
             button.setSelected(false);
         }
     }
@@ -115,9 +122,6 @@ public class CameraController implements Initializable {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if( setPresetMode.getValue() ){
-                        return;
-                    }
                     try {
                         camera.zoomIn();
                     } catch (IOException e) {
@@ -142,9 +146,6 @@ public class CameraController implements Initializable {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if( setPresetMode.getValue() ){
-                        return;
-                    }
                     try {
                         camera.zoomOut();
                     } catch (IOException e) {
@@ -299,23 +300,18 @@ public class CameraController implements Initializable {
         }
     };
 
-    private EventHandler<ActionEvent> handlerPreset = new EventHandler<ActionEvent>() {
+    private EventHandler<ActionEvent> handlerSetPreset = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
-            ToggleButton pressedButton = (ToggleButton) event.getSource();
+            Button pressedButton = (Button) event.getSource();
             Integer i = 0;
-            for( ToggleButton button: toggleButtons ){
+            for( Button button: presetToggleButtons){
                 i++;
-                button.setSelected(button == pressedButton);
                 if( button == pressedButton ) {
                     try {
-                        if( setPresetMode.getValue() ){
-                            camera.delPreset(i.toString());
-                            camera.addPreset(i.toString());
-                            setPresetMode.setValue(Boolean.FALSE);
-                        } else {
-                            camera.goToPreset(i.toString());
-                        }
+                        camera.delPreset(i.toString());
+                        camera.addPreset(i.toString());
+                        viewToggleButtons.get(i).setSelected(true);
                     } catch (IOException e) {
                         handleIOException(e);
                     }
@@ -324,12 +320,34 @@ public class CameraController implements Initializable {
         }
     };
 
+    private EventHandler<ActionEvent> handlerViewPreset = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            ToggleButton pressedButton = (ToggleButton) event.getSource();
+            Integer i = 0;
+            for( ToggleButton button: viewToggleButtons){
+                i++;
+                button.setSelected(button == pressedButton);
+                if( button == pressedButton ) {
+                    try {
+                        camera.goToPreset(i.toString());
+                    } catch (IOException e) {
+                        handleIOException(e);
+                    }
+                }
+            }
+        }
+    };
+
+
+    /*
     private EventHandler<ActionEvent> handlerSetPreset = new EventHandler<ActionEvent>() {
         @Override
         public void handle(ActionEvent event) {
             resetPresetButtons();
         }
     };
+    */
 
     private void handleIOException(IOException e) {
         e.printStackTrace();

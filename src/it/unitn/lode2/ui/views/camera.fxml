@@ -6,23 +6,23 @@
 <?import javafx.scene.text.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.controllers.CameraController">
-<children><ToggleButton fx:id="preset3ToggleButton" layoutX="154.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
+<children><Button fx:id="preset3ToggleButton" layoutX="154.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
 <font>
 <Font size="9.0" />
 </font>
-</ToggleButton><ToggleButton fx:id="preset4ToggleButton" layoutX="210.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
+</Button><Button fx:id="preset4ToggleButton" layoutX="210.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
 <font>
 <Font size="9.0" />
 </font>
-</ToggleButton><ToggleButton fx:id="preset2ToggleButton" layoutX="98.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
+</Button><Button fx:id="preset2ToggleButton" layoutX="98.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
 <font>
 <Font size="9.0" />
 </font>
-</ToggleButton><ToggleButton fx:id="preset1ToggleButton" layoutX="42.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
+</Button><Button fx:id="preset1ToggleButton" layoutX="42.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
 <font>
 <Font size="9.0" />
 </font>
-</ToggleButton><Button fx:id="tiltDownButton" layoutX="84.0" layoutY="77.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="TILT&#10;DOWN" textAlignment="CENTER">
+</Button><Button fx:id="tiltDownButton" layoutX="84.0" layoutY="77.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="TILT&#10;DOWN" textAlignment="CENTER">
 <font>
 <Font size="9.0" />
 </font>

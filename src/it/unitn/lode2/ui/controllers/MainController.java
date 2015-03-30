@@ -578,7 +578,7 @@ public class MainController implements Initializable {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/views/camera.fxml"));
                 Parent root = loader.load();
-                Scene scene = new Scene(root, 350, 230);
+                Scene scene = new Scene(root, 300, 300);
                 Stage stage = new Stage();
                 stage.setTitle("Camera controller");
                 stage.setScene(scene);
