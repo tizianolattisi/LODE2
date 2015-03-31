@@ -70,6 +70,7 @@ public class Main extends Application {
         List<String> lectures = xmlCourse.getXMLCourseLectures().getLectures();
         String lectureFolderName = lectures.get(lectures.size() - 1);
         String lectureFolder = courseFolder + "Acquisition/" + lectureFolderName;
+        System.out.println(lectureFolder);
 
         // read ip camera configuration
         XMLCameraIPConf cameraIPConf = XMLHelper.build(XMLCameraIPConf.class).unmarshal(new File(CAMERA_CONF));
@@ -169,6 +170,7 @@ public class Main extends Application {
         MainController controller = loader.getController();
         primaryStage.setTitle("Cam controller");
         Scene scene = new Scene(root, 1024, 720);
+
         scene.getStylesheets().add("/it/unitn/lode2/ui/skin/flat.css");
         controller.keyBindings();
         primaryStage.setScene(scene);

@@ -8,6 +8,7 @@ import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
 import it.unitn.lode2.recorder.ipcam.StreamGobbler;
+import it.unitn.lode2.ui.skin.AwesomeIcons;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
@@ -27,9 +28,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -38,6 +41,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
 
 /**
  * User: tiziano
@@ -45,6 +49,8 @@ import java.util.ResourceBundle;
  * Time: 09:39
  */
 public class MainController implements Initializable {
+
+    private Font fontAwesome;
 
     private final String RECORDING_COLOR = "red";
     private final String PAUSE_COLOR = "yellow";
@@ -131,6 +137,7 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+
         // Second screen (to move in Projector)
         ObservableList<Screen> screens = Screen.getScreens();
         if( screens.size()>1 ){
@@ -181,6 +188,30 @@ public class MainController implements Initializable {
         projector.first();
         refreshSlides();
         refreshRecorderButtons();
+
+        fontAwesome = Font.loadFont(MainController.class.getResource("/it/unitn/lode2/ui/skin/FontAwesome.otf").
+                toExternalForm(), 24);
+        setFontAwesome(previewToggleButton, AwesomeIcons.ICON_EYE_OPEN);
+        setFontAwesome(setupSceneButton, AwesomeIcons.ICON_COGS);
+        setFontAwesome(setupButton, AwesomeIcons.ICON_INFO_SIGN);
+
+        // recorder
+        setFontAwesome(recordToggleButton, AwesomeIcons.ICON_PLAY);
+        setFontAwesome(pauseToggleButton, AwesomeIcons.ICON_PAUSE);
+        setFontAwesome(stopButton, AwesomeIcons.ICON_STOP);
+
+        // slide
+        setFontAwesome(firstSlideButton, AwesomeIcons.ICON_FAST_BACKWARD);
+        setFontAwesome(prevSlideButton, AwesomeIcons.ICON_BACKWARD);
+        setFontAwesome(nextSlideButton, AwesomeIcons.ICON_FORWARD);
+        setFontAwesome(lastSlideButton, AwesomeIcons.ICON_FAST_FORWARD);
+
+    }
+
+    private void setFontAwesome(ButtonBase button, String iconName) {
+        button.setText(iconName);
+        button.setFont(fontAwesome);
+        button.setStyle("-fx-padding: 0");
     }
 
     private Boolean hasSecondDisplay(){
