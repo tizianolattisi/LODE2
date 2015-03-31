@@ -73,6 +73,8 @@ public class MainController implements Initializable {
     @FXML private Button showSlideButton;
     @FXML private Button nextSlideButton;
     @FXML private Button lastSlideButton;
+    @FXML private Button goToSlideButton;
+    @FXML private TextField goToSlideTextField;
 
     @FXML private Label currentSlideLabel;
     @FXML private Label preparedSlideLabel;
@@ -225,6 +227,7 @@ public class MainController implements Initializable {
         showSlideButton.setOnAction(handlerShowSlide);
         nextSlideButton.setOnAction(handlerNextSlide);
         lastSlideButton.setOnAction(handlerLastSlide);
+        goToSlideButton.setOnAction(handlerGoToSlide);
     }
 
     /* Preview */
@@ -659,11 +662,11 @@ public class MainController implements Initializable {
         public void handle(ActionEvent event) {
             projector.show();
             projector.shownSlide().ifPresent(s -> {
-                if( slideImageView != null ) {
+                if (slideImageView != null) {
                     slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight()));
                 }
-                if( recorder.isRecording() ) {
-                    projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), chronometer.elapsed()/1000));
+                if (recorder.isRecording()) {
+                    projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), chronometer.elapsed() / 1000));
                 }
             });
             refreshSlides();
@@ -680,6 +683,14 @@ public class MainController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             projector.last();
+            refreshSlides();
+        }
+    };
+    private EventHandler<ActionEvent> handlerGoToSlide = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            Integer i = Integer.parseInt(goToSlideTextField.getText());
+            projector.goTo(i);
             refreshSlides();
         }
     };

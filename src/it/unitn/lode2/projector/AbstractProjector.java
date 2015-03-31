@@ -104,6 +104,13 @@ public abstract class AbstractProjector implements Projector {
     }
 
     @Override
+    public void goTo(Integer n) {
+        if( n>0 && n<slides.size()+1 ) {
+            preparedIndex = n - 1;
+        }
+    }
+
+    @Override
     public Boolean isFirst() {
         return preparedIndex.equals(0);
     }

@@ -26,6 +26,7 @@ public interface Projector {
     void previous();
     void next();
     void last();
+    void goTo(Integer n);
     Boolean isFirst();
     Boolean isLast();
 
