@@ -53,9 +53,9 @@ public class IPRecorderImpl implements Recorder, EventListener {
             url += user+ ":" + password + "@";
         }
         if( "".equals(port) || "80".equals(port) ) {
-            url += host + ":" + port + path;
-        } else {
             url += host + path;
+        } else {
+            url += host + ":" + port + path;
         }
 
         MessageMapFormat mmp = new MessageMapFormat(recordTemplate);

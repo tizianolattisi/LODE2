@@ -29,7 +29,7 @@ public class QueryConnectionProvider extends AbstractConnectionProvider implemen
         Integer port = url.getDefaultPort();
         if( url.getPort() != -1 )
             port = url.getPort();
-        String sUrl = url.getProtocol() + "//" + url.getHost() + ":" + port + url.getPath() + "?" + authString + "&amp;" + url.getQuery();
+        String sUrl = url.getProtocol() + "://" + url.getHost() + ":" + port + url.getPath() + "?" + authString + "&amp;" + url.getQuery();
         url = new URL(sUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         return connection;

@@ -311,7 +311,7 @@ public class CameraController implements Initializable {
                     try {
                         camera.delPreset(i.toString());
                         camera.addPreset(i.toString());
-                        viewToggleButtons.get(i).setSelected(true);
+                        viewToggleButtons.get(i-1).setSelected(true);
                     } catch (IOException e) {
                         handleIOException(e);
                     }
