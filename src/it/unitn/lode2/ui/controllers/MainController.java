@@ -125,6 +125,8 @@ public class MainController implements Initializable {
 
     SecondDisplayMode secondDisplayMode = SecondDisplayMode.SLIDES;
 
+    // SimpleBooleanProperty per gestire la disabilitazione dei pulsanti
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -174,8 +176,11 @@ public class MainController implements Initializable {
             }
         }));
 
+        //recordToggleButton.disableProperty().bind((new SimpleBooleanProperty(recorder.isIdle())).not());
+
         projector.first();
         refreshSlides();
+        refreshRecorderButtons();
     }
 
     private Boolean hasSecondDisplay(){
@@ -531,8 +536,16 @@ public class MainController implements Initializable {
                 }
             }
             recordToggleButton.setSelected(true);
+            refreshRecorderButtons();
         }
     };
+
+    private void refreshRecorderButtons() {
+        Recorder recorder = IOC.queryUtility(Recorder.class);
+        recordToggleButton.setDisable(!recorder.isIdle());
+        pauseToggleButton.setDisable(recorder.isIdle());
+        stopButton.setDisable(recorder.isIdle());
+    }
 
     private EventHandler<ActionEvent> handlerPause = new EventHandler<ActionEvent>() {
         @Override
@@ -555,6 +568,7 @@ public class MainController implements Initializable {
             else {
                 pauseToggleButton.setSelected(false);
             }
+            refreshRecorderButtons();
         }
     };
 
@@ -575,6 +589,7 @@ public class MainController implements Initializable {
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
             }
+            refreshRecorderButtons();
         }
     };
 
