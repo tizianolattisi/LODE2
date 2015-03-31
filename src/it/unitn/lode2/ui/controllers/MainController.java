@@ -176,6 +176,10 @@ public class MainController implements Initializable {
         refreshSlides();
     }
 
+    private Boolean hasSecondDisplay(){
+        return slideImageView!=null;
+    }
+
     public void keyBindings() {
 
         setKeyButtonBinding(KeyCode.UP, showSlideButton);
@@ -227,7 +231,7 @@ public class MainController implements Initializable {
     private void refreshPreview() {
         try {
             previewer.snapshot().ifPresent(s -> previewImageView.setImage(new Image(s)));
-            if( SecondDisplayMode.PREVIEW.equals(secondDisplayMode) ){
+            if( hasSecondDisplay() && SecondDisplayMode.PREVIEW.equals(secondDisplayMode) ){
                 previewer.snapshot().ifPresent(s -> slideImageView.setImage(new Image(s)));
             }
         } catch (IOException e) {
@@ -598,11 +602,13 @@ public class MainController implements Initializable {
                         } else if (presetsZoomCheckBoxes.get(i-1).isIndeterminate() ){
                             // NOP
                         }
-                        if( presetsSlideButtons.get(i-1).isSelected() ){
-                            secondDisplayMode = SecondDisplayMode.SLIDES;
-                            projector.shownSlide().ifPresent(s -> slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight())));
-                        } else {
-                            secondDisplayMode = SecondDisplayMode.PREVIEW;
+                        if( hasSecondDisplay() ) {
+                            if (presetsSlideButtons.get(i - 1).isSelected()) {
+                                secondDisplayMode = SecondDisplayMode.SLIDES;
+                                projector.shownSlide().ifPresent(s -> slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight())));
+                            } else {
+                                secondDisplayMode = SecondDisplayMode.PREVIEW;
+                            }
                         }
                     } catch (IOException e) {
                         handleIOException(e);
