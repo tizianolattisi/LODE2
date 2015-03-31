@@ -2,6 +2,9 @@ package it.unitn.lode2.ui.skin;
 
 /**
  * Created by tiziano on 31/03/15.
+ *
+ * from: http://www.jensd.de/wordpress/?p=132
+ *
  */
 public class AwesomeIcons
 {
@@ -10,6 +13,7 @@ public class AwesomeIcons
     {
         /* not needed*/
     }
+    public static final String ICON_VIDEO_CAMERA = "\uf03D";
     public static final String ICON_GLASS = "\uf000";
     public static final String ICON_MUSIC = "\uf001";
     public static final String ICON_SEARCH = "\uf002";

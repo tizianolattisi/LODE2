@@ -21,7 +21,7 @@
             <Font size="9.0" />
          </font>
       </Button>
-      <Button fx:id="showSlideButton" layoutX="712.0" layoutY="347.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="ADD" textAlignment="CENTER">
+      <Button fx:id="showSlideButton" layoutX="713.0" layoutY="336.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="77.0" text="ADD" textAlignment="CENTER">
          <font>
             <Font size="9.0" />
          </font>
@@ -127,6 +127,9 @@
                </font>
             </Label>
          </children>
-      </Pane><Button fx:id="goToSlideButton" layoutX="245.0" layoutY="668.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" text="go to" /><TextField fx:id="goToSlideTextField" layoutX="307.0" layoutY="668.0" prefHeight="26.0" prefWidth="48.0" />
+      </Pane><Button fx:id="goToSlideButton" layoutX="245.0" layoutY="661.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="54.0" text="go to" /><TextField fx:id="goToSlideTextField" alignment="CENTER" layoutX="307.0" layoutY="661.0" prefHeight="48.0" prefWidth="48.0">
+<font>
+<Font size="18.0" />
+</font></TextField>
    </children>
 </AnchorPane>

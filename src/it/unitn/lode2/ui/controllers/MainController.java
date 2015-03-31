@@ -191,12 +191,12 @@ public class MainController implements Initializable {
 
         fontAwesome = Font.loadFont(MainController.class.getResource("/it/unitn/lode2/ui/skin/FontAwesome.otf").
                 toExternalForm(), 24);
-        setFontAwesome(previewToggleButton, AwesomeIcons.ICON_EYE_OPEN);
+        setFontAwesome(previewToggleButton, AwesomeIcons.ICON_VIDEO_CAMERA);
         setFontAwesome(setupSceneButton, AwesomeIcons.ICON_COGS);
         setFontAwesome(setupButton, AwesomeIcons.ICON_INFO_SIGN);
 
         // recorder
-        setFontAwesome(recordToggleButton, AwesomeIcons.ICON_PLAY);
+        setFontAwesome(recordToggleButton, AwesomeIcons.ICON_CIRCLE);
         setFontAwesome(pauseToggleButton, AwesomeIcons.ICON_PAUSE);
         setFontAwesome(stopButton, AwesomeIcons.ICON_STOP);
 
@@ -205,6 +205,9 @@ public class MainController implements Initializable {
         setFontAwesome(prevSlideButton, AwesomeIcons.ICON_BACKWARD);
         setFontAwesome(nextSlideButton, AwesomeIcons.ICON_FORWARD);
         setFontAwesome(lastSlideButton, AwesomeIcons.ICON_FAST_FORWARD);
+
+        setFontAwesome(showSlideButton, AwesomeIcons.ICON_CARET_UP);
+        setFontAwesome(goToSlideButton, AwesomeIcons.ICON_SIGNIN);
 
     }
 
