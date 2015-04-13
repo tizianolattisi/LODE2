@@ -193,30 +193,30 @@ public class MainController implements Initializable {
 
         fontAwesome = Font.loadFont(MainController.class.getResource("/it/unitn/lode2/ui/skin/FontAwesome.otf").
                 toExternalForm(), 24);
-        setFontAwesome(previewToggleButton, AwesomeIcons.ICON_VIDEO_CAMERA);
-        setFontAwesome(setupSceneButton, AwesomeIcons.ICON_COGS);
-        setFontAwesome(setupButton, AwesomeIcons.ICON_INFO_SIGN);
+        setFontAwesome(previewToggleButton, AwesomeIcons.ICON_VIDEO_CAMERA, "black");
+        setFontAwesome(setupSceneButton, AwesomeIcons.ICON_COGS, "black");
+        setFontAwesome(setupButton, AwesomeIcons.ICON_INFO_SIGN, "black");
 
         // recorder
-        setFontAwesome(recordToggleButton, AwesomeIcons.ICON_CIRCLE);
-        setFontAwesome(pauseToggleButton, AwesomeIcons.ICON_PAUSE);
-        setFontAwesome(stopButton, AwesomeIcons.ICON_STOP);
+        setFontAwesome(recordToggleButton, AwesomeIcons.ICON_CIRCLE, "red");
+        setFontAwesome(pauseToggleButton, AwesomeIcons.ICON_PAUSE, "yellow");
+        setFontAwesome(stopButton, AwesomeIcons.ICON_STOP, "blue");
 
         // slide
-        setFontAwesome(firstSlideButton, AwesomeIcons.ICON_FAST_BACKWARD);
-        setFontAwesome(prevSlideButton, AwesomeIcons.ICON_BACKWARD);
-        setFontAwesome(nextSlideButton, AwesomeIcons.ICON_FORWARD);
-        setFontAwesome(lastSlideButton, AwesomeIcons.ICON_FAST_FORWARD);
+        setFontAwesome(firstSlideButton, AwesomeIcons.ICON_FAST_BACKWARD, "black");
+        setFontAwesome(prevSlideButton, AwesomeIcons.ICON_BACKWARD, "black");
+        setFontAwesome(nextSlideButton, AwesomeIcons.ICON_FORWARD, "black");
+        setFontAwesome(lastSlideButton, AwesomeIcons.ICON_FAST_FORWARD, "black");
 
-        setFontAwesome(showSlideButton, AwesomeIcons.ICON_CARET_UP);
-        setFontAwesome(goToSlideButton, AwesomeIcons.ICON_SIGNIN);
+        setFontAwesome(showSlideButton, AwesomeIcons.ICON_CARET_UP, "black");
+        setFontAwesome(goToSlideButton, AwesomeIcons.ICON_SIGNIN, "black");
 
     }
 
-    private void setFontAwesome(ButtonBase button, String iconName) {
+    private void setFontAwesome(ButtonBase button, String iconName, String color) {
         button.setText(iconName);
         button.setFont(fontAwesome);
-        button.setStyle("-fx-padding: 0");
+        button.setStyle("-fx-padding: 0; -fx-text-fill: " + color + ";");
     }
 
     private Boolean hasSecondDisplay(){

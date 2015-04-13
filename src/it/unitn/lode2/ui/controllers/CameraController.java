@@ -3,13 +3,16 @@ package it.unitn.lode2.ui.controllers;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Capability;
+import it.unitn.lode2.ui.skin.AwesomeIcons;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
@@ -21,6 +24,8 @@ import java.util.ResourceBundle;
  * Created by tiziano on 17/03/15.
  */
 public class CameraController implements Initializable {
+
+    private Font fontAwesome;
 
     @FXML private Button zoomOutButton;
     @FXML private Button zoomInButton;
@@ -99,6 +104,29 @@ public class CameraController implements Initializable {
         view3ToggleButton.setOnAction(handlerViewPreset);
         view4ToggleButton.setOnAction(handlerViewPreset);
 
+        fontAwesome = Font.loadFont(MainController.class.getResource("/it/unitn/lode2/ui/skin/FontAwesome.otf").
+                toExternalForm(), 24);
+        setFontAwesome(tiltUpButton, AwesomeIcons.ICON_ARROW_UP, "black");
+        setFontAwesome(tiltDownButton, AwesomeIcons.ICON_ARROW_DOWN, "black");
+        setFontAwesome(panLeftButton, AwesomeIcons.ICON_UNDO, "black");
+        setFontAwesome(panRightButton, AwesomeIcons.ICON_REPEAT, "black");
+        setFontAwesome(zoomInButton, AwesomeIcons.ICON_ZOOM_IN, "black");
+        setFontAwesome(zoomOutButton, AwesomeIcons.ICON_ZOOM_OUT, "black");
+        setFontAwesome(view1ToggleButton, AwesomeIcons.ICON_EYE_OPEN, "black");
+        setFontAwesome(view2ToggleButton, AwesomeIcons.ICON_EYE_OPEN, "black");
+        setFontAwesome(view3ToggleButton, AwesomeIcons.ICON_EYE_OPEN, "black");
+        setFontAwesome(view4ToggleButton, AwesomeIcons.ICON_EYE_OPEN, "black");
+        setFontAwesome(preset1ToggleButton, AwesomeIcons.ICON_SAVE, "black");
+        setFontAwesome(preset2ToggleButton, AwesomeIcons.ICON_SAVE, "black");
+        setFontAwesome(preset3ToggleButton, AwesomeIcons.ICON_SAVE, "black");
+        setFontAwesome(preset4ToggleButton, AwesomeIcons.ICON_SAVE, "black");
+
+    }
+
+    private void setFontAwesome(ButtonBase button, String iconName, String color) {
+        button.setText(iconName);
+        button.setFont(fontAwesome);
+        button.setStyle("-fx-padding: 0; -fx-text-fill: " + color + ";");
     }
 
     private void resetPresetButtons() {
