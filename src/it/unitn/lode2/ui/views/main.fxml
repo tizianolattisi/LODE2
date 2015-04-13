@@ -125,7 +125,7 @@
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>
-            </Label>
+            </Label><ProgressBar fx:id="vuMeterProgressBar" layoutX="305.0" layoutY="279.0" prefHeight="26.0" prefWidth="160.0" progress="0.0" />
          </children>
       </Pane><Button fx:id="goToSlideButton" layoutX="245.0" layoutY="661.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="54.0" text="go to" /><TextField fx:id="goToSlideTextField" alignment="CENTER" layoutX="307.0" layoutY="661.0" prefHeight="48.0" prefWidth="48.0">
 <font>

@@ -7,7 +7,7 @@ import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
-import it.unitn.lode2.recorder.ipcam.StreamGobbler;
+import it.unitn.lode2.recorder.ipcam.FFMpegStreamGobbler;
 import it.unitn.lode2.ui.skin.AwesomeIcons;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -68,6 +68,7 @@ public class MainController implements Initializable {
     private Rectangle2D slideScreenBounds;
     private Chronometer chronometer = new Chronometer();
 
+    @FXML private ProgressBar vuMeterProgressBar;
 
     @FXML private ImageView currentSlideImageView;
     @FXML private ImageView preparedSlideImageView;
@@ -122,8 +123,9 @@ public class MainController implements Initializable {
 
     @FXML private Label recordingLabel;
 
-    private StreamGobbler errorStreamGobbler = new StreamGobbler();
-    private StreamGobbler standardStreamGobbler = new StreamGobbler();
+    //private StreamGobbler errorStreamGobbler = new StreamGobbler();
+    //private StreamGobbler standardStreamGobbler = new StreamGobbler();
+    private FFMpegStreamGobbler gobbler;
 
     enum SecondDisplayMode {
         SLIDES, PREVIEW
@@ -546,8 +548,8 @@ public class MainController implements Initializable {
                 stage.setTitle("Acquisition logs");
                 stage.setScene(scene);
                 stage.show();
-                recorder.errorLog().ifPresent(s -> errorStreamGobbler.stream(s).widget(logsController.getStderrorTextArea()).start());
-                recorder.outputLog().ifPresent(s -> standardStreamGobbler.stream(s).widget(logsController.getStdoutTextArea()).start());
+                //recorder.errorLog().ifPresent(s -> errorStreamGobbler.stream(s).widget(logsController.getStderrorTextArea()).start());
+                //recorder.outputLog().ifPresent(s -> standardStreamGobbler.stream(s).widget(logsController.getStdoutTextArea()).start());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -562,6 +564,10 @@ public class MainController implements Initializable {
                     recorder.record();
                     chronometer.reset();
                     chronometer.start();
+
+                    // ffmpeg gobbler
+                    recorder.errorLog().ifPresent(s -> (new FFMpegStreamGobbler(s, vuMeterProgressBar)).start());
+
                     recordingLabel.setText(RECORD_LABEL);
                     recordingLabel.setTextFill(Paint.valueOf(RECORDING_COLOR));
                     // XXX: clear timed slides?
@@ -616,7 +622,7 @@ public class MainController implements Initializable {
                 System.out.println(length);
                 lecture.setVideoLength(length);
                 lecture.save();
-                terminateGobblers();
+                //terminateGobblers();
                 //logsController.stop();
                 recordingLabel.setText(IDLE_LABEL);
                 recordingLabel.setTextFill(Paint.valueOf(IDLE_COLOR));
@@ -627,6 +633,7 @@ public class MainController implements Initializable {
         }
     };
 
+    /*
     private void terminateGobblers() {
         if( errorStreamGobbler != null && errorStreamGobbler.isAlive() ) {
             errorStreamGobbler.terminate();
@@ -634,7 +641,7 @@ public class MainController implements Initializable {
         if( standardStreamGobbler != null && standardStreamGobbler.isAlive() ) {
             standardStreamGobbler.terminate();
         }
-    }
+    }*/
 
     private EventHandler<ActionEvent> handlerPreset = new EventHandler<ActionEvent>() {
         @Override
@@ -749,10 +756,12 @@ public class MainController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirm exit");
             alert.setHeaderText("Do you really want to exit?");
-            alert.setContentText("The current recording session will end.\n\n");
+            if( recorder.isRecording() ) {
+                alert.setContentText("The current recording session will end.\n\n");
+            }
             Optional<ButtonType> result = alert.showAndWait();
             if( ButtonType.OK.equals(result.get()) ) {
-                terminateGobblers();
+                //terminateGobblers();
                 previewer.stop();
                 if( recorder.isRecording() ){
                     recorder.stop();

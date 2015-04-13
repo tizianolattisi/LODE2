@@ -77,8 +77,8 @@ public class IPRecorderImpl implements Recorder, EventListener {
     @Override
     public void stop() {
         if( RecorderStatus.RECORDING.equals(status) || RecorderStatus.PAUSED.equals(status) ) {
-            stopProcess();
             status = RecorderStatus.IDLE;
+            stopProcess();
         }
     }
 
@@ -144,6 +144,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
         Map<String, Object> map = new HashMap();
         map.put("output", output + "/" + fileName);
         String recordCommand = mmp.format(map);
+        System.out.println(recordCommand);
         recordProcess = new ProcessBuilder(recordCommand.split(" ")).start();
         (new RecorderObserver(recordProcess, this)).start();
     }
