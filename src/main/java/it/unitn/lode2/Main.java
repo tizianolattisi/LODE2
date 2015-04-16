@@ -165,13 +165,13 @@ public class Main extends Application {
         RasterProjectorImpl projector = projectorBuilder.build();
         IOC.registerUtility(projector, Projector.class);
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/views/main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main.fxml"));
         Parent root = loader.load();
         MainController controller = loader.getController();
         primaryStage.setTitle("Cam controller");
         Scene scene = new Scene(root, 1024, 720);
 
-        scene.getStylesheets().add("/it/unitn/lode2/ui/skin/flat.css");
+        scene.getStylesheets().add("/css/flat.css");
         controller.keyBindings();
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(controller.handlerClose);

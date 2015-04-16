@@ -32,7 +32,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -41,7 +40,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.Callable;
 
 /**
  * User: tiziano
@@ -191,7 +189,7 @@ public class MainController implements Initializable {
         refreshSlides();
         refreshRecorderButtons();
 
-        fontAwesome = Font.loadFont(MainController.class.getResource("/it/unitn/lode2/ui/skin/FontAwesome.otf").
+        fontAwesome = Font.loadFont(MainController.class.getResource("/fonts/FontAwesome.otf").
                 toExternalForm(), 24);
         setFontAwesome(previewToggleButton, AwesomeIcons.ICON_VIDEO_CAMERA, "black");
         setFontAwesome(setupSceneButton, AwesomeIcons.ICON_COGS, "black");
@@ -540,7 +538,7 @@ public class MainController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/views/logs.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/logs.fxml"));
                 Parent root = loader.load();
                 logsController = loader.getController();
                 Scene scene = new Scene(root, 600, 700);
@@ -681,7 +679,7 @@ public class MainController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/views/camera.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/camera.fxml"));
                 Parent root = loader.load();
                 Scene scene = new Scene(root, 300, 300);
                 Stage stage = new Stage();

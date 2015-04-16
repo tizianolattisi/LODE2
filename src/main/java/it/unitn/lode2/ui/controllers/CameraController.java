@@ -104,7 +104,7 @@ public class CameraController implements Initializable {
         view3ToggleButton.setOnAction(handlerViewPreset);
         view4ToggleButton.setOnAction(handlerViewPreset);
 
-        fontAwesome = Font.loadFont(MainController.class.getResource("/it/unitn/lode2/ui/skin/FontAwesome.otf").
+        fontAwesome = Font.loadFont(MainController.class.getResource("/fonts/FontAwesome.otf").
                 toExternalForm(), 24);
         setFontAwesome(tiltUpButton, AwesomeIcons.ICON_ARROW_UP, "black");
         setFontAwesome(tiltDownButton, AwesomeIcons.ICON_ARROW_DOWN, "black");

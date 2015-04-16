@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 public class XmlCourseImplTest {
 
-    private final static String courseFolderPath = "/Users/tiziano/_LODE/COURSES/Corso_Di_Test_Lode_(1_E_2)_2015/";
+    private final static String courseFolderPath = "/Users/tiziano/_LODE/COURSES/Corso_Di_Test_Lode_2015/";
 
     @Test
     public void test() throws Exception {
