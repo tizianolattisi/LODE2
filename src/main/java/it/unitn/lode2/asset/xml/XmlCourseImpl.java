@@ -21,6 +21,9 @@ public class XmlCourseImpl extends AbstractCourse implements Course {
     private XMLCourse course;
 
     public XmlCourseImpl(String folderPath) {
+        if( !folderPath.endsWith("/") ){
+            folderPath += "/";
+        }
         this.folderPath = folderPath;
         course = XMLHelper.build(XMLCourse.class).unmarshal(new File(this.folderPath + "COURSE.XML"));
     }
