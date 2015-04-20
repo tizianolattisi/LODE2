@@ -54,10 +54,25 @@ public class CoursesController implements Initializable {
     private TreeView<String> treeView;
 
     @FXML
+    private TabPane tabPane;
+
+    @FXML
     private Button newCourseButton;
 
     @FXML
     private Button delCourseButton;
+
+    @FXML
+    private TextField courseNameTextField;
+
+    @FXML
+    private TextField courseYearTextField;
+
+    @FXML
+    private TextField courseHomeTextField;
+
+    @FXML
+    private TextField lectureNameTextField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -128,15 +143,25 @@ public class CoursesController implements Initializable {
             TreeItem treeItem = (TreeItem) newValue;
             Object item = items.get(treeItem);
             if( item instanceof Slide ){
+                tabPane.getSelectionModel().select(2);
                 Slide slide = (Slide) item;
                 titleTextField.setText(slide.title());
                 textTextArea.setText(slide.text());
                 TreeItem lectureTreeItem = treeItem.getParent();
                 Lecture lecture = (Lecture) items.get(lectureTreeItem);
                 TreeItem courseTreeItem = lectureTreeItem.getParent();
-                Course course = (Course) items.get(courseTreeItem);
                 fileNameTextField.setText(slide.filename());
                 previewImageView.setImage(new Image("file://" + lecture.path() + "/" + slide.filename()));
+            } else if( item instanceof Course ){
+                tabPane.getSelectionModel().select(0);
+                Course course = (Course) item;
+                courseNameTextField.setText(course.name());
+                courseHomeTextField.setText(course.path());
+                courseYearTextField.setText(course.year().toString());
+            } else if( item instanceof Lecture ){
+                tabPane.getSelectionModel().select(1);
+                Lecture lecture = (Lecture) item;
+                lectureNameTextField.setText(lecture.name());
             }
         }
     };
