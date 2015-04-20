@@ -17,7 +17,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -120,12 +119,24 @@ public class CoursesController implements Initializable {
                 lectureTreeItem.setGraphic(createGraphicNode("report"));
                 courseTreeItem.getChildren().add(lectureTreeItem);
                 items.put(lectureTreeItem, lecture);
+                TreeItem<String> slidesTreeItem = new TreeItem<>("slides");
+                slidesTreeItem.setGraphic(createGraphicNode("folder_image"));
+                lectureTreeItem.getChildren().add(slidesTreeItem);
                 for( Slide slide: lecture.slides() ){
                     TreeItem slideTreeItem = new TreeItem(slide.title());
                     slideTreeItem.setGraphic(createGraphicNode("image"));
-                    lectureTreeItem.getChildren().add(slideTreeItem);
+                    slidesTreeItem.getChildren().add(slideTreeItem);
                     items.put(slideTreeItem, slide);
                 }
+            }
+            TreeItem<String> teachersTreeItem = new TreeItem<>("teachers");
+            teachersTreeItem.setGraphic(createGraphicNode("group"));
+            courseTreeItem.getChildren().add(teachersTreeItem);
+            for( String teacher: course.teachers() ){
+                TreeItem teacherTreeItem = new TreeItem(teacher);
+                teacherTreeItem.setGraphic(createGraphicNode("user_gray"));
+                teachersTreeItem.getChildren().add(teacherTreeItem);
+                items.put(teacherTreeItem, teacher);
             }
         }
         treeView.setRoot(root);
@@ -147,7 +158,7 @@ public class CoursesController implements Initializable {
                 Slide slide = (Slide) item;
                 titleTextField.setText(slide.title());
                 textTextArea.setText(slide.text());
-                TreeItem lectureTreeItem = treeItem.getParent();
+                TreeItem lectureTreeItem = treeItem.getParent().getParent();
                 Lecture lecture = (Lecture) items.get(lectureTreeItem);
                 TreeItem courseTreeItem = lectureTreeItem.getParent();
                 fileNameTextField.setText(slide.filename());
