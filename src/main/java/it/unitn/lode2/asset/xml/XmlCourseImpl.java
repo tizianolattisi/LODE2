@@ -33,6 +33,11 @@ public class XmlCourseImpl extends AbstractCourse implements Course {
     }
 
     @Override
+    public String path() {
+        return folderPath;
+    }
+
+    @Override
     public String name() {
         return course.getName();
     }

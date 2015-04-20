@@ -10,35 +10,36 @@ import java.util.List;
  */
 public interface Lecture {
 
-    public String name();
-    public void setName(String name);
+    String path();
+    String name();
+    void setName(String name);
 
-    public Date date();
-    public void setDate(Date date);
+    Date date();
+    void setDate(Date date);
 
-    public Integer number();
-    public void setNumber(Integer number);
+    Integer number();
+    void setNumber(Integer number);
 
-    public String lecturer();
-    public void setLecturer(String lecturer);
+    String lecturer();
+    void setLecturer(String lecturer);
 
-    public Course course();
+    Course course();
 
-    public Long videoLength();
-    public void setVideoLength(Long length);
+    Long videoLength();
+    void setVideoLength(Long length);
 
-    public Boolean hasPostProcessing();
-    public void setHasPostProcessing(Boolean b);
-    public Boolean hasPostProcessing4iTunesU();
-    public void setHasPostProcessing4iTunesU(Boolean b);
+    Boolean hasPostProcessing();
+    void setHasPostProcessing(Boolean b);
+    Boolean hasPostProcessing4iTunesU();
+    void setHasPostProcessing4iTunesU(Boolean b);
 
-    public List<Slide> slides();
-    public void addSlide(Slide slide);
-    public Slide slide(Integer seqNumber);
+    List<Slide> slides();
+    void addSlide(Slide slide);
+    Slide slide(Integer seqNumber);
 
-    public List<TimedSlide> timedSlides();
-    public void addTimedSlide(Slide slide, Long second);
+    List<TimedSlide> timedSlides();
+    void addTimedSlide(Slide slide, Long second);
 
-    public void save();
+    void save();
 
 }

@@ -9,14 +9,15 @@ import java.util.List;
  */
 public interface Course {
 
-    public String name();
-    public void setName(String name);
-    public Integer year();
-    public void setYear(Integer year);
-    public List<Lecture> lectures();
-    public void addLecture(Lecture lecture);
-    public List<String> teachers();
-    public void addTeacher(String teacher);
-    public void save();
+    String path();
+    String name();
+    void setName(String name);
+    Integer year();
+    void setYear(Integer year);
+    List<Lecture> lectures();
+    void addLecture(Lecture lecture);
+    List<String> teachers();
+    void addTeacher(String teacher);
+    void save();
 
 }

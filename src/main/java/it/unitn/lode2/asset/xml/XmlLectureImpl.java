@@ -34,6 +34,11 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
     }
 
     @Override
+    public String path() {
+        return folderPath;
+    }
+
+    @Override
     public String name() {
         return lecture.getName();
     }
