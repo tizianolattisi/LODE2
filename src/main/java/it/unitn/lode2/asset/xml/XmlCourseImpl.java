@@ -7,6 +7,7 @@ import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.course.XMLCourse;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +26,12 @@ public class XmlCourseImpl extends AbstractCourse implements Course {
             folderPath += "/";
         }
         this.folderPath = folderPath;
-        course = XMLHelper.build(XMLCourse.class).unmarshal(new File(this.folderPath + "COURSE.XML"));
+        File f = new File(this.folderPath + "COURSE.XML");
+        if( f.exists() ) {
+            course = XMLHelper.build(XMLCourse.class).unmarshal(f);
+        } else {
+            course = new XMLCourse();
+        }
     }
 
     public String getFolderPath() {
@@ -84,6 +90,6 @@ public class XmlCourseImpl extends AbstractCourse implements Course {
 
     @Override
     public void save() {
-
+        XMLHelper.build(XMLCourse.class).marshall(course, new File(folderPath + "/COURSE.XML"));
     }
 }

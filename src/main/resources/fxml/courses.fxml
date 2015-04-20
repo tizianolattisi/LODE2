@@ -9,7 +9,8 @@
    <children>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button mnemonicParsing="false" text="Button" />
+          <Button fx:id="newCourseButton" mnemonicParsing="false" text="new course" />
+            <Button fx:id="delCourseButton" mnemonicParsing="false" text="del course" />
         </items>
       </ToolBar>
       <AnchorPane prefHeight="562.0" prefWidth="800.0">

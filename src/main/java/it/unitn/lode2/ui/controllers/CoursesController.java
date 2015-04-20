@@ -3,8 +3,10 @@ package it.unitn.lode2.ui.controllers;
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.asset.Slide;
+import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -23,6 +27,9 @@ import java.util.*;
  * Time: 11:22
  */
 public class CoursesController implements Initializable {
+
+    private final static String LODE_HOME = System.getProperty("user.home") + "/_LODE/"; // XXX: to move outside...
+    private final static String LODE_CURSES = LODE_HOME + "/COURSES/";
 
     private List<Course> courses;
 
@@ -46,10 +53,18 @@ public class CoursesController implements Initializable {
     @FXML
     private TreeView<String> treeView;
 
+    @FXML
+    private Button newCourseButton;
+
+    @FXML
+    private Button delCourseButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("init");
         treeView.getSelectionModel().selectedItemProperty().addListener(selectionListener);
+
+        newCourseButton.setOnAction(newCourseHandler);
     }
 
     public EventHandler<WindowEvent> handlerClose = new EventHandler<WindowEvent>() {
@@ -74,6 +89,8 @@ public class CoursesController implements Initializable {
     }
 
     private void refresh() {
+
+        treeView.setRoot(null);
 
         TreeItem<String> root = new TreeItem<>("COURSES");
         root.setExpanded(true);
@@ -121,6 +138,27 @@ public class CoursesController implements Initializable {
                 fileNameTextField.setText(slide.filename());
                 previewImageView.setImage(new Image("file://" + lecture.path() + "/" + slide.filename()));
             }
+        }
+    };
+
+    EventHandler<ActionEvent> newCourseHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            TextInputDialog dialog = new TextInputDialog("New course name");
+            dialog.setTitle("New course creation");
+            dialog.setHeaderText("Insert the name of the news course");
+            dialog.setContentText("Course name:");
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(name -> {
+                String courseFolderName = LODE_CURSES + name; // XXX: check name...
+                if( new File(courseFolderName).mkdir() ) {
+                    XmlCourseImpl course = new XmlCourseImpl(courseFolderName);
+                    course.setName(name);
+                    course.save();
+                    courses.add(course);
+                    refresh();
+                }
+            });
         }
     };
 }
