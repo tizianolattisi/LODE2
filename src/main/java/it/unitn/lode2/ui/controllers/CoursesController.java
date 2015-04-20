@@ -4,6 +4,7 @@ import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
+import it.unitn.lode2.asset.xml.XmlLectureImpl;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -29,6 +30,10 @@ public class CoursesController implements Initializable {
 
     private final static String LODE_HOME = System.getProperty("user.home") + "/_LODE/"; // XXX: to move outside...
     private final static String LODE_CURSES = LODE_HOME + "/COURSES/";
+
+    private Course selectedCourse=null;
+
+    private Lecture selectedLecture=null;
 
     private List<Course> courses;
 
@@ -71,6 +76,12 @@ public class CoursesController implements Initializable {
     private TextField courseHomeTextField;
 
     @FXML
+    private Button newLectureButton;
+
+    @FXML
+    private Button delLectureButton;
+
+    @FXML
     private TextField lectureNameTextField;
 
     @Override
@@ -79,6 +90,7 @@ public class CoursesController implements Initializable {
         treeView.getSelectionModel().selectedItemProperty().addListener(selectionListener);
 
         newCourseButton.setOnAction(newCourseHandler);
+        newLectureButton.setOnAction(newLectureHandler);
     }
 
     public EventHandler<WindowEvent> handlerClose = new EventHandler<WindowEvent>() {
@@ -163,16 +175,22 @@ public class CoursesController implements Initializable {
                 TreeItem courseTreeItem = lectureTreeItem.getParent();
                 fileNameTextField.setText(slide.filename());
                 previewImageView.setImage(new Image("file://" + lecture.path() + "/" + slide.filename()));
+                selectedLecture = lecture;
+                selectedCourse = lecture.course();
             } else if( item instanceof Course ){
                 tabPane.getSelectionModel().select(0);
                 Course course = (Course) item;
                 courseNameTextField.setText(course.name());
                 courseHomeTextField.setText(course.path());
                 courseYearTextField.setText(course.year().toString());
+                selectedCourse = course;
+                selectedLecture = null;
             } else if( item instanceof Lecture ){
                 tabPane.getSelectionModel().select(1);
                 Lecture lecture = (Lecture) item;
                 lectureNameTextField.setText(lecture.name());
+                selectedLecture = lecture;
+                selectedCourse = lecture.course();
             }
         }
     };
@@ -182,14 +200,17 @@ public class CoursesController implements Initializable {
         public void handle(ActionEvent event) {
             TextInputDialog dialog = new TextInputDialog("New course name");
             dialog.setTitle("New course creation");
-            dialog.setHeaderText("Insert the name of the news course");
+            dialog.setHeaderText("Insert the name of the new course");
             dialog.setContentText("Course name:");
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(name -> {
                 String courseFolderName = LODE_CURSES + name; // XXX: check name...
                 if( new File(courseFolderName).mkdir() ) {
+                    new File(courseFolderName + "/Acquisition").mkdir();
+                    new File(courseFolderName + "/Distribution").mkdir();
                     XmlCourseImpl course = new XmlCourseImpl(courseFolderName);
                     course.setName(name);
+                    course.setYear(2015); // XXX
                     course.save();
                     courses.add(course);
                     refresh();
@@ -197,4 +218,28 @@ public class CoursesController implements Initializable {
             });
         }
     };
+
+    EventHandler<ActionEvent> newLectureHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            TextInputDialog dialog = new TextInputDialog("New lecture name");
+            dialog.setTitle("New lecture creation");
+            dialog.setHeaderText("Insert the name of the new lecture for the '" + selectedCourse.name() + "' course.");
+            dialog.setContentText("Lecture name:");
+            Optional<String> result = dialog.showAndWait();
+            result.ifPresent(name -> {
+                String folderName = "01_" + name;
+                String lectureFolder = selectedCourse.path() + "/Acquisition/" + folderName;
+                if( new File(lectureFolder).mkdir() ) {
+                    XmlLectureImpl lecture = new XmlLectureImpl((XmlCourseImpl) selectedCourse, folderName);
+                    lecture.setName(name);
+                    lecture.save();
+                    selectedCourse.addLecture(lecture);
+                    selectedCourse.save();
+                    refresh();
+                }
+            });
+        }
+    };
+
 }

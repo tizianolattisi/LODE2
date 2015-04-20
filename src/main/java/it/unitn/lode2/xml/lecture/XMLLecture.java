@@ -16,6 +16,7 @@ public class XMLLecture {
     private Date date;
     private Integer sequenceNumber;
     private String courseHome;
+    private String lectureHome;
     private String lecturer;
     private Long videoLength;
     private Boolean hasPostProcessing;
@@ -55,6 +56,15 @@ public class XMLLecture {
 
     public void setCourseHome(String courseHome) {
         this.courseHome = courseHome;
+    }
+
+    @XmlElement(name = "LECTURE_HOME")
+    public String getLectureHome() {
+        return lectureHome;
+    }
+
+    public void setLectureHome(String lectureHome) {
+        this.lectureHome = lectureHome;
     }
 
     @XmlElement(name = "LECTURER")

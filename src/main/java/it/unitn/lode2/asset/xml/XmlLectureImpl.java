@@ -4,6 +4,8 @@ import it.unitn.lode2.asset.*;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.lecture.XMLLecture;
 import it.unitn.lode2.xml.slides.XMLLodeSlides;
+import it.unitn.lode2.xml.slides.XMLLodeSlidesGroups;
+import it.unitn.lode2.xml.slides.XMLLodeSlidesSlides;
 import it.unitn.lode2.xml.timedslides.XMLTimedSlides;
 import it.unitn.lode2.xml.timedslides.XMLTimedSlidesSlide;
 
@@ -28,8 +30,18 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
 
     public XmlLectureImpl(XmlCourseImpl course, String folderName) {
         folderPath = course.getFolderPath() + "Acquisition/" + folderName;
-        lecture = XMLHelper.build(XMLLecture.class).unmarshal(new File(folderPath + "/LECTURE.XML"));
-        slides = XMLHelper.build(XMLLodeSlides.class).unmarshal(new File(this.folderPath + "/SLIDES.XML"));
+        File f = new File(folderPath + "/LECTURE.XML");
+        if( f.exists() ) {
+            lecture = XMLHelper.build(XMLLecture.class).unmarshal(f);
+        } else {
+            lecture = new XMLLecture();
+        }
+        File f1 = new File(this.folderPath + "/SLIDES.XML");
+        if( f1.exists() ) {
+            slides = XMLHelper.build(XMLLodeSlides.class).unmarshal(f1);
+        } else {
+            slides = new XMLLodeSlides(new XMLLodeSlidesSlides(), new XMLLodeSlidesGroups());
+        }
         this.course = course;
     }
 
