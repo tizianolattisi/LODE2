@@ -20,5 +20,5 @@
     <DELPRESET></DELPRESET>
     <SNAPSHOT>/image/jpeg.cgi</SNAPSHOT>
     <!--RECORD_COMMAND>${ffmpeg} -i ${input} -strict -2 -acodec aac -vcodec copy -b:a 32k -y ${output}</RECORD_COMMAND-->
-    <RECORD_COMMAND>${ffmpeg} -i ${input} -strict -2 -acodec aac -vcodec copy -b:a 8k -y -filter:a ebur128 -f mpegts ${output}</RECORD_COMMAND>
+    <RECORD_COMMAND>${ffmpeg} -rtsp_transport tcp -stimeout 5000000 -i ${input} -strict -2 -acodec aac -vcodec copy -b:a 8k -y -filter:a ebur128 -f mpegts ${output}</RECORD_COMMAND>
 </CAMERA_IP>
