@@ -261,7 +261,9 @@ public class CoursesController implements Initializable {
             FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Select pdf file to import","*.pdf");
             fileChooser.getExtensionFilters().add(extension);
             File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-            List<Slide> slides = PdfJuicerImpl.build().slide(file).output(selectedLecture.path() + "/Slides/").extract();
+            PdfJuicerImpl.build().slide(file).output(selectedLecture.path() + "/Slides/")
+                    .extract().stream().forEach(s -> selectedLecture.addSlide(s));
+            selectedLecture.save();
             refresh();
         }
     };

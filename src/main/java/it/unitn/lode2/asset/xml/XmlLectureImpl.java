@@ -6,6 +6,7 @@ import it.unitn.lode2.xml.lecture.XMLLecture;
 import it.unitn.lode2.xml.slides.XMLLodeSlides;
 import it.unitn.lode2.xml.slides.XMLLodeSlidesGroups;
 import it.unitn.lode2.xml.slides.XMLLodeSlidesSlides;
+import it.unitn.lode2.xml.slides.XMLLodeSlidesSlidesSlide;
 import it.unitn.lode2.xml.timedslides.XMLTimedSlides;
 import it.unitn.lode2.xml.timedslides.XMLTimedSlidesSlide;
 
@@ -118,7 +119,13 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
 
     @Override
     public void addSlide(Slide slide) {
-
+        int n = slides.getXMLLodeSlidesSlides().getSlides().size();
+        XMLLodeSlidesSlidesSlide xmlLodeSlidesSlidesSlide = new XMLLodeSlidesSlidesSlide();
+        xmlLodeSlidesSlidesSlide.setFileName(slide.filename());
+        xmlLodeSlidesSlidesSlide.setText(slide.text());
+        xmlLodeSlidesSlidesSlide.setTitle(slide.title());
+        xmlLodeSlidesSlidesSlide.setSequenceNumber(n+1);
+        slides.getXMLLodeSlidesSlides().addSlide(xmlLodeSlidesSlidesSlide);
     }
 
     @Override
