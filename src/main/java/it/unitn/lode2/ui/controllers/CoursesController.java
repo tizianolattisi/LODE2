@@ -5,6 +5,7 @@ import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.asset.xml.XmlLectureImpl;
+import it.unitn.lode2.slidejuicer.pdf.PdfJuicerImpl;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -15,6 +16,9 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
@@ -38,6 +42,9 @@ public class CoursesController implements Initializable {
     private List<Course> courses;
 
     private Map<TreeItem, Object> items = new HashMap<>();
+
+    @FXML
+    private VBox root;
 
     @FXML
     private TextField titleTextField;
@@ -84,6 +91,9 @@ public class CoursesController implements Initializable {
     @FXML
     private TextField lectureNameTextField;
 
+    @FXML
+    private Button importSlidesButton;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("init");
@@ -91,6 +101,7 @@ public class CoursesController implements Initializable {
 
         newCourseButton.setOnAction(newCourseHandler);
         newLectureButton.setOnAction(newLectureHandler);
+        importSlidesButton.setOnAction(importSlidesHandler);
     }
 
     public EventHandler<WindowEvent> handlerClose = new EventHandler<WindowEvent>() {
@@ -231,6 +242,7 @@ public class CoursesController implements Initializable {
                 String folderName = "01_" + name;
                 String lectureFolder = selectedCourse.path() + "/Acquisition/" + folderName;
                 if( new File(lectureFolder).mkdir() ) {
+                    new File(lectureFolder + "/Slides").mkdir();
                     XmlLectureImpl lecture = new XmlLectureImpl((XmlCourseImpl) selectedCourse, folderName);
                     lecture.setName(name);
                     lecture.save();
@@ -239,6 +251,18 @@ public class CoursesController implements Initializable {
                     refresh();
                 }
             });
+        }
+    };
+
+    EventHandler<ActionEvent> importSlidesHandler = new EventHandler<ActionEvent>() {
+        @Override
+        public void handle(ActionEvent event) {
+            FileChooser fileChooser = new FileChooser();
+            FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Select pdf file to import","*.pdf");
+            fileChooser.getExtensionFilters().add(extension);
+            File file = fileChooser.showOpenDialog(root.getScene().getWindow());
+            List<Slide> slides = PdfJuicerImpl.build().slide(file).output(selectedLecture.path() + "/Slides/").extract();
+            refresh();
         }
     };
 

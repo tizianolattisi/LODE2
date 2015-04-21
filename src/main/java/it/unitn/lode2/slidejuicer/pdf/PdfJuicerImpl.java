@@ -1,5 +1,7 @@
 package it.unitn.lode2.slidejuicer.pdf;
 
+import it.unitn.lode2.asset.Slide;
+import it.unitn.lode2.asset.xml.XmlSlideImpl;
 import it.unitn.lode2.slidejuicer.Juicer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -8,6 +10,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +41,8 @@ public class PdfJuicerImpl implements Juicer {
     }
 
     @Override
-    public void extract(){
+    public List<Slide> extract(){
+        List<Slide> slides = new ArrayList<>();
         if( slide.exists() ){
             try {
                 PDDocument document = PDDocument.load(slide);
@@ -47,16 +51,20 @@ public class PdfJuicerImpl implements Juicer {
                 for( PDPage page: pages ){
                     i++;
                     BufferedImage bufferedImage = page.convertToImage();
-                    File outputfile = new File(path + i + ".png");
+                    String fileName = i + ".png";
+                    File outputfile = new File(path + fileName);
                     ImageIO.write(bufferedImage, "png", outputfile);
+                    Slide slide = new XmlSlideImpl("Slides/" + fileName, "title", "text");
+                    slides.add(slide);
                 }
                 document.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                return;
+                return slides;
             }
 
         }
+        return slides;
     }
 
 }
