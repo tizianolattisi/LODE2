@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputControl;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,6 +21,8 @@ public class FFMpegStreamGobbler extends Thread {
     InputStream inputStream;
     ProgressBar progressBar;
     Boolean toTerminate = Boolean.FALSE;
+
+    final static Logger logger = Logger.getLogger(FFMpegStreamGobbler.class);
 
     public FFMpegStreamGobbler(InputStream inputStream, ProgressBar progressBar) {
         this.inputStream = inputStream;
@@ -42,7 +45,7 @@ public class FFMpegStreamGobbler extends Thread {
                         Float m = (Float.parseFloat(substring)+73)*2/100;
                         Platform.runLater(() -> progressBar.setProgress(m));
                     } catch (StringIndexOutOfBoundsException ex) {
-                        System.out.println(line);
+                        logger.error("Unable to parse ebur128 line.");
                     }
                     //System.out.println(line);
                 } else if( line.startsWith("frame=") ) {
@@ -50,14 +53,15 @@ public class FFMpegStreamGobbler extends Thread {
                 } else if( line.startsWith("[mpegts") ) {
                     // do noting
                 } else {
-                    System.out.println(line);
+                    logger.debug(line);
                 }
                 //final String fLine = line;
                 //Platform.runLater(() -> System.out.println(fLine+"\n"));
             }
+            logger.debug("Stream gobbler terminated.");
         }
         catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.error("Unable to read from ffmpeg output.");
         }
     }
 

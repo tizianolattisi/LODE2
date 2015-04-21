@@ -3,6 +3,7 @@ package it.unitn.lode2.recorder.ipcam;
 import com.axiastudio.mapformat.MessageMapFormat;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.RecorderStatus;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.EventListener;
@@ -36,6 +37,8 @@ public class IPRecorderImpl implements Recorder, EventListener {
 
     private String url;
     private Integer numOfFragments=0;
+
+    final static Logger logger = Logger.getLogger(IPRecorderImpl.class);
 
 
     public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password, String recordTemplate, String output) {
@@ -71,6 +74,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
         if( RecorderStatus.IDLE.equals(status) || RecorderStatus.PAUSED.equals(status) ) {
             startProcess();
             status = RecorderStatus.RECORDING;
+            logger.debug("Start recording.");
         }
     }
 
@@ -79,6 +83,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
         if( RecorderStatus.RECORDING.equals(status) || RecorderStatus.PAUSED.equals(status) ) {
             status = RecorderStatus.IDLE;
             stopProcess();
+            logger.debug("Stop recording.");
         }
     }
 
@@ -87,6 +92,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
         if( RecorderStatus.RECORDING.equals(status) ) {
             stopProcess();
             status = RecorderStatus.PAUSED;
+            logger.debug("Pause recording.");
         }
     }
 
@@ -96,6 +102,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
         if( RecorderStatus.PAUSED.equals(status) ) {
             startProcess();
             status = RecorderStatus.RECORDING;
+            logger.debug("Wakeup recording.");
         }
     }
 
@@ -144,7 +151,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
         Map<String, Object> map = new HashMap();
         map.put("output", output + "/" + fileName);
         String recordCommand = mmp.format(map);
-        System.out.println(recordCommand);
+        logger.debug("Recording command: " + recordCommand);
         recordProcess = new ProcessBuilder(recordCommand.split(" ")).start();
         (new RecorderObserver(recordProcess, this)).start();
     }
@@ -159,19 +166,20 @@ public class IPRecorderImpl implements Recorder, EventListener {
             pi.write("q");
             pi.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Unable to quit from ffmpeg process.", e);
         }
         //recordProcess.destroy();
         recordProcess=null;
     }
 
     public void timeoutHandle() {
+        logger.warn("");
         if( RecorderStatus.RECORDING.equals(status) ){
             try {
                 status = RecorderStatus.PAUSED;
                 record();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("Something wrong in restarting record process.", e);
             }
         }
     }
