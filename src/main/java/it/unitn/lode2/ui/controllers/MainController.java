@@ -564,7 +564,10 @@ public class MainController implements Initializable {
                     chronometer.start();
 
                     // ffmpeg gobbler
-                    recorder.errorLog().ifPresent(s -> (new FFMpegStreamGobbler(s, vuMeterProgressBar)).start());
+                    recorder.errorLog().ifPresent(s -> {
+                        gobbler = new FFMpegStreamGobbler(s, vuMeterProgressBar);
+                        gobbler.start();
+                    });
 
                     recordingLabel.setText(RECORD_LABEL);
                     recordingLabel.setTextFill(Paint.valueOf(RECORDING_COLOR));
@@ -593,6 +596,7 @@ public class MainController implements Initializable {
                 chronometer.stop();
                 recordingLabel.setText(PAUSE_LABEL);
                 recordingLabel.setTextFill(Paint.valueOf(PAUSE_COLOR));
+                gobbler.terminate();
             } else if( recorder.isPaused() ){
                 try {
                     recorder.wakeup();
@@ -602,6 +606,10 @@ public class MainController implements Initializable {
                     handleIOException(e);
                 }
                 chronometer.start();
+                recorder.errorLog().ifPresent(s -> {
+                    gobbler = new FFMpegStreamGobbler(s, vuMeterProgressBar);
+                    gobbler.start();
+                });
             }
             else {
                 pauseToggleButton.setSelected(false);
@@ -626,6 +634,7 @@ public class MainController implements Initializable {
                 recordingLabel.setTextFill(Paint.valueOf(IDLE_COLOR));
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
+                gobbler.terminate();
             }
             refreshRecorderButtons();
         }
