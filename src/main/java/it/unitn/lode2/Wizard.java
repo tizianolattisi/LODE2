@@ -1,19 +1,11 @@
 package it.unitn.lode2;
 
-import it.unitn.lode2.asset.Course;
-import it.unitn.lode2.asset.xml.XmlCourseImpl;
-import it.unitn.lode2.ui.controllers.CoursesController;
 import it.unitn.lode2.ui.controllers.WizardController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * User: tiziano
@@ -29,13 +21,10 @@ public class Wizard extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        File lodeHome = new File(LODE_CURSES);
-        List<Course> courses = Arrays.asList(lodeHome.list((dir, name) -> new File(dir, name).isDirectory())).stream().map(n -> new XmlCourseImpl(LODE_CURSES + n)).collect(Collectors.toList());
-
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/wizard.fxml"));
         Parent root = loader.load();
         WizardController controller = loader.getController();
-        controller.setCourses(courses);
+        controller.setLodeCoursesPath(LODE_CURSES);
         primaryStage.setTitle("LODE2 Wizard");
         Scene scene = new Scene(root, 500, 345);
 

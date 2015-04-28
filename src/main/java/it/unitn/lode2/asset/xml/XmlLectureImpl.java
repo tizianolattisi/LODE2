@@ -170,6 +170,11 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
 
     @Override
     public void save() {
+        File folder = new File(folderPath);
+        if( !folder.exists() ){
+            folder.mkdir();
+            new File(folderPath + "/Slides").mkdir();
+        }
         XMLHelper.build(XMLLecture.class).marshall(lecture, new File(folderPath + "/LECTURE.XML"));
         XMLHelper.build(XMLLodeSlides.class).marshall(slides, new File(folderPath + "/SLIDES.XML"));
         XMLTimedSlides xmlTimedSlides = new XMLTimedSlides();

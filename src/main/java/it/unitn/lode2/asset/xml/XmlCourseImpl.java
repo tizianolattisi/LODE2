@@ -5,10 +5,8 @@ import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.course.XMLCourse;
-import it.unitn.lode2.xml.lecture.XMLLecture;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +89,12 @@ public class XmlCourseImpl extends AbstractCourse implements Course {
 
     @Override
     public void save() {
+        File folder = new File(folderPath);
+        if( !folder.exists() ){
+            folder.mkdir();
+            new File(folderPath + "/Acquisition").mkdir();
+            new File(folderPath + "/Distribution").mkdir();
+        }
         XMLHelper.build(XMLCourse.class).marshall(course, new File(folderPath + "/COURSE.XML"));
     }
 }

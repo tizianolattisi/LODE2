@@ -18,7 +18,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.File;
@@ -216,16 +215,12 @@ public class CoursesController implements Initializable {
             Optional<String> result = dialog.showAndWait();
             result.ifPresent(name -> {
                 String courseFolderName = LODE_CURSES + name; // XXX: check name...
-                if( new File(courseFolderName).mkdir() ) {
-                    new File(courseFolderName + "/Acquisition").mkdir();
-                    new File(courseFolderName + "/Distribution").mkdir();
-                    XmlCourseImpl course = new XmlCourseImpl(courseFolderName);
-                    course.setName(name);
-                    course.setYear(2015); // XXX
-                    course.save();
-                    courses.add(course);
-                    refresh();
-                }
+                XmlCourseImpl course = new XmlCourseImpl(courseFolderName);
+                course.setName(name);
+                course.setYear(2015); // XXX
+                course.save();
+                courses.add(course);
+                refresh();
             });
         }
     };
