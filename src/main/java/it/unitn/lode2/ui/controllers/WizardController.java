@@ -145,10 +145,10 @@ public class WizardController implements Initializable {
         newLectureButton.setOnAction(event -> {
             int size = lecturesListView.getItems().size();
             Integer number = size+1;
-            String name = String.format("%02d", number) + "_" + lectureName.getText();
+            String name = String.format("%02d", number) + " " + lectureName.getText();
             lectureName.setText("");
-            lectureLecturer.setText("");
             String lecturer = lectureLecturer.getText();
+            lectureLecturer.setText("");
             Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
             Lecture lecture = new XmlLectureImpl((XmlCourseImpl) course, name);
             lecture.setName(name);
