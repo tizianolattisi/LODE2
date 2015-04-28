@@ -14,17 +14,13 @@ import javafx.stage.Stage;
  */
 public class Wizard extends Application {
 
-    private final static String LODE_HOME = System.getProperty("user.home") + "/_LODE/";
-    private final static String LODE_CURSES = LODE_HOME + "/COURSES/";
-    private final static String LODE_PREFS = LODE_HOME + "/.LODE_PREFS.XML";
-
     @Override
     public void start(Stage primaryStage) throws Exception{
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/wizard.fxml"));
         Parent root = loader.load();
         WizardController controller = loader.getController();
-        controller.setLodeCoursesPath(LODE_CURSES);
+        controller.setLodeCoursesPath(Constants.LODE_COURSES);
         primaryStage.setTitle("LODE2 Wizard");
         Scene scene = new Scene(root, 500, 345);
 

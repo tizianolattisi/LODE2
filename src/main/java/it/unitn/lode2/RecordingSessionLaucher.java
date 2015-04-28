@@ -36,7 +36,6 @@ import java.util.List;
  */
 public class RecordingSessionLaucher {
 
-    private final static String CAMERA_CONF = System.getProperty("user.home") + "/_LODE/IPCAM.XML";
 
     public static void launch(Stage stage, String courseFolder) throws IOException{
         XMLCourse xmlCourse = XMLHelper.build(XMLCourse.class).unmarshal(new File(courseFolder + "/COURSE.XML"));
@@ -51,7 +50,7 @@ public class RecordingSessionLaucher {
         String lectureFolder = courseFolder + "Acquisition/" + lectureFolderName;
 
         // read ip camera configuration
-        XMLCameraIPConf cameraIPConf = XMLHelper.build(XMLCameraIPConf.class).unmarshal(new File(CAMERA_CONF));
+        XMLCameraIPConf cameraIPConf = XMLHelper.build(XMLCameraIPConf.class).unmarshal(new File(Constants.CAMERA_CONF));
 
         // ConnectionProvider
         ConnectionProvider connProvider;

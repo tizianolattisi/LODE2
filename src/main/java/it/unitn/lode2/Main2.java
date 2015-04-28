@@ -23,15 +23,11 @@ import java.util.stream.Collectors;
  */
 public class Main2 extends Application {
 
-    private final static String LODE_HOME = System.getProperty("user.home") + "/_LODE/";
-    private final static String LODE_CURSES = LODE_HOME + "/COURSES/";
-    private final static String LODE_PREFS = LODE_HOME + "/.LODE_PREFS.XML";
-
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        File lodeHome = new File(LODE_CURSES);
-        List<Course> courses = Arrays.asList(lodeHome.list((dir, name) -> new File(dir, name).isDirectory())).stream().map(n -> new XmlCourseImpl(LODE_CURSES + n)).collect(Collectors.toList());
+        File lodeHome = new File(Constants.LODE_COURSES);
+        List<Course> courses = Arrays.asList(lodeHome.list((dir, name) -> new File(dir, name).isDirectory())).stream().map(n -> new XmlCourseImpl(Constants.LODE_COURSES + n)).collect(Collectors.toList());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/courses.fxml"));
         Parent root = loader.load();

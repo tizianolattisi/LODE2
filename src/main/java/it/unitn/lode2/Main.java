@@ -11,9 +11,6 @@ import java.io.File;
 
 public class Main extends Application {
 
-    //private final static String CAMERA_CONF = "/Users/tiziano/Projects/LODE2/confs/ipcamera/FOSCAM.XML";
-    private final static String CAMERA_CONF = System.getProperty("user.home") + "/_LODE/IPCAM.XML";
-    private final static String LODE_PREFS = System.getProperty("user.home") + "/_LODE/.LODE_PREFS.XML";
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -31,7 +28,7 @@ public class Main extends Application {
 
         // Last used course
         String courseFolder = null;
-        XMLLodePrefs prefs = XMLHelper.build(XMLLodePrefs.class).unmarshal(new File(LODE_PREFS));
+        XMLLodePrefs prefs = XMLHelper.build(XMLLodePrefs.class).unmarshal(new File(Constants.LODE_PREFS));
         for( XMLSection section: prefs.getSections() ){
             if( "LAST USED COURSE".equals(section.getName()) ){
                 for(XMLProperty property: section.getGroupOfProperties().getProperties() ){
