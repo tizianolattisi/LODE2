@@ -11,13 +11,15 @@ public interface Course {
 
     String path();
     String name();
-    void setName(String name);
     Integer year();
-    void setYear(Integer year);
     List<Lecture> lectures();
-    void addLecture(Lecture lecture);
     List<String> teachers();
+    Boolean isClosed();
+    void setName(String name);
+    void setYear(Integer year);
+    void addLecture(Lecture lecture);
     void addTeacher(String teacher);
+    void setClosed(Boolean closed);
     void save();
 
 }

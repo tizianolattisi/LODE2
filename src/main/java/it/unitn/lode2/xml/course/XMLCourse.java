@@ -17,6 +17,8 @@ public class XMLCourse {
 
     private String courseHome;
 
+    private Boolean closed=Boolean.FALSE;
+
     private XMLCourseLectures XMLCourseLectures = new XMLCourseLectures();
 
     private XMLCourseTeachers XMLCourseTeachers = new XMLCourseTeachers();
@@ -72,5 +74,14 @@ public class XMLCourse {
 
     public void setCourseHome(String courseHome) {
         this.courseHome = courseHome;
+    }
+
+    @XmlElement(name = "CLOSED")
+    public Boolean isClosed() {
+        return closed;
+    }
+
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
     }
 }

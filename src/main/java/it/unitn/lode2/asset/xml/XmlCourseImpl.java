@@ -88,6 +88,16 @@ public class XmlCourseImpl extends AbstractCourse implements Course {
     }
 
     @Override
+    public Boolean isClosed() {
+        return course.isClosed();
+    }
+
+    @Override
+    public void setClosed(Boolean closed) {
+        course.setClosed(closed);
+    }
+
+    @Override
     public void save() {
         File folder = new File(folderPath);
         if( !folder.exists() ){
