@@ -1,6 +1,7 @@
 package it.unitn.lode2.ui.controllers;
 
 import it.unitn.lode2.Constants;
+import it.unitn.lode2.RecordingSessionLaucher;
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.asset.Slide;
@@ -207,7 +208,12 @@ public class WizardController implements Initializable {
         });
 
         recordingSessionButton.setOnAction(event -> {
-
+            Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
+            try {
+                RecordingSessionLaucher.launch(new Stage(), course.path());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         exitWizardButton.setOnAction(event -> {
