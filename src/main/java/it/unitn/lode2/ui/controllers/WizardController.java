@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by tiziano on 21/04/15.
@@ -48,6 +49,9 @@ public class WizardController implements Initializable {
 
     @FXML
     private ListView<Course> coursesListView;
+
+    @FXML
+    private CheckBox onlyLastUsedCheckBox;
 
     @FXML
     private TextField courseYear;
@@ -94,6 +98,7 @@ public class WizardController implements Initializable {
             super.updateItem(item, empty);
             if( empty || item==null ){
                 setText(null);
+                setGraphic(null);
             } else {
                 setText(item.name());
                 setGraphic(createGraphicNode("book"));
@@ -162,7 +167,7 @@ public class WizardController implements Initializable {
 
         newLectureButton.setOnAction(event -> {
             int size = lecturesListView.getItems().size();
-            Integer number = size+1;
+            Integer number = size + 1;
             String name = String.format("%02d", number) + " " + lectureName.getText();
             lectureName.setText("");
             String lecturer = lectureLecturer.getText();
@@ -181,7 +186,7 @@ public class WizardController implements Initializable {
 
         importSlideButton.setOnAction(event -> {
             FileChooser fileChooser = new FileChooser();
-            FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Select pdf file to import","*.pdf");
+            FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Select pdf file to import", "*.pdf");
             fileChooser.getExtensionFilters().add(extension);
             File file = fileChooser.showOpenDialog(root.getScene().getWindow());
             Lecture lecture = lecturesListView.getSelectionModel().selectedItemProperty().get();
@@ -194,9 +199,9 @@ public class WizardController implements Initializable {
             Juicer juicer = PdfJuicerImpl.build();
             Iterator<Slide> iterator = juicer.slide(file).output(lecture.path() + "/Slides/").iterator();
             double d = 1.0 / juicer.size();
-            while( iterator.hasNext() ){
+            while (iterator.hasNext()) {
                 lecture.addSlide(iterator.next());
-                Platform.runLater(() -> progress.set(progress.getValue()+d));
+                Platform.runLater(() -> progress.set(progress.getValue() + d));
             }
             progress.set(1.0);
             lecture.save();
@@ -236,6 +241,10 @@ public class WizardController implements Initializable {
             //((Stage) root.getScene().getWindow()).close();
         });
 
+        onlyLastUsedCheckBox.setOnAction(event -> {
+            refreshCourses();
+        });
+
     }
 
     private void refreshPane(){
@@ -251,20 +260,26 @@ public class WizardController implements Initializable {
     }
 
     private void refreshCourses() {
+        Boolean onlyLast = Boolean.TRUE;
+        LodePrefs prefs = IOC.queryUtility(LodePrefs.class);
+        List<String> lastUsedPaths = prefs.lastUsedCourses().stream().map(c -> c.path()).collect(Collectors.toList());
         File lodeHome = new File(lodePath);
-        List<Course> courses = Arrays.asList(lodeHome.list((dir, name) -> new File(dir, name).isDirectory())).stream()
-                .filter(n -> true)
-                .map(n -> new XmlCourseImpl(lodePath + n))
-                .collect(Collectors.toList());
+        Stream<XmlCourseImpl> stream = Arrays.asList(lodeHome.list((dir, name) -> new File(dir, name).isDirectory()))
+                .stream()
+                .map(n -> new XmlCourseImpl(lodePath + n));
+        if( onlyLastUsedCheckBox.isSelected() ){
+            stream = stream.filter(c -> lastUsedPaths.contains(c.getFolderPath()));
+        }
+        List<Course> courses = stream.collect(Collectors.toList());
         coursesListView.setItems(FXCollections.observableList(courses));
     }
 
     private void refreshLectures(List<Lecture> lectures){
-        lecturesListView.setItems(FXCollections.observableArrayList(lectures));
+        lecturesListView.setItems(FXCollections.observableList(lectures));
     }
 
     private void refreshSlides(List<Slide> slides){
-        slidesListView.setItems(FXCollections.observableArrayList(slides));
+        slidesListView.setItems(FXCollections.observableList(slides));
     }
 
     private Node createGraphicNode(String name){

@@ -10,7 +10,7 @@
     <Tab text="Course selection">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="274.0" prefWidth="499.0">
-<children><ListView fx:id="coursesListView" layoutX="14.0" layoutY="44.0" prefHeight="184.0" prefWidth="470.0" /><Label layoutX="14.0" layoutY="14.0" text="Select a course from the above list, o reate a new one." /><Label layoutX="14.0" layoutY="244.0" text="Name" /><TextField fx:id="courseName" layoutX="60.0" layoutY="239.0" prefHeight="26.0" prefWidth="171.0" /><Label layoutX="244.84908485412598" layoutY="244.0" text="Year" /><TextField fx:id="courseYear" layoutX="282.0" layoutY="239.0" prefHeight="26.0" prefWidth="48.0" /><Button fx:id="newCourseButton" layoutX="397.0" layoutY="239.0" mnemonicParsing="false" text="new course" />
+<children><ListView fx:id="coursesListView" layoutX="14.0" layoutY="58.0" prefHeight="170.0" prefWidth="470.0" /><Label layoutX="14.0" layoutY="14.0" text="Select a course from the above list, or create a new one." /><Label layoutX="14.0" layoutY="244.0" text="Name" /><TextField fx:id="courseName" layoutX="60.0" layoutY="239.0" prefHeight="26.0" prefWidth="171.0" /><Label layoutX="244.84908485412598" layoutY="244.0" text="Year" /><TextField fx:id="courseYear" layoutX="282.0" layoutY="239.0" prefHeight="26.0" prefWidth="48.0" /><Button fx:id="newCourseButton" layoutX="397.0" layoutY="239.0" mnemonicParsing="false" text="new course" /><CheckBox fx:id="onlyLastUsedCheckBox" layoutX="15.296745300292969" layoutY="33.25" mnemonicParsing="false" selected="true" text="show only last used courses" />
 </children></AnchorPane>
       </content>
     </Tab>
