@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- FOSCAM FI9826P -->
 <CAMERA_IP>
     <USER>admin</USER>
     <PASSWORD>admin</PASSWORD>
@@ -22,5 +23,5 @@
     <ADDPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzAddPresetPoint&amp;name=</ADDPRESET>
     <DELPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzDeletePresetPoint&amp;name=</DELPRESET>
     <SNAPSHOT>/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2</SNAPSHOT>
-    <RECORD_COMMAND>${ffmpeg} -rtsp_transport tcp -stimeout 2000000 -i ${input} -strict -2 -acodec aac -vcodec copy -b:a 32k -y -f mpegts -filter:a ebur128 ${output}</RECORD_COMMAND>
+    <RECORD_COMMAND>${ffmpeg} -rtsp_transport tcp -stimeout 5000000 -i ${input} -strict -2 -c:a aac -b:a 32k -vn -f mpegts -filter:a ebur128 out.ts -c:v copy -c:a copy -y</RECORD_COMMAND>
 </CAMERA_IP>

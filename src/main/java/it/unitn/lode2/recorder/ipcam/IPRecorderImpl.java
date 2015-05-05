@@ -6,10 +6,7 @@ import it.unitn.lode2.recorder.RecorderStatus;
 import org.apache.log4j.Logger;
 
 import java.io.*;
-import java.util.EventListener;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * User: tiziano
@@ -146,13 +143,12 @@ public class IPRecorderImpl implements Recorder, EventListener {
     private void startProcess() throws IOException {
         // fragment file name
         numOfFragments++;
-        String fileName = "movie" + String.format("%03d", numOfFragments) + ".ts";
-        MessageMapFormat mmp = new MessageMapFormat(recordPartialCommand);
-        Map<String, Object> map = new HashMap();
-        map.put("output", output + "/" + fileName);
-        String recordCommand = mmp.format(map);
-        logger.debug("Recording command: " + recordCommand);
-        recordProcess = new ProcessBuilder(recordCommand.split(" ")).start();
+        String fileName = "movie" + String.format("%03d", numOfFragments) + ".mov";
+
+        ArrayList<String> recordCommand = new ArrayList(Arrays.asList(recordPartialCommand.split(" ")));
+        recordCommand.add(output + "/" + fileName);
+        System.out.println(recordCommand);
+        recordProcess = new ProcessBuilder(recordCommand).start();
         (new RecorderObserver(recordProcess, this)).start();
     }
 
