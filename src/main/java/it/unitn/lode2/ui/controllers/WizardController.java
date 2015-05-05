@@ -275,6 +275,7 @@ public class WizardController implements Initializable {
     }
 
     private void refreshLectures(List<Lecture> lectures){
+        Collections.reverse(lectures);
         lecturesListView.setItems(FXCollections.observableList(lectures));
     }
 
