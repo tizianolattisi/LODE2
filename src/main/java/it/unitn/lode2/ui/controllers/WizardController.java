@@ -1,11 +1,19 @@
 package it.unitn.lode2.ui.controllers;
 
+import it.unitn.lode2.Constants;
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.asset.xml.XmlLectureImpl;
+import it.unitn.lode2.slidejuicer.Juicer;
 import it.unitn.lode2.slidejuicer.pdf.PdfJuicerImpl;
+import it.unitn.lode2.xml.XMLHelper;
+import it.unitn.lode2.xml.prefs.XMLLodePrefs;
+import it.unitn.lode2.xml.prefs.XMLProperty;
+import it.unitn.lode2.xml.prefs.XMLSection;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,9 +26,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -65,6 +71,10 @@ public class WizardController implements Initializable {
 
     @FXML
     private ListView<Slide> slidesListView;
+
+    @FXML
+    private ProgressBar slideImportProgressBar;
+
 
     @FXML
     private Button recordingSessionButton;
@@ -139,6 +149,7 @@ public class WizardController implements Initializable {
             course.setName(name);
             course.setYear(year);
             course.save();
+            setLastCourse(course);
             refreshCourses();
         });
 
@@ -157,6 +168,7 @@ public class WizardController implements Initializable {
             lecture.save();
             course.addLecture(lecture);
             course.save();
+            setLastCourse(course);
             refreshLectures(course.lectures());
         });
 
@@ -166,9 +178,23 @@ public class WizardController implements Initializable {
             fileChooser.getExtensionFilters().add(extension);
             File file = fileChooser.showOpenDialog(root.getScene().getWindow());
             Lecture lecture = lecturesListView.getSelectionModel().selectedItemProperty().get();
+            SimpleDoubleProperty progress = new SimpleDoubleProperty(0.0);
+            slideImportProgressBar.progressProperty().bind(progress);
+            /*
             PdfJuicerImpl.build().slide(file).output(lecture.path() + "/Slides/")
                     .extract().stream().forEach(s -> lecture.addSlide(s));
+                    */
+            Juicer juicer = PdfJuicerImpl.build();
+            Iterator<Slide> iterator = juicer.slide(file).output(lecture.path() + "/Slides/").iterator();
+            double d = 1.0 / juicer.size();
+            while( iterator.hasNext() ){
+                lecture.addSlide(iterator.next());
+                Platform.runLater(() -> progress.set(progress.getValue()+d));
+            }
+            progress.set(1.0);
             lecture.save();
+            Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
+            setLastCourse(course);
             refreshCourses();
         });
 
@@ -200,5 +226,39 @@ public class WizardController implements Initializable {
         return new ImageView(new Image(CoursesController.class.getResourceAsStream("/images/" + name + ".png")));
     }
 
-
+    private void setLastCourse(Course course){
+        XMLLodePrefs prefs = XMLHelper.build(XMLLodePrefs.class).unmarshal(new File(Constants.LODE_PREFS));
+        for( XMLSection section: prefs.getSections() ){
+            if( "LAST USED COURSE".equals(section.getName()) ){
+                XMLSection lastUsedSection = section;
+                XMLProperty lastUsed = null;
+                XMLProperty lastUsedMinus2 = null;
+                XMLProperty lastUsedMinus3 = null;
+                for(XMLProperty property: section.getGroupOfProperties().getProperties() ){
+                    if( "Last used course".equals(property.getName()) ){
+                        lastUsed = property;
+                    } else if( "Last used course-2".equals(property.getName()) ){
+                        lastUsedMinus2 = property;
+                    } else if( "Last used course-3".equals(property.getName()) ){
+                        lastUsedMinus3 = property;
+                    }
+                }
+                List<XMLProperty> properties = new ArrayList<>();
+                if( !course.path().equals(lastUsed.getValue()) ) {
+                    if (!course.path().equals(lastUsedMinus2.getValue())) {
+                        properties.add(new XMLProperty("Last used course", course.path()));
+                        properties.add(new XMLProperty("Last used course-2", lastUsed.getValue()));
+                        properties.add(new XMLProperty("Last used course-3", lastUsedMinus2.getValue()));
+                    } else {
+                        properties.add(new XMLProperty("Last used course", course.path()));
+                        properties.add(new XMLProperty("Last used course-2", lastUsed.getValue()));
+                        properties.add(new XMLProperty("Last used course-3", lastUsedMinus3.getValue()));
+                    }
+                    lastUsedSection.getGroupOfProperties().setProperties(properties);
+                    XMLHelper.build(XMLLodePrefs.class).marshall(prefs, new File(Constants.LODE_PREFS));
+                }
+                break;
+            }
+        }
+    }
 }

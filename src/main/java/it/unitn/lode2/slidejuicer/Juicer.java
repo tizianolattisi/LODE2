@@ -3,6 +3,7 @@ package it.unitn.lode2.slidejuicer;
 import it.unitn.lode2.asset.Slide;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -13,5 +14,7 @@ public interface Juicer {
     Juicer slide(File file);
     Juicer output(String path);
     List<Slide> extract();
+    Iterator<Slide> iterator();
+    Integer size();
 
 }

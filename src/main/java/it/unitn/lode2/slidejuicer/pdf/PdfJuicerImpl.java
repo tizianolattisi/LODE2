@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,6 +21,9 @@ public class PdfJuicerImpl implements Juicer {
 
     private File slide;
     private String path = "./";
+
+    PDDocument document = null;
+    List<PDPage> pages;
 
     public PdfJuicerImpl() {
     }
@@ -31,6 +35,12 @@ public class PdfJuicerImpl implements Juicer {
     @Override
     public Juicer slide(File slide){
         this.slide = slide;
+        try {
+            document = PDDocument.load(slide);
+            pages = document.getDocumentCatalog().getAllPages();
+        } catch (IOException e) {
+            pages = new ArrayList<>();
+        }
         return this;
     }
 
@@ -66,5 +76,60 @@ public class PdfJuicerImpl implements Juicer {
         }
         return slides;
     }
+
+    @Override
+    public Integer size() {
+        return pages.size();
+    }
+
+    @Override
+    public Iterator<Slide> iterator() {
+
+
+        Iterator<Slide> myIterator = new Iterator<Slide>() {
+
+
+            Integer i = 0;
+
+            @Override
+            public boolean hasNext() {
+                return i < pages.size() - 1;
+            }
+
+            @Override
+            public Slide next() {
+                Slide slide = null;
+                try {
+                    System.out.println(i);
+                    PDPage page = pages.get(i);
+                    i++;
+                    BufferedImage bufferedImage = page.convertToImage();
+                    String fileName = i + ".png";
+                    File outputfile = new File(path + fileName);
+                    ImageIO.write(bufferedImage, "png", outputfile);
+                    slide = new XmlSlideImpl("Slides/" + fileName, "title", "text");
+                } catch (IOException e) {
+
+                }
+                if (!hasNext()) {
+                    try {
+                        document.close();
+                    } catch (IOException e) {
+
+                    }
+                }
+                return slide;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+
+        return myIterator;
+    }
+
+
 
 }
