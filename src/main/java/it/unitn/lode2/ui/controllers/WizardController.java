@@ -1,18 +1,16 @@
 package it.unitn.lode2.ui.controllers;
 
 import it.unitn.lode2.Constants;
+import it.unitn.lode2.IOC;
 import it.unitn.lode2.RecordingSessionLaucher;
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
+import it.unitn.lode2.asset.LodePrefs;
 import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.asset.xml.XmlLectureImpl;
 import it.unitn.lode2.slidejuicer.Juicer;
 import it.unitn.lode2.slidejuicer.pdf.PdfJuicerImpl;
-import it.unitn.lode2.xml.XMLHelper;
-import it.unitn.lode2.xml.prefs.XMLLodePrefs;
-import it.unitn.lode2.xml.prefs.XMLProperty;
-import it.unitn.lode2.xml.prefs.XMLSection;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
@@ -137,13 +135,13 @@ public class WizardController implements Initializable {
         lecturesListView.setCellFactory(list -> new LectureFormatCell());
         slidesListView.setCellFactory(list -> new SlideFormatCell());
         coursesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldCourse, newCourse) -> {
-            if( newCourse != null) {
+            if (newCourse != null) {
                 refreshLectures(newCourse.lectures());
                 tabPane.getSelectionModel().select(1);
             }
         });
         lecturesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldLecture, newLecture) -> {
-            if( newLecture!= null ){
+            if (newLecture != null) {
                 refreshSlides(newLecture.slides());
                 tabPane.getSelectionModel().select(2);
             }
@@ -237,6 +235,14 @@ public class WizardController implements Initializable {
             stage.show();
             //((Stage) root.getScene().getWindow()).close();
         });
+
+    }
+
+    private void refreshPane(){
+        tabPane.getTabs().get(1).setDisable(true);
+        tabPane.getTabs().get(2).setDisable(true);
+        tabPane.getTabs().get(2).setDisable(true);
+        tabPane.getTabs().get(2).setDisable(true);
     }
 
     public void setLodeCoursesPath(String path){
@@ -246,7 +252,10 @@ public class WizardController implements Initializable {
 
     private void refreshCourses() {
         File lodeHome = new File(lodePath);
-        List<Course> courses = Arrays.asList(lodeHome.list((dir, name) -> new File(dir, name).isDirectory())).stream().map(n -> new XmlCourseImpl(lodePath + n)).collect(Collectors.toList());
+        List<Course> courses = Arrays.asList(lodeHome.list((dir, name) -> new File(dir, name).isDirectory())).stream()
+                .filter(n -> true)
+                .map(n -> new XmlCourseImpl(lodePath + n))
+                .collect(Collectors.toList());
         coursesListView.setItems(FXCollections.observableList(courses));
     }
 
@@ -263,38 +272,8 @@ public class WizardController implements Initializable {
     }
 
     private void setLastCourse(Course course){
-        XMLLodePrefs prefs = XMLHelper.build(XMLLodePrefs.class).unmarshal(new File(Constants.LODE_PREFS));
-        for( XMLSection section: prefs.getSections() ){
-            if( "LAST USED COURSE".equals(section.getName()) ){
-                XMLSection lastUsedSection = section;
-                XMLProperty lastUsed = null;
-                XMLProperty lastUsedMinus2 = null;
-                XMLProperty lastUsedMinus3 = null;
-                for(XMLProperty property: section.getGroupOfProperties().getProperties() ){
-                    if( "Last used course".equals(property.getName()) ){
-                        lastUsed = property;
-                    } else if( "Last used course-2".equals(property.getName()) ){
-                        lastUsedMinus2 = property;
-                    } else if( "Last used course-3".equals(property.getName()) ){
-                        lastUsedMinus3 = property;
-                    }
-                }
-                List<XMLProperty> properties = new ArrayList<>();
-                if( !course.path().equals(lastUsed.getValue()) ) {
-                    if (!course.path().equals(lastUsedMinus2.getValue())) {
-                        properties.add(new XMLProperty("Last used course", course.path()));
-                        properties.add(new XMLProperty("Last used course-2", lastUsed.getValue()));
-                        properties.add(new XMLProperty("Last used course-3", lastUsedMinus2.getValue()));
-                    } else {
-                        properties.add(new XMLProperty("Last used course", course.path()));
-                        properties.add(new XMLProperty("Last used course-2", lastUsed.getValue()));
-                        properties.add(new XMLProperty("Last used course-3", lastUsedMinus3.getValue()));
-                    }
-                    lastUsedSection.getGroupOfProperties().setProperties(properties);
-                    XMLHelper.build(XMLLodePrefs.class).marshall(prefs, new File(Constants.LODE_PREFS));
-                }
-                break;
-            }
-        }
+        LodePrefs lodePrefs = IOC.queryUtility(LodePrefs.class);
+        lodePrefs.setLastUsedCourse(course);
+        lodePrefs.save();
     }
 }

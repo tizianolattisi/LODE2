@@ -1,12 +1,11 @@
 package it.unitn.lode2;
 
+import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
+import it.unitn.lode2.asset.LodePrefs;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
+import it.unitn.lode2.asset.xml.XmlLodePrefsImpl;
 import it.unitn.lode2.ui.controllers.WizardController;
-import it.unitn.lode2.xml.XMLHelper;
-import it.unitn.lode2.xml.prefs.XMLLodePrefs;
-import it.unitn.lode2.xml.prefs.XMLProperty;
-import it.unitn.lode2.xml.prefs.XMLSection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,7 +16,6 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -27,22 +25,14 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        // LODE prefs
+        LodePrefs lodePrefs = new XmlLodePrefsImpl(Constants.LODE_PREFS);
+        IOC.registerUtility(lodePrefs, LodePrefs.class);
+
         // There's a lecture to record?
-        String courseFolder = null;
-        XMLLodePrefs prefs = XMLHelper.build(XMLLodePrefs.class).unmarshal(new File(Constants.LODE_PREFS));
-        for( XMLSection section: prefs.getSections() ){
-            if( "LAST USED COURSE".equals(section.getName()) ){
-                for(XMLProperty property: section.getGroupOfProperties().getProperties() ){
-                    if( "Last used course".equals(property.getName()) ){
-                        courseFolder = property.getValue() + "/";
-                        break;
-                    }
-                }
-                break;
-            }
-        }
-        if( courseFolder!=null ){
-            XmlCourseImpl course = new XmlCourseImpl(courseFolder);
+        if( lodePrefs.lastUsedCourses().size()>0 ){
+            Course lastUsedCourse = lodePrefs.lastUsedCourses().get(0);
+            XmlCourseImpl course = new XmlCourseImpl(lastUsedCourse.path());
             Lecture lecture = course.lectures().get(course.lectures().size() - 1);
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Lecture ready for the recording session.");
