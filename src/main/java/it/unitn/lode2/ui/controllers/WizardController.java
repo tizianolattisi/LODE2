@@ -16,15 +16,20 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -75,9 +80,12 @@ public class WizardController implements Initializable {
     @FXML
     private ProgressBar slideImportProgressBar;
 
-
     @FXML
     private Button recordingSessionButton;
+
+    @FXML
+    private Button exitWizardButton;
+
 
 
 
@@ -200,6 +208,28 @@ public class WizardController implements Initializable {
 
         recordingSessionButton.setOnAction(event -> {
 
+        });
+
+        exitWizardButton.setOnAction(event -> {
+            File lodeHome = new File(Constants.LODE_COURSES);
+            List<Course> courses = Arrays.asList(lodeHome.list((dir, name) -> new File(dir, name).isDirectory())).stream().map(n -> new XmlCourseImpl(Constants.LODE_COURSES + n)).collect(Collectors.toList());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/courses.fxml"));
+            Parent root = null;
+            try {
+                root = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            CoursesController controller = loader.getController();
+            controller.setCourses(courses);
+            Stage stage = new Stage();
+            stage.setTitle("Courses management");
+            Scene scene = new Scene(root, 800, 600);
+            stage.setScene(scene);
+            stage.setOnCloseRequest(controller.handlerClose);
+            stage.show();
+            //((Stage) root.getScene().getWindow()).close();
         });
     }
 

@@ -40,7 +40,7 @@
   </tabs>
 </TabPane><ToolBar prefWidth="200.0">
   <items>
-    <Button mnemonicParsing="false" text="Exit wizard" />
+    <Button fx:id="exitWizardButton" mnemonicParsing="false" text="Exit wizard" />
   </items>
 </ToolBar>
 </children>
