@@ -11,6 +11,7 @@ import it.unitn.lode2.recorder.ipcam.FFMpegStreamGobbler;
 import it.unitn.lode2.ui.skin.AwesomeIcons;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -26,7 +27,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -62,8 +62,6 @@ public class MainController implements Initializable {
     private Recorder recorder=null;
     private Projector projector;
     private Lecture lecture;
-    private ImageView slideImageView=null;
-    private Rectangle2D slideScreenBounds;
     private Chronometer chronometer = new Chronometer();
 
     @FXML private ProgressBar vuMeterProgressBar;
@@ -96,10 +94,13 @@ public class MainController implements Initializable {
     @FXML private ToggleButton preset2ToggleButton;
     @FXML private ToggleButton preset3ToggleButton;
     @FXML private ToggleButton preset4ToggleButton;
-    @FXML private ToggleButton preset1SlideToggleButton;
-    @FXML private ToggleButton preset2SlideToggleButton;
-    @FXML private ToggleButton preset3SlideToggleButton;
-    @FXML private ToggleButton preset4SlideToggleButton;
+
+
+
+    @FXML private ChoiceBox<DisplayMode> scene1ModeChoiceBox;
+    @FXML private ChoiceBox<DisplayMode> scene2ModeChoiceBox;
+    @FXML private ChoiceBox<DisplayMode> scene3ModeChoiceBox;
+    @FXML private ChoiceBox<DisplayMode> scene4ModeChoiceBox;
 
     @FXML private CheckBox preset1zoomCheckBox;
     @FXML private CheckBox preset2zoomCheckBox;
@@ -111,7 +112,7 @@ public class MainController implements Initializable {
     @FXML private Button stopButton;
 
     private List<ToggleButton> presetsToggleButtons;
-    private List<ToggleButton> presetsSlideButtons;
+    private List<ChoiceBox> sceneModeChoiceBoxes;
     private List<CheckBox> presetsZoomCheckBoxes;
     private List<ImageView> nextImageViews;
     private List<Label> nextLabels;
@@ -125,11 +126,9 @@ public class MainController implements Initializable {
     //private StreamGobbler standardStreamGobbler = new StreamGobbler();
     private FFMpegStreamGobbler gobbler;
 
-    enum SecondDisplayMode {
-        SLIDES, PREVIEW
-    }
-
-    SecondDisplayMode secondDisplayMode = SecondDisplayMode.SLIDES;
+    DisplayMode displayMode = DisplayMode.SLIDES;
+    private SecondDisplay secondDisplay = null;
+    private Rectangle2D secondScreeBounds;
 
     // SimpleBooleanProperty per gestire la disabilitazione dei pulsanti
 
@@ -142,20 +141,10 @@ public class MainController implements Initializable {
         ObservableList<Screen> screens = Screen.getScreens();
         if( screens.size()>1 ){
             Screen screen = screens.get(1);
-            slideScreenBounds = screen.getBounds();
-            slideImageView = new ImageView();
-            Pane slidePane = new Pane();
-            slidePane.getChildren().add(slideImageView);
-            Scene scene = new Scene(slidePane);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setX(slideScreenBounds.getMinX());
-            stage.setY(slideScreenBounds.getMinY());
-            stage.setWidth(slideScreenBounds.getWidth());
-            stage.setHeight(slideScreenBounds.getHeight());
-            stage.setFullScreen(true);
-            stage.toFront();
-            stage.show();
+            secondScreeBounds = screen.getBounds();
+            secondDisplay = new SecondDisplay(secondScreeBounds);
+            secondDisplay.switchMode(DisplayMode.SLIDES);
+            secondDisplay.show();
         }
 
         // IOC to inject the implementations of Camera, Recorder, and Projector
@@ -166,11 +155,20 @@ public class MainController implements Initializable {
         lecture = IOC.queryUtility(Lecture.class);
 
         presetsToggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
-        presetsSlideButtons = Arrays.asList(preset1SlideToggleButton, preset2SlideToggleButton, preset3SlideToggleButton, preset4SlideToggleButton);
+        sceneModeChoiceBoxes = Arrays.asList(scene1ModeChoiceBox, scene2ModeChoiceBox, scene3ModeChoiceBox, scene4ModeChoiceBox);
         presetsZoomCheckBoxes = Arrays.asList(preset1zoomCheckBox, preset2zoomCheckBox, preset3zoomCheckBox, preset4zoomCheckBox);
         nextImageViews = Arrays.asList(next1SlideImageView, next2SlideImageView);
         nextLabels = Arrays.asList(next1SlideLabel, next2SlideLabel);
 
+        //
+        ObservableList<DisplayMode> displayModeObservableList = FXCollections.observableArrayList(DisplayMode.SLIDES,
+                DisplayMode.PREVIEW,
+                DisplayMode.BROWSER,
+                DisplayMode.DESKTOP);
+        for( ChoiceBox<DisplayMode> choiceBox: sceneModeChoiceBoxes ){
+            choiceBox.setItems(displayModeObservableList);
+            choiceBox.getSelectionModel().select(0);
+        }
 
         configHandlers();
 
@@ -218,7 +216,8 @@ public class MainController implements Initializable {
     }
 
     private Boolean hasSecondDisplay(){
-        return slideImageView!=null;
+        return secondDisplay != null;
+        //return slideImageView!=null;
     }
 
     public void keyBindings() {
@@ -273,8 +272,8 @@ public class MainController implements Initializable {
     private void refreshPreview() {
         try {
             previewer.snapshot().ifPresent(s -> previewImageView.setImage(new Image(s)));
-            if( hasSecondDisplay() && SecondDisplayMode.PREVIEW.equals(secondDisplayMode) ){
-                previewer.snapshot().ifPresent(s -> slideImageView.setImage(new Image(s)));
+            if( hasSecondDisplay() && DisplayMode.PREVIEW.equals(displayMode) ){
+                previewer.snapshot().ifPresent(s -> secondDisplay.setImage(new Image(s)));
             }
         } catch (IOException e) {
             handleIOException(e);
@@ -660,6 +659,16 @@ public class MainController implements Initializable {
                 button.setSelected(button == pressedButton);
                 if( button == pressedButton ) {
                     try {
+                        if( hasSecondDisplay() ) {
+                            if (sceneModeChoiceBoxes.get(i - 1).getSelectionModel().selectedItemProperty().getValue().equals(DisplayMode.SLIDES)) {
+                                displayMode = DisplayMode.SLIDES;
+                                projector.shownSlide().ifPresent(s -> secondDisplay.setImage(s.createPreview(secondScreeBounds.getWidth(), secondScreeBounds.getHeight())));
+                            } else if (sceneModeChoiceBoxes.get(i - 1).getSelectionModel().selectedItemProperty().getValue().equals(DisplayMode.PREVIEW)) {
+                                displayMode = DisplayMode.PREVIEW;
+                            } else if (sceneModeChoiceBoxes.get(i - 1).getSelectionModel().selectedItemProperty().getValue().equals(DisplayMode.DESKTOP)) {
+                                displayMode = DisplayMode.DESKTOP;
+                            }
+                        }
                         camera.goToPreset(i.toString());
                         if( presetsZoomCheckBoxes.get(i-1).isSelected() ){
                             camera.zoomIn();
@@ -667,14 +676,6 @@ public class MainController implements Initializable {
                             camera.zoomOut();
                         } else if (presetsZoomCheckBoxes.get(i-1).isIndeterminate() ){
                             // NOP
-                        }
-                        if( hasSecondDisplay() ) {
-                            if (presetsSlideButtons.get(i - 1).isSelected()) {
-                                secondDisplayMode = SecondDisplayMode.SLIDES;
-                                projector.shownSlide().ifPresent(s -> slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight())));
-                            } else {
-                                secondDisplayMode = SecondDisplayMode.PREVIEW;
-                            }
                         }
                     } catch (IOException e) {
                         handleIOException(e);
@@ -725,8 +726,8 @@ public class MainController implements Initializable {
         public void handle(ActionEvent event) {
             projector.show();
             projector.shownSlide().ifPresent(s -> {
-                if (slideImageView != null) {
-                    slideImageView.setImage(s.createPreview(slideScreenBounds.getWidth(), slideScreenBounds.getHeight()));
+                if (secondDisplay != null) {
+                    secondDisplay.setImage(s.createPreview(secondScreeBounds.getWidth(), secondScreeBounds.getHeight()));
                 }
                 if (recorder.isRecording()) {
                     projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), chronometer.elapsed() / 1000));

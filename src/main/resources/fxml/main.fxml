@@ -76,26 +76,10 @@
             <CheckBox fx:id="preset2zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="166.0" layoutY="114.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" />
             <CheckBox fx:id="preset4zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="373.0" layoutY="114.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" />
             <CheckBox fx:id="preset3zoomCheckBox" allowIndeterminate="true" indeterminate="true" layoutX="270.0" layoutY="114.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="96.0" text="zoom" />
-            <ToggleButton fx:id="preset1SlideToggleButton" layoutX="62.0" layoutY="140.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
-      <font>
-      <Font size="9.0" />
-      </font>
-            </ToggleButton>
-            <ToggleButton fx:id="preset2SlideToggleButton" layoutX="166.0" layoutY="140.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
-      <font>
-      <Font size="9.0" />
-      </font>
-            </ToggleButton>
-            <ToggleButton fx:id="preset4SlideToggleButton" layoutX="374.0" layoutY="140.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
-      <font>
-      <Font size="9.0" />
-      </font>
-            </ToggleButton>
-            <ToggleButton fx:id="preset3SlideToggleButton" layoutX="270.0" layoutY="140.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="96.0" text="SLIDE">
-      <font>
-      <Font size="9.0" />
-      </font>
-            </ToggleButton>
+            <ChoiceBox fx:id="scene1ModeChoiceBox" layoutX="63.0" layoutY="140.0" prefHeight="26.0" prefWidth="96.0" />
+            <ChoiceBox fx:id="scene2ModeChoiceBox" layoutX="166.0" layoutY="140.0" prefHeight="26.0" prefWidth="96.0" />
+            <ChoiceBox fx:id="scene3ModeChoiceBox" layoutX="270.0" layoutY="140.0" prefHeight="26.0" prefWidth="96.0" />
+            <ChoiceBox fx:id="scene4ModeChoiceBox" layoutX="373.0" layoutY="140.0" prefHeight="26.0" prefWidth="96.0" />
          </children>
       </Pane>
       <Pane layoutX="10.0" layoutY="10.0" prefHeight="328.0" prefWidth="479.0" style="-fx-background-color: gray;">
