@@ -662,11 +662,18 @@ public class MainController implements Initializable {
                         if( hasSecondDisplay() ) {
                             if (sceneModeChoiceBoxes.get(i - 1).getSelectionModel().selectedItemProperty().getValue().equals(DisplayMode.SLIDES)) {
                                 displayMode = DisplayMode.SLIDES;
+                                secondDisplay.switchMode(DisplayMode.SLIDES);
                                 projector.shownSlide().ifPresent(s -> secondDisplay.setImage(s.createPreview(secondScreeBounds.getWidth(), secondScreeBounds.getHeight())));
                             } else if (sceneModeChoiceBoxes.get(i - 1).getSelectionModel().selectedItemProperty().getValue().equals(DisplayMode.PREVIEW)) {
                                 displayMode = DisplayMode.PREVIEW;
+                                secondDisplay.switchMode(DisplayMode.PREVIEW);
                             } else if (sceneModeChoiceBoxes.get(i - 1).getSelectionModel().selectedItemProperty().getValue().equals(DisplayMode.DESKTOP)) {
                                 displayMode = DisplayMode.DESKTOP;
+                                secondDisplay.switchMode(DisplayMode.DESKTOP);
+                            } else if (sceneModeChoiceBoxes.get(i - 1).getSelectionModel().selectedItemProperty().getValue().equals(DisplayMode.BROWSER)) {
+                                displayMode = DisplayMode.BROWSER;
+                                secondDisplay.switchMode(DisplayMode.BROWSER);
+                                secondDisplay.setURL("http://www.google.it");
                             }
                         }
                         camera.goToPreset(i.toString());

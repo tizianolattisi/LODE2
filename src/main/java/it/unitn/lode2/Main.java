@@ -33,14 +33,18 @@ public class Main extends Application {
         if( lodePrefs.lastUsedCourses().size()>0 ){
             Course lastUsedCourse = lodePrefs.lastUsedCourses().get(0);
             XmlCourseImpl course = new XmlCourseImpl(lastUsedCourse.path());
-            Lecture lecture = course.lectures().get(course.lectures().size() - 1);
+            Lecture lecture=null;
+            String msg="";
+            if( course.lectures().size()>0 ) {
+                lecture = course.lectures().get(course.lectures().size() - 1);
+                msg = "Do you want to start the recording session for the lecture:\n\n \""
+                        + lecture.name()
+                        + "\" ("
+                        + course.name()
+                        + ").";            }
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Lecture ready for the recording session.");
-            String msg = "Do you want to start the recording session for the lecture:\n\n \""
-                       + lecture.name()
-                       + "\" ("
-                       + course.name()
-                       + ").";
+
             alert.setHeaderText(msg);
             //alert.setContentText("Choose your option.");
             ButtonType buttonTypeRecord = new ButtonType("Record");
