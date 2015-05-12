@@ -35,6 +35,7 @@ import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -654,10 +655,20 @@ public class MainController implements Initializable {
         public void handle(ActionEvent event) {
             ToggleButton pressedButton = (ToggleButton) event.getSource();
             Integer i = 0;
-            for( ToggleButton button: presetsToggleButtons){
+            for( ToggleButton button: presetsToggleButtons ){
                 i++;
                 button.setSelected(button == pressedButton);
                 if( button == pressedButton ) {
+                    if( pressedButton.getText()!=null ) {
+                        previewer.getSnapshotPreview(i).ifPresent(s -> {
+                            Image image = new Image(s);
+                            ImageView imageView = new ImageView(image);
+                            imageView.setFitHeight(60);
+                            imageView.setFitWidth(80);
+                            pressedButton.setGraphic(imageView);
+                            pressedButton.setText(null);
+                        });
+                    }
                     try {
                         if( hasSecondDisplay() ) {
                             if (sceneModeChoiceBoxes.get(i - 1).getSelectionModel().selectedItemProperty().getValue().equals(DisplayMode.SLIDES)) {

@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by tiziano on 10/03/15.
@@ -22,6 +22,7 @@ public class PreviewerIPImpl implements Previewer {
     private String snapshotUrl;
     private PreviewMode mode=PreviewMode.ONDEMAND;
     private PreviewerThread previewerThread;
+    private Map<Integer, InputStream> snapshotPreviews = new HashMap<>();
 
 
     @Override
@@ -83,5 +84,17 @@ public class PreviewerIPImpl implements Previewer {
         this.snapshotUrl = snapshotUrl;
     }
 
+    @Override
+    public void takeSnapshotPreview(Integer i) throws IOException {
+        snapshotPreviews.put(i, threadSafeSnapshot());
+    }
 
+    @Override
+    public Optional<InputStream> getSnapshotPreview(Integer i) {
+        InputStream stream = snapshotPreviews.getOrDefault(i, null);
+        if( stream == null ){
+            return Optional.empty();
+        }
+        return Optional.of(stream);
+    }
 }

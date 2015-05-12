@@ -3,6 +3,7 @@ package it.unitn.lode2.ui.controllers;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Capability;
+import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.ui.skin.AwesomeIcons;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -340,6 +341,8 @@ public class CameraController implements Initializable {
                         camera.delPreset(i.toString());
                         camera.addPreset(i.toString());
                         viewToggleButtons.get(i-1).setSelected(true);
+                        Previewer previewer = IOC.queryUtility(Previewer.class);
+                        previewer.takeSnapshotPreview(i);
                     } catch (IOException e) {
                         handleIOException(e);
                     }
