@@ -66,6 +66,9 @@ public class WizardController implements Initializable {
     private ListView<Lecture> lecturesListView;
 
     @FXML
+    private Label courseNameLabel;
+
+    @FXML
     private TextField lectureName;
 
     @FXML
@@ -79,6 +82,9 @@ public class WizardController implements Initializable {
 
     @FXML
     private ListView<Slide> slidesListView;
+
+    @FXML
+    private Label courseAndLectureName;
 
     @FXML
     private ProgressBar slideImportProgressBar;
@@ -143,12 +149,14 @@ public class WizardController implements Initializable {
             if (newCourse != null) {
                 refreshLectures(newCourse.lectures());
                 tabPane.getSelectionModel().select(1);
+                courseNameLabel.setText(newCourse.name());
             }
         });
         lecturesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldLecture, newLecture) -> {
             if (newLecture != null) {
                 refreshSlides(newLecture.slides());
                 tabPane.getSelectionModel().select(2);
+                courseAndLectureName.setText(newLecture.name());
             }
         });
 
@@ -260,7 +268,6 @@ public class WizardController implements Initializable {
     }
 
     private void refreshCourses() {
-        Boolean onlyLast = Boolean.TRUE;
         LodePrefs prefs = IOC.queryUtility(LodePrefs.class);
         List<String> lastUsedPaths = prefs.lastUsedCourses().stream().map(c -> c.path()).collect(Collectors.toList());
         File lodeHome = new File(lodePath);

@@ -3,6 +3,7 @@
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <VBox fx:id="root" prefHeight="345.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.controllers.WizardController">
 <children><TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE">
@@ -17,13 +18,20 @@
     <Tab text="Lecture selection">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-<children><ListView fx:id="lecturesListView" layoutX="14.0" layoutY="44.0" prefHeight="184.0" prefWidth="470.0" /><Label layoutX="14.0" layoutY="14.0" text="Select a lecture of the course, or create a new one." /><Label layoutX="14.0" layoutY="244.0" text="Name" /><TextField fx:id="lectureName" layoutX="60.0" layoutY="239.0" prefHeight="26.0" prefWidth="150.0" /><Label layoutX="220.0" layoutY="244.0" text="Lecturer" /><TextField fx:id="lectureLecturer" layoutX="280.0" layoutY="239.0" prefHeight="26.0" prefWidth="100.0" /><Button fx:id="newLectureButton" layoutX="397.0" layoutY="239.0" mnemonicParsing="false" text="new lecture" />
+<children><ListView fx:id="lecturesListView" layoutX="14.0" layoutY="58.0" prefHeight="170.0" prefWidth="470.0" /><Label layoutX="14.0" layoutY="14.0" text="Select a lecture of the course, or create a new one." /><Label layoutX="14.0" layoutY="244.0" text="Name" /><TextField fx:id="lectureName" layoutX="60.0" layoutY="239.0" prefHeight="26.0" prefWidth="150.0" /><Label layoutX="220.0" layoutY="244.0" text="Lecturer" /><TextField fx:id="lectureLecturer" layoutX="280.0" layoutY="239.0" prefHeight="26.0" prefWidth="100.0" /><Button fx:id="newLectureButton" layoutX="397.0" layoutY="239.0" mnemonicParsing="false" text="new lecture" /><Label fx:id="courseNameLabel" layoutX="14.0" layoutY="38.0" text="Course name">
+<font>
+<Font name="System Bold Italic" size="13.0" />
+</font></Label>
 </children></AnchorPane>
       </content>
     </Tab><Tab text="Slides import">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-<children><ListView fx:id="slidesListView" layoutX="14.0" layoutY="44.0" prefHeight="184.0" prefWidth="370.0" /><Label layoutX="14.0" layoutY="14.0" text="Import slides." /><Button fx:id="importSlideButton" layoutX="397.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="import" /><ProgressBar fx:id="slideImportProgressBar" layoutX="14.0" layoutY="242.0" prefHeight="20.0" prefWidth="370.0" progress="0.0" />
+<children><ListView fx:id="slidesListView" layoutX="14.0" layoutY="58.0" prefHeight="170.0" prefWidth="370.0" /><Label layoutX="14.0" layoutY="14.0" text="Import slides." /><Button fx:id="importSlideButton" layoutX="397.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="import" /><ProgressBar fx:id="slideImportProgressBar" layoutX="14.0" layoutY="242.0" prefHeight="20.0" prefWidth="370.0" progress="0.0" /><Label fx:id="courseAndLectureName" layoutX="14.0" layoutY="38.0" text="Course and lecture name">
+<font>
+<Font name="System Bold Italic" size="13.0" />
+</font>
+</Label>
 </children></AnchorPane>
   </content>
 </Tab><Tab text="Record">
