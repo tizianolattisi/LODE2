@@ -4,6 +4,7 @@ import it.unitn.lode2.IOC;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Previewer;
+import it.unitn.lode2.projector.Slide;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
@@ -27,6 +28,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -147,6 +150,12 @@ public class MainController implements Initializable {
             secondDisplay.switchMode(DisplayMode.SLIDES);
             secondDisplay.show();
         }
+
+        //
+        currentSlideImageView.setOnMouseClicked(handleSlideClick);
+        preparedSlideImageView.setOnMouseClicked(handleSlideClick);
+        next1SlideImageView.setOnMouseClicked(handleSlideClick);
+        next2SlideImageView.setOnMouseClicked(handleSlideClick);
 
         // IOC to inject the implementations of Camera, Recorder, and Projector
         camera = IOC.queryUtility(Camera.class);
@@ -800,6 +809,31 @@ public class MainController implements Initializable {
             }
         }
     };
+    private EventHandler<MouseEvent> handleSlideClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            ImageView slideImageView = (ImageView) event.getSource();
+            Optional<Slide> slide = Optional.empty();
+            if( slideImageView.equals(currentSlideImageView) ){
+                slide = projector.shownSlide();
+            } else if( slideImageView.equals(preparedSlideImageView) ){
+                slide = projector.preparedSlide();
+            } else if( slideImageView.equals(next1SlideImageView) ){
+                slide = projector.slideDelta(1);
+            } else if( slideImageView.equals(next2SlideImageView) ){
+                slide = projector.slideDelta(2);
+            }
+            slide.ifPresent(s -> {
+                Image preview = s.createPreview(800.0, 600.0);
+                ImageView magnifier = new ImageView(preview);
+                Stage stage = new Stage();
+                Scene scene = new Scene(new Pane(magnifier), 800, 600);
+                stage.setScene(scene);
+                stage.show();
+            });
+        }
+    };
+
 
     private void handleIOException(IOException e) {
         e.printStackTrace();
