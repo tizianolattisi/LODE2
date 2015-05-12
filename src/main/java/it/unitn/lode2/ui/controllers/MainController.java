@@ -572,6 +572,8 @@ public class MainController implements Initializable {
                     chronometer.reset();
                     chronometer.start();
 
+                    projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), 0L));
+
                     // ffmpeg gobbler
                     recorder.errorLog().ifPresent(s -> {
                         gobbler = new FFMpegStreamGobbler(s, vuMeterProgressBar);
