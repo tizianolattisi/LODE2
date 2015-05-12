@@ -9,12 +9,12 @@ import java.util.Optional;
  */
 public interface Previewer {
 
-    public Optional<InputStream> snapshot() throws IOException;
+    Optional<InputStream> snapshot() throws IOException;
 
-    public void setPreviewMode(PreviewMode mode);
+    void setPreviewMode(PreviewMode mode);
 
-    public void start();
+    void start();
 
-    public void stop();
+    void stop();
 
 }

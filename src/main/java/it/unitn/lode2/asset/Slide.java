@@ -7,7 +7,7 @@ package it.unitn.lode2.asset;
  */
 public interface Slide {
 
-    public String filename();
-    public String title();
-    public String text();
+    String filename();
+    String title();
+    String text();
 }

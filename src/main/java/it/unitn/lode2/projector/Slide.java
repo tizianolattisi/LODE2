@@ -11,12 +11,12 @@ import java.net.URL;
  */
 public interface Slide {
 
-    public Image createPreview(Double width, Double height);
+    Image createPreview(Double width, Double height);
 
-    public String getTitle();
+    String getTitle();
 
-    public String getDescription();
+    String getDescription();
 
-    public URL getUrl();
+    URL getUrl();
 
 }

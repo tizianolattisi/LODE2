@@ -13,23 +13,23 @@ import java.util.Optional;
  */
 public interface Recorder {
 
-    public void record() throws IOException;
+    void record() throws IOException;
 
-    public void stop();
+    void stop();
 
-    public void pause();
+    void pause();
 
-    public void wakeup() throws IOException;
+    void wakeup() throws IOException;
 
-    public RecorderStatus status();
+    RecorderStatus status();
 
-    public Boolean isIdle();
+    Boolean isIdle();
 
-    public Boolean isRecording();
+    Boolean isRecording();
 
-    public Boolean isPaused();
+    Boolean isPaused();
 
-    public Optional<InputStream> outputLog();
+    Optional<InputStream> outputLog();
 
-    public Optional<InputStream> errorLog();
+    Optional<InputStream> errorLog();
 }

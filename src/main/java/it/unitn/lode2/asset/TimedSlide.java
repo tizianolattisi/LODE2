@@ -7,7 +7,7 @@ package it.unitn.lode2.asset;
  */
 public interface TimedSlide {
 
-    public Slide slide();
-    public Long time();
+    Slide slide();
+    Long time();
 
 }
