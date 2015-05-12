@@ -105,15 +105,15 @@
                   <Font size="9.0" />
                </font>
             </ToggleButton>
-            <Label fx:id="recordingLabel" alignment="CENTER" layoutX="178.0" layoutY="274.0" prefHeight="33.0" prefWidth="108.0">
+            <Label fx:id="recordingLabel" alignment="CENTER" layoutX="174.0" layoutY="274.0" prefHeight="33.0" prefWidth="100.0">
                <font>
                   <Font name="System Bold" size="28.0" />
                </font>
-            </Label><ProgressBar fx:id="vuMeterProgressBar" layoutX="305.0" layoutY="279.0" prefHeight="26.0" prefWidth="160.0" progress="0.0" />
+            </Label><ProgressBar fx:id="vuMeterProgressBar" layoutX="342.0" layoutY="279.0" prefHeight="26.0" prefWidth="123.0" progress="0.0" /><Label fx:id="lufsLabel" layoutX="283.0" layoutY="291.0" prefHeight="16.0" prefWidth="54.0" text="-" textAlignment="CENTER" />
          </children>
       </Pane><Button fx:id="goToSlideButton" layoutX="245.0" layoutY="661.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="54.0" text="go to" /><TextField fx:id="goToSlideTextField" alignment="CENTER" layoutX="307.0" layoutY="661.0" prefHeight="48.0" prefWidth="48.0">
 <font>
 <Font size="18.0" />
-</font></TextField>
+</font></TextField><Label layoutX="293.0" layoutY="285.0" prefHeight="16.0" prefWidth="54.0" text="LUFS" textAlignment="CENTER" />
    </children>
 </AnchorPane>

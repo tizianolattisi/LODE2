@@ -1,9 +1,7 @@
 package it.unitn.lode2.recorder.ipcam;
 
 import javafx.application.Platform;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextInputControl;
+import javafx.beans.property.DoubleProperty;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -19,14 +17,14 @@ import java.io.InputStreamReader;
 public class FFMpegStreamGobbler extends Thread {
 
     InputStream inputStream;
-    ProgressBar progressBar;
+    DoubleProperty lufs;
     Boolean toTerminate = Boolean.FALSE;
 
     final static Logger logger = Logger.getLogger(FFMpegStreamGobbler.class);
 
-    public FFMpegStreamGobbler(InputStream inputStream, ProgressBar progressBar) {
+    public FFMpegStreamGobbler(InputStream inputStream, DoubleProperty lufs) {
         this.inputStream = inputStream;
-        this.progressBar = progressBar;
+        this.lufs = lufs;
     }
 
     @Override
@@ -42,8 +40,10 @@ public class FFMpegStreamGobbler extends Thread {
                     // StringIndexOutOfBoundsException
                     try {
                         String substring = line.substring(52, 59);
-                        Float m = (Float.parseFloat(substring)+73)*2/100;
-                        Platform.runLater(() -> progressBar.setProgress(m));
+                        //Float m = (Float.parseFloat(substring)+73)*2/100;
+                        //Float m = Float.parseFloat(substring);
+                        Double m = Double.parseDouble(substring);
+                        Platform.runLater(() -> lufs.setValue(m));
                     } catch (StringIndexOutOfBoundsException ex) {
                         logger.error("Unable to parse ebur128 line.");
                     }

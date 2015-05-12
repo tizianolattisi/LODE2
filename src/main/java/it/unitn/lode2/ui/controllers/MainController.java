@@ -12,6 +12,9 @@ import it.unitn.lode2.recorder.ipcam.FFMpegStreamGobbler;
 import it.unitn.lode2.ui.skin.AwesomeIcons;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +23,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,7 +33,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -38,7 +46,6 @@ import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -69,6 +76,7 @@ public class MainController implements Initializable {
     private Chronometer chronometer = new Chronometer();
 
     @FXML private ProgressBar vuMeterProgressBar;
+    @FXML private Label lufsLabel;
 
     @FXML private ImageView currentSlideImageView;
     @FXML private ImageView preparedSlideImageView;
@@ -135,6 +143,8 @@ public class MainController implements Initializable {
     private Rectangle2D secondScreeBounds;
 
     // SimpleBooleanProperty per gestire la disabilitazione dei pulsanti
+    DoubleProperty lufs = new SimpleDoubleProperty();
+    DoubleProperty vuMeter = new SimpleDoubleProperty();
 
 
     @Override
@@ -181,6 +191,14 @@ public class MainController implements Initializable {
         }
 
         configHandlers();
+
+        // vu meter
+        lufsLabel.textProperty().bind(lufs.asString());
+        vuMeterProgressBar.progressProperty().bind(lufs.divide(74.0).add(1.0));
+        lufsLabel.backgroundProperty().bind(
+                Bindings.when(lufs.lessThan(-73.0))
+                        .then(new Background(new BackgroundFill(Color.RED, CornerRadii.EMPTY, Insets.EMPTY)))
+                        .otherwise(new Background(new BackgroundFill(Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY))));
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -576,7 +594,7 @@ public class MainController implements Initializable {
 
                     // ffmpeg gobbler
                     recorder.errorLog().ifPresent(s -> {
-                        gobbler = new FFMpegStreamGobbler(s, vuMeterProgressBar);
+                        gobbler = new FFMpegStreamGobbler(s, lufs);
                         gobbler.start();
                     });
 
@@ -618,7 +636,7 @@ public class MainController implements Initializable {
                 }
                 chronometer.start();
                 recorder.errorLog().ifPresent(s -> {
-                    gobbler = new FFMpegStreamGobbler(s, vuMeterProgressBar);
+                    gobbler = new FFMpegStreamGobbler(s, lufs);
                     gobbler.start();
                 });
             }
