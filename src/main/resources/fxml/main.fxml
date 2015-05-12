@@ -43,7 +43,7 @@
       </Button>
       <Label fx:id="next2SlideLabel" layoutX="89.0" layoutY="637.0" text="--" />
       <Label fx:id="next1SlideLabel" layoutX="306.0" layoutY="640.0" text="--" />
-      <Label fx:id="preparedSlideLabel" layoutX="533.0" layoutY="683.0" text="--" />
+      <Label fx:id="preparedSlideLabel" layoutX="533.0" layoutY="403.0" text="--" />
       <Label fx:id="currentSlideLabel" layoutX="528.0" layoutY="299.0" text="--" />
       <Pane layoutX="11.0" layoutY="349.0" prefHeight="176.0" prefWidth="479.0" style="-fx-background-color: gray;">
          <children>
