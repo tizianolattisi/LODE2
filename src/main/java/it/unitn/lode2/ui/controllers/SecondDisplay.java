@@ -1,11 +1,15 @@
 package it.unitn.lode2.ui.controllers;
 
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 
@@ -17,6 +21,8 @@ import javafx.stage.Stage;
 public class SecondDisplay extends Stage {
 
     ImageView slideImageView = new ImageView();
+    VBox browser = new VBox();
+    ComboBox<String> addresses = new ComboBox<>();
     WebView browserWebView = new WebView();
     private final Pane pane;
 
@@ -29,6 +35,16 @@ public class SecondDisplay extends Stage {
         pane = new Pane();
         Scene scene = new Scene(pane);
         setScene(scene);
+
+        addresses.setItems(FXCollections.observableArrayList("http://www.google.it", "http://www.oracle.com", "http://192.168.2.1"));
+        addresses.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                setURL(addresses.getSelectionModel().selectedItemProperty().get());
+            }
+        });
+        browser.getChildren().add(addresses);
+        browser.getChildren().add(browserWebView);
 
         switchMode(DisplayMode.PREVIEW);
     }
@@ -45,7 +61,7 @@ public class SecondDisplay extends Stage {
         } else if( DisplayMode.BROWSER.equals(mode) ){
             setFullScreen(true);
             toFront();
-            pane.getChildren().add(browserWebView);
+            pane.getChildren().add(browser);
         }
     }
 
