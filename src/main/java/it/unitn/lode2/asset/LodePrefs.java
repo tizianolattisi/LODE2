@@ -12,4 +12,11 @@ public interface LodePrefs {
     void save();
     String getFfmpegPath();
     void setFfmpegPath(String path);
+    String getUser();
+    void setUser(String user);
+    String getPassword();
+    void setPassword(String password);
+    String getHost();
+    void setHost(String host);
+    List<String> getIpCamPresets();
 }

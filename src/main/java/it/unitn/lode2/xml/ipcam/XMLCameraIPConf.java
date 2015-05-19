@@ -13,12 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "CAMERA_IP")
 public class XMLCameraIPConf {
 
-    private String user;
-    private String password;
     private AuthMode authMode;
     private String authQuery;
 
-    private String host;
     private Integer cgiPort;
     private Integer streamPort;
     private String streamProtocol;
@@ -43,16 +40,6 @@ public class XMLCameraIPConf {
     private String snapshot;
     private String recordCommand;
 
-    @XmlElement(name = "USER")
-    public String getUser() {
-        return user;
-    }
-
-    @XmlElement(name = "PASSWORD")
-    public String getPassword() {
-        return password;
-    }
-
     @XmlElement(name = "AUTH")
     public AuthMode getAuthMode() {
         return authMode;
@@ -61,11 +48,6 @@ public class XMLCameraIPConf {
     @XmlElement(name = "AUTHQUERY")
     public String getAuthQuery() {
         return authQuery;
-    }
-
-    @XmlElement(name = "HOST")
-    public String getHost() {
-        return host;
     }
 
     @XmlElement(name = "CGI_PORT")
@@ -156,18 +138,6 @@ public class XMLCameraIPConf {
     @XmlElement(name = "RECORD_COMMAND")
     public String getRecordCommand() {
         return recordCommand;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
     }
 
     public void setCgiPort(Integer cgiPort) {

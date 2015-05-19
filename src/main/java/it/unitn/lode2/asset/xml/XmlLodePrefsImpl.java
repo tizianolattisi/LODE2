@@ -1,6 +1,5 @@
 package it.unitn.lode2.asset.xml;
 
-import it.unitn.lode2.Constants;
 import it.unitn.lode2.asset.AbstractLodePrefs;
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.LodePrefs;
@@ -106,6 +105,41 @@ public class XmlLodePrefsImpl extends AbstractLodePrefs implements LodePrefs {
     @Override
     public void setFfmpegPath(String path) {
         getPropertyInSectionName("GENERIC", "ffmpeg").setValue(path);
+    }
+
+    @Override
+    public String getUser() {
+        return getPropertyInSectionName("IPCAM", "user").getValue();
+    }
+
+    @Override
+    public void setUser(String user) {
+        getPropertyInSectionName("IPCAM", "user").setValue(user);
+    }
+
+    @Override
+    public String getPassword() {
+        return getPropertyInSectionName("IPCAM", "password").getValue();
+    }
+
+    @Override
+    public void setPassword(String password) {
+        getPropertyInSectionName("IPCAM", "password").setValue(password);
+    }
+
+    @Override
+    public String getHost() {
+        return getPropertyInSectionName("IPCAM", "host").getValue();
+    }
+
+    @Override
+    public void setHost(String host) {
+        getPropertyInSectionName("IPCAM", "host").setValue(host);
+    }
+
+    @Override
+    public List<String> getIpCamPresets() {
+        return Arrays.asList(getPropertyInSectionName("IPCAM", "presets").getValue().split(","));
     }
 
     @Override

@@ -25,11 +25,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        Setup.checkAndSetupLodeHome();
+
         // LODE prefs
         LodePrefs lodePrefs = new XmlLodePrefsImpl(Constants.LODE_PREFS);
         IOC.registerUtility(lodePrefs, LodePrefs.class);
 
-        Setup.setup(primaryStage);
+        Setup.checkAndSetupFfmpeg(primaryStage);
+        Setup.checkAndSetupIpCam(primaryStage);
+
 
         // There's a lecture to record?
         if( lodePrefs.lastUsedCourses().size()>0 ){

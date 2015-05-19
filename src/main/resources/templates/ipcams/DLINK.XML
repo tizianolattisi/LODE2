@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <CAMERA_IP>
-    <USER>admin</USER>
-    <PASSWORD>admin1</PASSWORD>
     <AUTH>BASIC</AUTH>
     <AUTHQUERY></AUTHQUERY>
-    <HOST>192.168.1.2</HOST>
     <CGI_PORT>80</CGI_PORT>
     <STREAM_PORT>554</STREAM_PORT>
     <STREAM_PROTOCOL>RTSP</STREAM_PROTOCOL>

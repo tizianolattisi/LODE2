@@ -59,9 +59,9 @@ public class RecordingSessionLaucher {
         // ConnectionProvider
         ConnectionProvider connProvider;
         if(AuthMode.BASIC.equals(cameraIPConf.getAuthMode()) ) {
-            connProvider = new BasicConnectionProvider(cameraIPConf.getUser(), cameraIPConf.getPassword());
+            connProvider = new BasicConnectionProvider(lodePrefs.getUser(), lodePrefs.getPassword());
         } else if(AuthMode.QUERY.equals(cameraIPConf.getAuthMode()) ) {
-            connProvider = new QueryConnectionProvider(cameraIPConf.getUser(), cameraIPConf.getPassword(), cameraIPConf.getAuthQuery());
+            connProvider = new QueryConnectionProvider(lodePrefs.getUser(), lodePrefs.getPassword(), cameraIPConf.getAuthQuery());
         } else {
             connProvider = new NoAuthConnectionProvider();
         }
@@ -70,9 +70,9 @@ public class RecordingSessionLaucher {
 
         // Camera
         CameraIPBuilder builder = CameraIPBuilder.create()
-                .user(cameraIPConf.getUser())
-                .password(cameraIPConf.getPassword())
-                .host(cameraIPConf.getHost())
+                .user(lodePrefs.getUser())
+                .password(lodePrefs.getPassword())
+                .host(lodePrefs.getHost())
                 .port(cameraIPConf.getCgiPort());
         if( cameraIPConf.getZoomIn()!=null && cameraIPConf.getZoomOut()!=null ){
             builder = builder.template(Cmds.ZOOMIN, cameraIPConf.getZoomIn());
@@ -105,9 +105,9 @@ public class RecordingSessionLaucher {
 
         // Previewer
         Previewer previewer = PreviewerIPBuilder.create()
-                .user(cameraIPConf.getUser())
-                .password(cameraIPConf.getPassword())
-                .host(cameraIPConf.getHost())
+                .user(lodePrefs.getUser())
+                .password(lodePrefs.getPassword())
+                .host(lodePrefs.getHost())
                 .port(cameraIPConf.getCgiPort())
                 .snapshotUrl(cameraIPConf.getSnapshot())
                 .build();
@@ -117,11 +117,11 @@ public class RecordingSessionLaucher {
         // Recorder
         Recorder recorder = IPRecorderBuilder.create()
                 .protocol(IPRecorderProtocol.valueOf(cameraIPConf.getStreamProtocol()))
-                .host(cameraIPConf.getHost())
+                .host(lodePrefs.getHost())
                 .port(cameraIPConf.getStreamPort())
                 .url(cameraIPConf.getStreamUrl())
-                .user(cameraIPConf.getUser())
-                .password(cameraIPConf.getPassword())
+                .user(lodePrefs.getUser())
+                .password(lodePrefs.getPassword())
                 .recordCommand(cameraIPConf.getRecordCommand())
                         //.output(lectureFolder + "/movie0.mp4")
                 .output(lectureFolder)
