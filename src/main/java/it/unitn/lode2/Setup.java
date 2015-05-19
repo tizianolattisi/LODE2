@@ -69,10 +69,15 @@ public class Setup {
             if( result.isPresent() ){
                 copyTemplate("/templates/ipcams/" + result.get() + ".XML", new FileOutputStream(Constants.CAMERA_CONF));
             }
+
         }
+
         String host = prefs.getHost();
         String user = prefs.getUser();
         String password = prefs.getPassword();
+        if( host!=null && host!="" && user!=null && user!=null && password!=null && password!="" ){
+            return;
+        }
 
         TextInputDialog dialog = new TextInputDialog(host);
         dialog.setTitle("IPCAM ip address");

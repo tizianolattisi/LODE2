@@ -43,45 +43,52 @@ public class Main extends Application {
             String msg="";
             if( course.lectures().size()>0 ) {
                 lecture = course.lectures().get(course.lectures().size() - 1);
-                msg = "Do you want to start the recording session for the lecture:\n\n \""
-                        + lecture.name()
-                        + "\" ("
-                        + course.name()
-                        + ").";            }
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Lecture ready for the recording session.");
+                if( lecture.videoLength()==null ){
+                    msg = "Do you want to start the recording session for the lecture:\n\n \""
+                            + lecture.name()
+                            + "\" ("
+                            + course.name()
+                            + ").";
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Lecture ready for the recording session.");
 
-            alert.setHeaderText(msg);
-            //alert.setContentText("Choose your option.");
-            ButtonType buttonTypeRecord = new ButtonType("Record");
-            ButtonType buttonTypeWizard = new ButtonType("Go to wizard");
-            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-            alert.getButtonTypes().setAll(buttonTypeRecord, buttonTypeWizard, buttonTypeCancel);
-            Optional<ButtonType> result = alert.showAndWait();
-            if( result.isPresent() ){
-                if( result.get()==buttonTypeRecord) {
-                    RecordingSessionLaucher.launch(new Stage(), course.getFolderPath());
-                } else if( result.get()==buttonTypeWizard ){
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/wizard.fxml"));
-                    Parent root = null;
-                    try {
-                        root = loader.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    alert.setHeaderText(msg);
+                    //alert.setContentText("Choose your option.");
+                    ButtonType buttonTypeRecord = new ButtonType("Record");
+                    ButtonType buttonTypeWizard = new ButtonType("Go to wizard");
+                    ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    alert.getButtonTypes().setAll(buttonTypeRecord, buttonTypeWizard, buttonTypeCancel);
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if( result.isPresent() ){
+                        if( result.get()==buttonTypeRecord) {
+                            RecordingSessionLaucher.launch(new Stage(), course.getFolderPath());
+                            return;
+                        } else if( result.get()==buttonTypeCancel ){
+                            return;
+                        }
                     }
-                    WizardController controller = loader.getController();
-                    controller.setLodeCoursesPath(Constants.LODE_COURSES);
-                    primaryStage.setTitle("LODE2 Wizard");
-                    Scene scene = new Scene(root, 500, 345);
-
-                    primaryStage.setScene(scene);
-                    //primaryStage.setOnCloseRequest(controller.handlerClose);
-                    primaryStage.show();
                 }
-
             }
         }
+        startWizard(primaryStage);
+    }
 
+    private void startWizard(Stage primaryStage) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/wizard.fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        WizardController controller = loader.getController();
+        controller.setLodeCoursesPath(Constants.LODE_COURSES);
+        primaryStage.setTitle("LODE2 Wizard");
+        Scene scene = new Scene(root, 500, 345);
+
+        primaryStage.setScene(scene);
+        //primaryStage.setOnCloseRequest(controller.handlerClose);
+        primaryStage.show();
     }
 
 
