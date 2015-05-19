@@ -54,12 +54,6 @@ public class WizardController implements Initializable {
     private CheckBox onlyLastUsedCheckBox;
 
     @FXML
-    private TextField courseYear;
-
-    @FXML
-    private TextField courseName;
-
-    @FXML
     private Button newCourseButton;
 
     @FXML
@@ -67,12 +61,6 @@ public class WizardController implements Initializable {
 
     @FXML
     private Label courseNameLabel;
-
-    @FXML
-    private TextField lectureName;
-
-    @FXML
-    private TextField lectureLecturer;
 
     @FXML
     private Button newLectureButton;
@@ -161,35 +149,42 @@ public class WizardController implements Initializable {
         });
 
         newCourseButton.setOnAction(event -> {
-            String name = courseName.getText();
-            courseName.setText("");
-            Integer year = Integer.parseInt(courseYear.getText());
-            courseYear.setText("");
-            Course course = new XmlCourseImpl(lodePath + name);
-            course.setName(name);
-            course.setYear(year);
-            course.save();
-            setLastCourse(course);
-            refreshCourses();
+            TextInputDialog dialog = new TextInputDialog("new course name");
+            dialog.setTitle("New course creation");
+            dialog.setHeaderText("Insert the name of the new course.");
+            dialog.setContentText("Course name:");
+            dialog.showAndWait().ifPresent(name -> {
+                Course course = new XmlCourseImpl(lodePath + name);
+                course.setName(name);
+                course.setYear(Calendar.getInstance().get(Calendar.YEAR));
+                course.save();
+                setLastCourse(course);
+                refreshCourses();
+            });
         });
 
         newLectureButton.setOnAction(event -> {
-            int size = lecturesListView.getItems().size();
-            Integer number = size + 1;
-            String name = String.format("%02d", number) + " " + lectureName.getText();
-            lectureName.setText("");
-            String lecturer = lectureLecturer.getText();
-            lectureLecturer.setText("");
             Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
-            Lecture lecture = new XmlLectureImpl((XmlCourseImpl) course, name);
-            lecture.setName(name);
-            lecture.setLecturer(lecturer);
-            lecture.setNumber(number);
-            lecture.save();
-            course.addLecture(lecture);
-            course.save();
-            setLastCourse(course);
-            refreshLectures(course.lectures());
+            TextInputDialog dialog = new TextInputDialog("new lecture title");
+            dialog.setTitle("New lecture creation");
+            dialog.setHeaderText("Insert the title of the new lecture of the '" + course.name() + "' course.");
+            dialog.setContentText("Title:");
+            dialog.showAndWait().ifPresent(title -> {
+                int size = lecturesListView.getItems().size();
+                Integer number = size + 1;
+                String name = String.format("%02d", number) + " " + title;
+                String lecturer = "";
+                Lecture lecture = new XmlLectureImpl((XmlCourseImpl) course, name);
+                lecture.setName(name);
+                lecture.setLecturer(lecturer);
+                lecture.setNumber(number);
+                lecture.save();
+                course.addLecture(lecture);
+                course.save();
+                setLastCourse(course);
+                refreshLectures(course.lectures());
+
+            });
         });
 
         importSlideButton.setOnAction(event -> {
