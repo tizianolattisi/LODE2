@@ -14,10 +14,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -31,20 +29,7 @@ public class Main extends Application {
         LodePrefs lodePrefs = new XmlLodePrefsImpl(Constants.LODE_PREFS);
         IOC.registerUtility(lodePrefs, LodePrefs.class);
 
-        // ffmpeg path
-        String ffmpegPath = lodePrefs.getFfmpegPath();
-        File file = new File(ffmpegPath);
-        if( !file.exists() ){
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Select ffmpeg path");
-            if( false ) { // windows
-                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Exe Files", "*.exe"));
-            }
-            File ffmpegFile = fileChooser.showOpenDialog(primaryStage);
-            ffmpegPath = ffmpegFile.getAbsolutePath();
-            lodePrefs.setFfmpegPath(ffmpegPath);
-            lodePrefs.save();
-        }
+        Setup.setup(primaryStage);
 
         // There's a lecture to record?
         if( lodePrefs.lastUsedCourses().size()>0 ){
