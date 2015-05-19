@@ -130,7 +130,6 @@ public class MainController implements Initializable {
     private List<Label> nextLabels;
 
     private Timeline timeline;
-    private LogsController logsController;
 
     @FXML private Label recordingLabel;
 
@@ -278,7 +277,6 @@ public class MainController implements Initializable {
     private void configHandlers() {
 
         previewToggleButton.setOnAction(handlerPreview);
-        setupButton.setOnAction(handlerSetup);
         recordToggleButton.setOnAction(handlerRecord);
         pauseToggleButton.setOnAction(handlerPause);
         stopButton.setOnAction(handlerStop);
@@ -557,26 +555,6 @@ public class MainController implements Initializable {
                 playPreview();
             } else {
                 stopPreview();
-            }
-        }
-    };
-
-    private EventHandler<ActionEvent> handlerSetup = new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/logs.fxml"));
-                Parent root = loader.load();
-                logsController = loader.getController();
-                Scene scene = new Scene(root, 600, 700);
-                Stage stage = new Stage();
-                stage.setTitle("Acquisition logs");
-                stage.setScene(scene);
-                stage.show();
-                //recorder.errorLog().ifPresent(s -> errorStreamGobbler.stream(s).widget(logsController.getStderrorTextArea()).start());
-                //recorder.outputLog().ifPresent(s -> standardStreamGobbler.stream(s).widget(logsController.getStdoutTextArea()).start());
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     };
