@@ -104,6 +104,11 @@ public class XmlLodePrefsImpl extends AbstractLodePrefs implements LodePrefs {
     }
 
     @Override
+    public void setFfmpegPath(String path) {
+        getPropertyInSectionName("GENERIC", "ffmpeg").setValue(path);
+    }
+
+    @Override
     public void save() {
         XMLHelper.build(XMLLodePrefs.class).marshall(prefs, new File(filePath));
     }

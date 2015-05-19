@@ -11,4 +11,5 @@ public interface LodePrefs {
     void setLastUsedCourse(Course course);
     void save();
     String getFfmpegPath();
+    void setFfmpegPath(String path);
 }
