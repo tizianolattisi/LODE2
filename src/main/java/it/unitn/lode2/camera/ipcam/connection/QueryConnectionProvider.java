@@ -1,6 +1,6 @@
 package it.unitn.lode2.camera.ipcam.connection;
 
-import com.axiastudio.mapformat.MessageMapFormat;
+import it.unitn.lode2.mapformat.MessageMapFormat;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

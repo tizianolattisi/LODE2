@@ -1,6 +1,6 @@
 package it.unitn.lode2.recorder.ipcam;
 
-import com.axiastudio.mapformat.MessageMapFormat;
+import it.unitn.lode2.mapformat.MessageMapFormat;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.RecorderStatus;
 import org.apache.log4j.Logger;

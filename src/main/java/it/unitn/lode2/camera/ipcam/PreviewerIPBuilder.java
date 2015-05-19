@@ -1,6 +1,6 @@
 package it.unitn.lode2.camera.ipcam;
 
-import com.axiastudio.mapformat.MessageMapFormat;
+import it.unitn.lode2.mapformat.MessageMapFormat;
 import it.unitn.lode2.camera.Capability;
 import it.unitn.lode2.camera.PreviewMode;
 
