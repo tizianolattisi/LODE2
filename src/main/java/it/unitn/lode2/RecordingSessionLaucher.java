@@ -2,6 +2,7 @@ package it.unitn.lode2;
 
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
+import it.unitn.lode2.asset.LodePrefs;
 import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.camera.Camera;
@@ -48,6 +49,9 @@ public class RecordingSessionLaucher {
 
 
         String lectureFolder = courseFolder + "Acquisition/" + lectureFolderName;
+
+        // LODE prefs
+        LodePrefs lodePrefs = IOC.queryUtility(LodePrefs.class);
 
         // read ip camera configuration
         XMLCameraIPConf cameraIPConf = XMLHelper.build(XMLCameraIPConf.class).unmarshal(new File(Constants.CAMERA_CONF));
@@ -121,6 +125,7 @@ public class RecordingSessionLaucher {
                 .recordCommand(cameraIPConf.getRecordCommand())
                         //.output(lectureFolder + "/movie0.mp4")
                 .output(lectureFolder)
+                .ffmpeg(lodePrefs.getFfmpegPath())
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
 

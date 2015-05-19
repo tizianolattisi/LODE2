@@ -32,23 +32,45 @@ public class XmlLodePrefsImpl extends AbstractLodePrefs implements LodePrefs {
         }
     }
 
+    private List<XMLProperty> getPropertiesInSectionName(String name) {
+        List<XMLProperty> properties = new ArrayList<>();
+        for( XMLSection section: prefs.getSections() ) {
+            if (name.equals(section.getName())) {
+                for(XMLProperty property: section.getGroupOfProperties().getProperties() ){
+                    properties.add(property);
+                }
+                break;
+            }
+        }
+        return properties;
+    }
+
+    private XMLProperty getPropertyInSectionName(String sectionName, String propertyName){
+        for( XMLSection section: prefs.getSections() ) {
+            if (sectionName.equals(section.getName())) {
+                for(XMLProperty property: section.getGroupOfProperties().getProperties() ){
+                    if( propertyName.equals(property.getName()) ){
+                        return property;
+                    }
+                }
+                break;
+            }
+        }
+        return null;
+    }
+
     @Override
     public List<Course> lastUsedCourses() {
         XMLProperty lastUsed = null;
         XMLProperty lastUsedMinus2 = null;
         XMLProperty lastUsedMinus3 = null;
-        for( XMLSection section: prefs.getSections() ){
-            if( "LAST USED COURSE".equals(section.getName()) ){
-                for(XMLProperty property: section.getGroupOfProperties().getProperties() ){
-                    if( "Last used course".equals(property.getName()) ){
-                        lastUsed = property;
-                    } else if( "Last used course-2".equals(property.getName()) ){
-                        lastUsedMinus2 = property;
-                    } else if( "Last used course-3".equals(property.getName()) ){
-                        lastUsedMinus3 = property;
-                    }
-                }
-                break;
+        for(XMLProperty property: getPropertiesInSectionName("LAST USED COURSE") ){
+            if( "Last used course".equals(property.getName()) ){
+                lastUsed = property;
+            } else if( "Last used course-2".equals(property.getName()) ){
+                lastUsedMinus2 = property;
+            } else if( "Last used course-3".equals(property.getName()) ){
+                lastUsedMinus3 = property;
             }
         }
         return Arrays.asList(new XmlCourseImpl(lastUsed.getValue()),
@@ -74,8 +96,11 @@ public class XmlLodePrefsImpl extends AbstractLodePrefs implements LodePrefs {
                 }
             }
         }
+    }
 
-
+    @Override
+    public String getFfmpegPath() {
+        return getPropertyInSectionName("GENERIC", "ffmpeg").getValue();
     }
 
     @Override

@@ -17,7 +17,6 @@ public class IPRecorderImpl implements Recorder, EventListener {
 
     // ffmpeg -i "concat:movie001.ts|movie002.ts|movie003.ts|movie004.ts" -c copy -bsf:a aac_adtstoasc movie0.mp4
 
-    private static final String FFMPEG = "/Applications/ffmpeg/bin/ffmpeg";
     //private static final String CONCAT_COMMAND = FFMPEG + " -i \"concat:${ts}\" -c copy -bsf:a aac_adtstoasc movie0.mp4";
 
     private Process recordProcess=null;
@@ -38,7 +37,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
     final static Logger logger = Logger.getLogger(IPRecorderImpl.class);
 
 
-    public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password, String recordTemplate, String output) {
+    public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password, String recordTemplate, String output, String ffmpeg) {
         this.protocol = protocol;
         this.host = host;
         this.port = port;
@@ -60,7 +59,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
 
         MessageMapFormat mmp = new MessageMapFormat(recordTemplate);
         Map<String, Object> map = new HashMap();
-        map.put("ffmpeg", FFMPEG);
+        map.put("ffmpeg", ffmpeg);
         map.put("input", url);
         map.put("output", "${output}");
         this.recordPartialCommand = mmp.format(map);
