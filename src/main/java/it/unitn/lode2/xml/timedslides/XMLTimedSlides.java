@@ -20,4 +20,8 @@ public class XMLTimedSlides {
     public void addSlide(XMLTimedSlidesSlide s){
         slides.add(s);
     }
+
+    public List<XMLTimedSlidesSlide> slides() {
+        return slides;
+    }
 }
