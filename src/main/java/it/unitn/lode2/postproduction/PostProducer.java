@@ -10,4 +10,6 @@ public interface PostProducer {
 
     void convert(Lecture lecture);
 
+    void createDistribution(Lecture lecture);
+
 }

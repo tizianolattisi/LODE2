@@ -230,6 +230,7 @@ public class WizardController implements Initializable {
             Lecture lecture = lecturesListView.getSelectionModel().selectedItemProperty().get();
             PostProducer producer = IOC.queryUtility(PostProducer.class);
             producer.convert(lecture);
+            producer.createDistribution(lecture);
         });
 
         exitWizardButton.setOnAction(event -> {
