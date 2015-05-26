@@ -61,7 +61,6 @@ public class IPRecorderImpl implements Recorder, EventListener {
         Map<String, Object> map = new HashMap();
         map.put("ffmpeg", ffmpeg);
         map.put("input", url);
-        map.put("output", "${output}");
         this.recordPartialCommand = mmp.format(map);
     }
 
