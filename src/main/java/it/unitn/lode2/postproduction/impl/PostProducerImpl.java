@@ -46,7 +46,10 @@ public class PostProducerImpl implements PostProducer{
             command.add(lecture.path() + "/movie.mp4");
             System.out.println(command);
             recordProcess = new ProcessBuilder(command).start();
+            recordProcess.waitFor();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
