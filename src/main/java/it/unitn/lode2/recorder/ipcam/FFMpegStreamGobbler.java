@@ -37,11 +37,10 @@ public class FFMpegStreamGobbler extends Thread {
             while( !toTerminate && (line = br.readLine()) != null ) {
                 // [Parsed_ebur128_0 @ 0x7fe36bc1a140] t: 52.0867    M: -66.6 S: -63.5     I: -24.7 LUFS     LRA:  21.0 LU
                 if( line.startsWith("[Parsed_ebur128") ){
-                    // StringIndexOutOfBoundsException
                     try {
-                        String substring = line.substring(52, 59);
-                        //Float m = (Float.parseFloat(substring)+73)*2/100;
-                        //Float m = Float.parseFloat(substring);
+                        int start = line.indexOf("M:") + 2;
+                        int end = line.indexOf("S:", start);
+                        String substring = line.substring(start, end);
                         Double m = Double.parseDouble(substring);
                         Platform.runLater(() -> lufs.setValue(m));
                     } catch (StringIndexOutOfBoundsException ex) {
