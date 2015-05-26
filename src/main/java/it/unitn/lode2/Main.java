@@ -5,7 +5,11 @@ import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.asset.LodePrefs;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.asset.xml.XmlLodePrefsImpl;
+import it.unitn.lode2.postproduction.PostProducer;
+import it.unitn.lode2.postproduction.impl.PostProducerBuilder;
 import it.unitn.lode2.ui.controllers.WizardController;
+import it.unitn.lode2.xml.XMLHelper;
+import it.unitn.lode2.xml.ipcam.XMLCameraIPConf;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -16,6 +20,7 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -34,6 +39,13 @@ public class Main extends Application {
         Setup.checkAndSetupFfmpeg(primaryStage);
         Setup.checkAndSetupIpCam(primaryStage);
 
+        // Post producer
+        XMLCameraIPConf cameraIPConf = XMLHelper.build(XMLCameraIPConf.class).unmarshal(new File(Constants.CAMERA_CONF));
+        PostProducer postProducer = PostProducerBuilder.create()
+                .command(cameraIPConf.getConvCommand())
+                .ffmpeg(lodePrefs.getFfmpegPath())
+                .build();
+        IOC.registerUtility(postProducer, PostProducer.class);
 
         // There's a lecture to record?
         if( lodePrefs.lastUsedCourses().size()>0 ){

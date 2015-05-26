@@ -39,6 +39,7 @@ public class XMLCameraIPConf {
 
     private String snapshot;
     private String recordCommand;
+    private String convCommand;
 
     @XmlElement(name = "AUTH")
     public AuthMode getAuthMode() {
@@ -138,6 +139,15 @@ public class XMLCameraIPConf {
     @XmlElement(name = "RECORD_COMMAND")
     public String getRecordCommand() {
         return recordCommand;
+    }
+
+    @XmlElement(name = "CONV_COMMAND")
+    public String getConvCommand() {
+        return convCommand;
+    }
+
+    public void setConvCommand(String convCommand) {
+        this.convCommand = convCommand;
     }
 
     public void setCgiPort(Integer cgiPort) {

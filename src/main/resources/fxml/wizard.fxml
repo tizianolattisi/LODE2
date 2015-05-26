@@ -42,7 +42,9 @@
   </content>
 </Tab><Tab text="Post process">
   <content>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+<children><Label layoutX="14.0" layoutY="14.0" text="Post process." /><Button fx:id="postProcessButton" layoutX="31.17632293701172" layoutY="50.0" mnemonicParsing="false" text="Execute post process" />
+</children></AnchorPane>
   </content>
 </Tab>
   </tabs>

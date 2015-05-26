@@ -9,6 +9,7 @@ import it.unitn.lode2.asset.LodePrefs;
 import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.asset.xml.XmlLectureImpl;
+import it.unitn.lode2.postproduction.PostProducer;
 import it.unitn.lode2.slidejuicer.Juicer;
 import it.unitn.lode2.slidejuicer.pdf.PdfJuicerImpl;
 import javafx.application.Platform;
@@ -79,6 +80,9 @@ public class WizardController implements Initializable {
 
     @FXML
     private Button recordingSessionButton;
+
+    @FXML
+    private Button postProcessButton;
 
     @FXML
     private Button exitWizardButton;
@@ -220,6 +224,12 @@ public class WizardController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        });
+
+        postProcessButton.setOnAction(event -> {
+            Lecture lecture = lecturesListView.getSelectionModel().selectedItemProperty().get();
+            PostProducer producer = IOC.queryUtility(PostProducer.class);
+            producer.convert(lecture);
         });
 
         exitWizardButton.setOnAction(event -> {
