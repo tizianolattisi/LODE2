@@ -64,9 +64,9 @@
             <tbody>
             <tr ng-repeat="lecture in lectures">
                 <td>{{lecture.number}}</td>
-                <td align='center'>2013-03-07<br><br>1h 13m 10s
+                <td align='center'>{{lecture.date}}<br><br>{{lecture.lenght}}
                 </td>
-                <td align='center'>Luigi Palopoli<br><br>{{lecture.title}}</td>
+                <td align='center'>{{lecture.lecturer}}<br><br>{{lecture.title}}</td>
                 <td align='center'><a href="#tcloud2_zoom" id ="flash_tcloud_link_2"><div id="tcloud2">
                 </div>
                 </a>

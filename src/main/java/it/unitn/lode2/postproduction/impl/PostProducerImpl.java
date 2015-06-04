@@ -1,5 +1,6 @@
 package it.unitn.lode2.postproduction.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.mapformat.MessageMapFormat;
@@ -148,5 +149,31 @@ public class PostProducerImpl implements PostProducer{
                 e.printStackTrace();
             }
         }
+        // json
+        List<Map<String, Object>> lectures = new ArrayList<>();
+        for( Lecture lecture: course.lectures() ) {
+            Map<String, Object> lectureData = new HashMap<>();
+            lectureData.put("number", lecture.number().toString());
+            lectureData.put("lenght", lecture.videoLength());
+            lectureData.put("lecturer", lecture.lecturer());
+            lectureData.put("title", lecture.name());
+            lectureData.put("slides", "lectures/" + lecture.name() + "/sources/");
+            lectureData.put("video", "lectures/" + lecture.name() + "/index.html");
+            lectureData.put("zip", "downloads/" + lecture.name() + ".zip");
+            lectureData.put("note", "...uhm... e le note da dove le prendo?");
+            if (lecture.date() != null) {
+                lectureData.put("date", lecture.date().toString());
+            } else {
+                lectureData.put("date", "-");
+            }
+            lectures.add(lectureData);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            mapper.writeValue(new File(course.path() + "/Website/lectures.json"), lectures);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
