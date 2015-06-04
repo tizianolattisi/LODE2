@@ -86,6 +86,9 @@ public class WizardController implements Initializable {
     private Button postProcessButton;
 
     @FXML
+    private Button createWebsiteButton;
+
+    @FXML
     private Button exitWizardButton;
 
 
@@ -238,6 +241,12 @@ public class WizardController implements Initializable {
             PostProducer producer = IOC.queryUtility(PostProducer.class);
             producer.convert(lecture);
             producer.createDistribution(lecture);
+        });
+
+        createWebsiteButton.setOnAction(event -> {
+            Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
+            PostProducer producer = IOC.queryUtility(PostProducer.class);
+            producer.createWebsite(course);
         });
 
         exitWizardButton.setOnAction(event -> {

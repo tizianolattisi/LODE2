@@ -1,5 +1,6 @@
 package it.unitn.lode2.postproduction.impl;
 
+import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.mapformat.MessageMapFormat;
 import it.unitn.lode2.postproduction.PostProducer;
@@ -119,6 +120,33 @@ public class PostProducerImpl implements PostProducer{
             FileUtils.copyDirectory(slidesFileSourceDir, slidesFileDestDir);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void createWebsite(Course course) {
+        // template
+        File srcDir = new File(PostProducer.class.getResource("/templateindexhtml").getFile());
+        File destDir = new File(course.path() + "/Website");
+        try {
+            if( srcDir.exists() ) {
+                FileUtils.deleteDirectory(destDir);
+            }
+            FileUtils.copyDirectory(srcDir, destDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // lectures
+        File lecturesDir = new File(course.path() + "/Website/lectures");
+        lecturesDir.mkdir();
+        for( Lecture lecture: course.lectures() ){
+            File lectureSrcDir = new File(course.path() + "/Distribution/" + lecture.name());
+            File lectureDestDir = new File(course.path() + "/Website/lectures/" + lecture.name());
+            try {
+                FileUtils.copyDirectory(lectureSrcDir, lectureDestDir);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

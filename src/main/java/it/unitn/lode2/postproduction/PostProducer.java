@@ -1,5 +1,6 @@
 package it.unitn.lode2.postproduction;
 
+import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 
 
@@ -11,5 +12,7 @@ public interface PostProducer {
     void convert(Lecture lecture);
 
     void createDistribution(Lecture lecture);
+
+    void createWebsite(Course course);
 
 }
