@@ -27,6 +27,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -212,6 +213,12 @@ public class WizardController implements Initializable {
             }
             progress.set(1.0);
             lecture.save();
+            File destFile = new File(lecture.path() + "/Sources/" + file.getName());
+            try {
+                FileUtils.copyFile(file, destFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
             setLastCourse(course);
             refreshCourses();

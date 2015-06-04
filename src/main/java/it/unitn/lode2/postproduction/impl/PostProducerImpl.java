@@ -111,5 +111,14 @@ public class PostProducerImpl implements PostProducer{
         info.setDynamic_url("http://latemar.science.unitn.it/LODE");
         data.setInfo(info);
         XMLHelper.build(XMLData.class).marshall(data, new File(distributionDir + "/content/data.xml"));
+
+        // sources
+        File slidesFileSourceDir = new File(lecture.path() + "/Sources");
+        File slidesFileDestDir = new File(distributionDir + "/content/sources");
+        try {
+            FileUtils.copyDirectory(slidesFileSourceDir, slidesFileDestDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

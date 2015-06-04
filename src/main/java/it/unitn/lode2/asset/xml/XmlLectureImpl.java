@@ -174,6 +174,7 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
         if( !folder.exists() ){
             folder.mkdir();
             new File(folderPath + "/Slides").mkdir();
+            new File(folderPath + "/Sources").mkdir();
         }
         XMLHelper.build(XMLLecture.class).marshall(lecture, new File(folderPath + "/LECTURE.XML"));
         XMLHelper.build(XMLLodeSlides.class).marshall(slides, new File(folderPath + "/SLIDES.XML"));
