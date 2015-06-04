@@ -150,11 +150,15 @@ public class PostProducerImpl implements PostProducer{
             }
         }
         // json
+        Map<String, Object> courseIndex = new HashMap<>();
+        courseIndex.put("name", course.name());
+        courseIndex.put("year", course.year());
         List<Map<String, Object>> lectures = new ArrayList<>();
         for( Lecture lecture: course.lectures() ) {
             Map<String, Object> lectureData = new HashMap<>();
             lectureData.put("number", lecture.number().toString());
-            lectureData.put("lenght", lecture.videoLength());
+            int[] componentTimes = splitHoursMinutesSeconds(lecture.videoLength());
+            lectureData.put("length", componentTimes[0] + "h " + componentTimes[1] + "m " + componentTimes[2] + "s");
             lectureData.put("lecturer", lecture.lecturer());
             lectureData.put("title", lecture.name());
             lectureData.put("slides", "lectures/" + lecture.name() + "/sources/");
@@ -168,12 +172,26 @@ public class PostProducerImpl implements PostProducer{
             }
             lectures.add(lectureData);
         }
+        courseIndex.put("lectures", lectures);
         ObjectMapper mapper = new ObjectMapper();
         try {
-            mapper.writeValue(new File(course.path() + "/Website/lectures.json"), lectures);
+            mapper.writeValue(new File(course.path() + "/Website/course.json"), courseIndex);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
+
+    private static int[] splitHoursMinutesSeconds(Long seconds)
+    {
+        int hours = seconds.intValue() / 3600;
+        int remainder = seconds.intValue() - hours * 3600;
+        int mins = remainder / 60;
+        remainder = remainder - mins * 60;
+        int secs = remainder;
+
+        int[] ints = {hours , mins , secs};
+        return ints;
+    }
+
 }

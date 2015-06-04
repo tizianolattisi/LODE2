@@ -17,20 +17,20 @@
     </head>
 <body ng-app="App">
 
-<div id="container">
+<div id="container" ng-controller="CourseCtrl">
 
     <div id="header">
         <table id="infoTable">
             <tr>
                 <td class="top-left"></td>
                 <td>Course name: </td>
-                <td>Architettura degli Elaboratori</td>
+                <td>{{course.name}}</td>
                 <td class="top-right"></td>
             </tr>
             <tr>
                 <td class="foot-left"></td>
                 <td>Year: </td>
-                <td>2013</td>
+                <td>{{course.year}}</td>
                 <td class="foot-right"></td>
             </tr>
         </table>
@@ -38,7 +38,7 @@
 
     <div id="footer"></div>
 
-    <div id="content" ng-controller="LecturesCtrl">
+    <div id="content">
         <table id="table">
             <caption></caption>
             <thead>
@@ -62,9 +62,9 @@
             </tr>
             </tfoot>
             <tbody>
-            <tr ng-repeat="lecture in lectures">
+            <tr ng-repeat="lecture in course.lectures">
                 <td>{{lecture.number}}</td>
-                <td align='center'>{{lecture.date}}<br><br>{{lecture.lenght}}
+                <td align='center'>{{lecture.date}}<br><br>{{lecture.length}}
                 </td>
                 <td align='center'>{{lecture.lecturer}}<br><br>{{lecture.title}}</td>
                 <td align='center'><a href="#tcloud2_zoom" id ="flash_tcloud_link_2"><div id="tcloud2">

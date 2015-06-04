@@ -24,10 +24,10 @@ app
         }
     })
 
-    .controller("LecturesCtrl", function($scope, $http) {
-    $http.get('lectures.json').
+    .controller("CourseCtrl", function($scope, $http) {
+    $http.get('course.json').
         success(function(data, status, headers, config) {
-            $scope.lectures = data;
+            $scope.course = data;
         }).
         error(function(data, status, headers, config) {
             // log error
