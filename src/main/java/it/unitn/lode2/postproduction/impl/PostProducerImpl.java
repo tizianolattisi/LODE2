@@ -164,7 +164,7 @@ public class PostProducerImpl implements PostProducer{
             lectureData.put("slides", "lectures/" + lecture.name() + "/sources/");
             lectureData.put("video", "lectures/" + lecture.name() + "/index.html");
             lectureData.put("zip", "downloads/" + lecture.name() + ".zip");
-            lectureData.put("note", "...uhm... e le note da dove le prendo?");
+            lectureData.put("note", "");
             if (lecture.date() != null) {
                 lectureData.put("date", lecture.date().toString());
             } else {
