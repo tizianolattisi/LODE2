@@ -186,6 +186,7 @@ public class WizardController implements Initializable {
                 lecture.setName(name);
                 lecture.setLecturer(lecturer);
                 lecture.setNumber(number);
+                lecture.setDate(new Date());
                 lecture.save();
                 course.addLecture(lecture);
                 course.save();
