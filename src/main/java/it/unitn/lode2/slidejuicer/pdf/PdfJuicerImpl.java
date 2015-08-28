@@ -3,6 +3,8 @@ package it.unitn.lode2.slidejuicer.pdf;
 import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlSlideImpl;
 import it.unitn.lode2.slidejuicer.Juicer;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 
@@ -26,6 +28,9 @@ public class PdfJuicerImpl implements Juicer {
     List<PDPage> pages;
 
     public PdfJuicerImpl() {
+        Logger.getLogger("org.apache.pdfbox.util.PDFStreamEngine").setLevel(Level.OFF);
+        Logger.getLogger("org.apache.pdfbox.util").setLevel(Level.OFF);
+        Logger.getLogger("org.apache.pdfbox").setLevel(Level.OFF);
     }
 
     public static Juicer build(){
@@ -50,6 +55,9 @@ public class PdfJuicerImpl implements Juicer {
         return this;
     }
 
+    /*
+     *  XXX: non usa l'iteratore!
+     */
     @Override
     public List<Slide> extract(){
         List<Slide> slides = new ArrayList<>();
@@ -85,9 +93,7 @@ public class PdfJuicerImpl implements Juicer {
     @Override
     public Iterator<Slide> iterator() {
 
-
         Iterator<Slide> myIterator = new Iterator<Slide>() {
-
 
             Integer i = 0;
 
@@ -100,7 +106,6 @@ public class PdfJuicerImpl implements Juicer {
             public Slide next() {
                 Slide slide = null;
                 try {
-                    System.out.println(i);
                     PDPage page = pages.get(i);
                     i++;
                     BufferedImage bufferedImage = page.convertToImage();

@@ -12,9 +12,8 @@ import it.unitn.lode2.asset.xml.XmlLectureImpl;
 import it.unitn.lode2.postproduction.PostProducer;
 import it.unitn.lode2.slidejuicer.Juicer;
 import it.unitn.lode2.slidejuicer.pdf.PdfJuicerImpl;
-import javafx.application.Platform;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -202,20 +201,28 @@ public class WizardController implements Initializable {
             fileChooser.getExtensionFilters().add(extension);
             File file = fileChooser.showOpenDialog(root.getScene().getWindow());
             Lecture lecture = lecturesListView.getSelectionModel().selectedItemProperty().get();
-            SimpleDoubleProperty progress = new SimpleDoubleProperty(0.0);
-            slideImportProgressBar.progressProperty().bind(progress);
-            /*
-            PdfJuicerImpl.build().slide(file).output(lecture.path() + "/Slides/")
-                    .extract().stream().forEach(s -> lecture.addSlide(s));
-                    */
-            Juicer juicer = PdfJuicerImpl.build();
-            Iterator<Slide> iterator = juicer.slide(file).output(lecture.path() + "/Slides/").iterator();
-            double d = 1.0 / juicer.size();
-            while (iterator.hasNext()) {
-                lecture.addSlide(iterator.next());
-                Platform.runLater(() -> progress.set(progress.getValue() + d));
-            }
-            progress.set(1.0);
+
+            Task<Void> task = new Task<Void>() {
+                @Override
+                public Void call() {
+                    Juicer juicer = PdfJuicerImpl.build();
+                    Iterator<Slide> iterator = juicer.slide(file).output(lecture.path() + "/Slides/").iterator();
+                    Integer n = juicer.size();
+                    Integer done = 0;
+                    while (iterator.hasNext()) {
+                        lecture.addSlide(iterator.next());
+                        updateProgress(++done, n);
+                    }
+                    updateProgress(n, n);
+                    return null;
+                }
+            };
+
+            slideImportProgressBar.progressProperty().bind(task.progressProperty());
+            Thread thread = new Thread(task);
+            //thread.setDaemon(true);
+            thread.start();
+
             lecture.save();
             File destFile = new File(lecture.path() + "/Sources/" + file.getName());
             try {
