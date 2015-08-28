@@ -55,32 +55,12 @@ public class PdfJuicerImpl implements Juicer {
         return this;
     }
 
-    /*
-     *  XXX: non usa l'iteratore!
-     */
     @Override
     public List<Slide> extract(){
         List<Slide> slides = new ArrayList<>();
-        if( slide.exists() ){
-            try {
-                PDDocument document = PDDocument.load(slide);
-                List<PDPage> pages = document.getDocumentCatalog().getAllPages();
-                Integer i=0;
-                for( PDPage page: pages ){
-                    i++;
-                    BufferedImage bufferedImage = page.convertToImage();
-                    String fileName = i + ".png";
-                    File outputfile = new File(path + fileName);
-                    ImageIO.write(bufferedImage, "png", outputfile);
-                    Slide slide = new XmlSlideImpl("Slides/" + fileName, "title", "text");
-                    slides.add(slide);
-                }
-                document.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return slides;
-            }
-
+        Iterator<Slide> iterator = iterator();
+        while( iterator.hasNext() ){
+            slides.add(iterator.next());
         }
         return slides;
     }
@@ -112,7 +92,7 @@ public class PdfJuicerImpl implements Juicer {
                     String fileName = i + ".png";
                     File outputfile = new File(path + fileName);
                     ImageIO.write(bufferedImage, "png", outputfile);
-                    slide = new XmlSlideImpl("Slides/" + fileName, "title", "text");
+                    slide = new XmlSlideImpl("Slides/" + fileName, "Slide " + i, "");
                 } catch (IOException e) {
 
                 }
