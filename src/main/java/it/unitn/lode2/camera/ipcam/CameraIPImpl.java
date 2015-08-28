@@ -3,10 +3,13 @@ package it.unitn.lode2.camera.ipcam;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.AbstractCamera;
 import it.unitn.lode2.camera.ipcam.connection.ConnectionProvider;
+import it.unitn.lode2.mapformat.MessageMapFormat;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * User: tiziano
@@ -79,7 +82,11 @@ public class CameraIPImpl extends AbstractCamera {
 
     @Override
     public void goToPreset(String preset) throws IOException {
-        executeGET(presetUrl + preset);
+        MessageMapFormat mmp = new MessageMapFormat(presetUrl);
+        Map<String, Object> map = new HashMap();
+        map.put("preset", preset);
+        String goToPreset = mmp.format(map);
+        executeGET(goToPreset);
     }
 
     @Override
