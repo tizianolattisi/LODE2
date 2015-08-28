@@ -226,6 +226,7 @@ public class WizardController implements Initializable {
                         updateProgress(++done, n);
                     }
                     updateProgress(n, n);
+                    lecture.save();
                     return null;
                 }
             };
