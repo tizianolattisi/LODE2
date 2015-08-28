@@ -32,7 +32,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.function.IntConsumer;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -70,6 +72,9 @@ public class WizardController implements Initializable {
     private Button importSlideButton;
 
     @FXML
+    private Button skipSlideButton;
+
+    @FXML
     private ListView<Slide> slidesListView;
 
     @FXML
@@ -91,7 +96,7 @@ public class WizardController implements Initializable {
     private Button exitWizardButton;
 
 
-
+    private IntConsumer refreshPane = (s) -> IntStream.range(0, tabPane.getTabs().size()).forEach(i -> tabPane.getTabs().get(i).setDisable(i>s));
 
     public class CourseFormatCell extends ListCell<Course> {
         @Override
@@ -144,6 +149,7 @@ public class WizardController implements Initializable {
             if (newCourse != null) {
                 refreshLectures(newCourse.lectures());
                 tabPane.getSelectionModel().select(1);
+                refreshPane.accept(1);
                 courseNameLabel.setText(newCourse.name());
             }
         });
@@ -151,6 +157,7 @@ public class WizardController implements Initializable {
             if (newLecture != null) {
                 refreshSlides(newLecture.slides());
                 tabPane.getSelectionModel().select(2);
+                refreshPane.accept(2);
                 courseAndLectureName.setText(newLecture.name());
             }
         });
@@ -193,6 +200,11 @@ public class WizardController implements Initializable {
                 refreshLectures(course.lectures());
 
             });
+        });
+
+        skipSlideButton.setOnAction(event -> {
+            refreshPane.accept(3);
+            tabPane.getSelectionModel().select(4); // TODO: check if recording session present
         });
 
         importSlideButton.setOnAction(event -> {
@@ -283,15 +295,15 @@ public class WizardController implements Initializable {
             refreshCourses();
         });
 
-    }
+        // Tab setup
+        refreshPane.accept(0);
 
-    private void refreshPane(){
-        tabPane.getTabs().get(1).setDisable(true);
-        tabPane.getTabs().get(2).setDisable(true);
-        tabPane.getTabs().get(2).setDisable(true);
-        tabPane.getTabs().get(2).setDisable(true);
     }
-
+/*
+    private void refreshPane(Integer step){
+        IntStream.range(0, tabPane.getTabs().size()).forEach(i -> tabPane.getTabs().get(i).setDisable(i>step));
+    }
+*/
     public void setLodeCoursesPath(String path){
         lodePath = path;
         refreshCourses();
