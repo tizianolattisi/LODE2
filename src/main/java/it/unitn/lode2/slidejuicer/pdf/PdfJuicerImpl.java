@@ -7,11 +7,13 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.util.PDFTextStripper;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +27,7 @@ public class PdfJuicerImpl implements Juicer {
     private String path = "./";
 
     PDDocument document = null;
+    PDFTextStripper textStripper = null;
     List<PDPage> pages;
 
     public PdfJuicerImpl() {
@@ -43,6 +46,7 @@ public class PdfJuicerImpl implements Juicer {
         try {
             document = PDDocument.load(slide);
             pages = document.getDocumentCatalog().getAllPages();
+            textStripper = new PDFTextStripper();
         } catch (IOException e) {
             pages = new ArrayList<>();
         }
@@ -86,13 +90,20 @@ public class PdfJuicerImpl implements Juicer {
             public Slide next() {
                 Slide slide = null;
                 try {
+                    // text
+                    StringWriter textWriter = new StringWriter();
+                    textStripper.setStartPage(i);
+                    textStripper.setEndPage(i);
+                    textStripper.writeText(document, textWriter);
+                    // image
                     PDPage page = pages.get(i);
                     i++;
                     BufferedImage bufferedImage = page.convertToImage();
                     String fileName = i + ".png";
                     File outputfile = new File(path + fileName);
                     ImageIO.write(bufferedImage, "png", outputfile);
-                    slide = new XmlSlideImpl("Slides/" + fileName, "Slide " + i, "");
+                    // create slide
+                    slide = new XmlSlideImpl("Slides/" + fileName, "Slide " + i, textWriter.toString());
                 } catch (IOException e) {
 
                 }
