@@ -35,6 +35,7 @@ public interface Lecture {
 
     List<Slide> slides();
     void addSlide(Slide slide);
+    void replaceSlide(Integer position, Slide slide);
     Slide slide(Integer seqNumber);
 
     List<TimedSlide> timedSlides();

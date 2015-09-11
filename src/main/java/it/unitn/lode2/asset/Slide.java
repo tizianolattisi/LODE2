@@ -9,5 +9,7 @@ public interface Slide {
 
     String filename();
     String title();
+    void setTitle(String title);
     String text();
+    void setText(String text);
 }

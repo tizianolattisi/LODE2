@@ -11,8 +11,8 @@ import it.unitn.lode2.asset.Slide;
 public class XmlSlideImpl extends AbstractSlide implements Slide{
 
     private final String filename;
-    private final String title;
-    private final String text;
+    private String title;
+    private String text;
 
     public XmlSlideImpl(String filename, String title, String text) {
         this.filename = filename;
@@ -31,7 +31,17 @@ public class XmlSlideImpl extends AbstractSlide implements Slide{
     }
 
     @Override
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Override
     public String text() {
         return text;
+    }
+
+    @Override
+    public void setText(String text) {
+        this.text = text;
     }
 }

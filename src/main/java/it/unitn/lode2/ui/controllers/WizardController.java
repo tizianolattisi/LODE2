@@ -9,6 +9,7 @@ import it.unitn.lode2.asset.LodePrefs;
 import it.unitn.lode2.asset.Slide;
 import it.unitn.lode2.asset.xml.XmlCourseImpl;
 import it.unitn.lode2.asset.xml.XmlLectureImpl;
+import it.unitn.lode2.asset.xml.XmlSlideImpl;
 import it.unitn.lode2.postproduction.PostProducer;
 import it.unitn.lode2.slidejuicer.Juicer;
 import it.unitn.lode2.slidejuicer.pdf.PdfJuicerImpl;
@@ -67,6 +68,9 @@ public class WizardController implements Initializable {
 
     @FXML
     private Button newLectureButton;
+
+    @FXML
+    private Button editSlideButton;
 
     @FXML
     private Button importSlideButton;
@@ -205,6 +209,23 @@ public class WizardController implements Initializable {
         skipSlideButton.setOnAction(event -> {
             refreshPane.accept(3);
             tabPane.getSelectionModel().select(4); // TODO: check if recording session present
+        });
+
+        editSlideButton.setOnAction(event -> {
+            int position = slidesListView.getSelectionModel().getSelectedIndex();
+            XmlSlideImpl slide = (XmlSlideImpl) slidesListView.getSelectionModel().getSelectedItem();
+            if( slide != null ){
+                TextInputDialog dialog = new TextInputDialog(slide.title());
+                dialog.setTitle("Edit slide title");
+                dialog.setContentText("Title:");
+                dialog.showAndWait().ifPresent(t -> {
+                    slide.setTitle(t);
+                    Lecture lecture = lecturesListView.getSelectionModel().selectedItemProperty().get();
+                    lecture.replaceSlide(position, slide);
+                    refreshSlides(lecture.slides());
+                    lecture.save();
+                });
+            }
         });
 
         importSlideButton.setOnAction(event -> {

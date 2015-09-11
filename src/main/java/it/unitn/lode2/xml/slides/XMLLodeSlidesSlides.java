@@ -19,6 +19,11 @@ public class XMLLodeSlidesSlides {
         slides.add(s);
     }
 
+    public void replaceSlide(Integer position, XMLLodeSlidesSlidesSlide s){
+        slides.remove(position.intValue());
+        slides.add(position, s);
+    }
+
     @XmlElement(name = "SLIDE")
     public List<XMLLodeSlidesSlidesSlide> getSlides() {
         return slides;
