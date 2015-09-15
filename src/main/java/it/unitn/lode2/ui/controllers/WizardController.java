@@ -79,6 +79,9 @@ public class WizardController implements Initializable {
     private Button skipSlideButton;
 
     @FXML
+    private Button toPostProcessButton;
+
+    @FXML
     private ListView<Slide> slidesListView;
 
     @FXML
@@ -208,7 +211,12 @@ public class WizardController implements Initializable {
 
         skipSlideButton.setOnAction(event -> {
             refreshPane.accept(3);
-            tabPane.getSelectionModel().select(4); // TODO: check if recording session present
+            tabPane.getSelectionModel().select(3);
+        });
+
+        toPostProcessButton.setOnAction(event -> {
+            refreshPane.accept(4);
+            tabPane.getSelectionModel().select(4);
         });
 
         editSlideButton.setOnAction(event -> {
