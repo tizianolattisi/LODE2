@@ -16,9 +16,9 @@
     <TILTUP>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveUp</TILTUP>
     <TILTDOWN>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveDown</TILTDOWN>
     <TILTSTOP>/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun</TILTSTOP>
-    <PRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzGotoPresetPoint&amp;name=</PRESET>
-    <ADDPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzAddPresetPoint&amp;name=</ADDPRESET>
-    <DELPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzDeletePresetPoint&amp;name=</DELPRESET>
+    <PRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzGotoPresetPoint&amp;name=${preset}</PRESET>
+    <ADDPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzAddPresetPoint&amp;name=${preset}</ADDPRESET>
+    <DELPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzDeletePresetPoint&amp;name=${preset}</DELPRESET>
     <SNAPSHOT>/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2</SNAPSHOT>
     <RECORD_COMMAND>${ffmpeg} -rtsp_transport tcp -stimeout 5000000 -i ${input} -strict -2 -c:a aac -b:a 32k -vn -f mpegts -filter:a ebur128 out.ts -c:v copy -c:a copy -y</RECORD_COMMAND>
     <CONV_COMMAND>${ffmpeg} -i ${input} -strict -2 -c:a aac -b:a 8k -c:v copy </CONV_COMMAND>
