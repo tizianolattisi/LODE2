@@ -64,6 +64,7 @@ public class CameraIPBuilder {
             Map<String, Object> map = new HashMap();
             map.put("user", user);
             map.put("password", password);
+            map.put("preset", "${preset}");
             String relativeUrl = mmp.format(map);
             String url = "http://" + host + ":" + port + relativeUrl;
             urls.put(cmd, url);

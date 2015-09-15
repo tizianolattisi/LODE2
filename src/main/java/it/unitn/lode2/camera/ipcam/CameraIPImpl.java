@@ -82,22 +82,24 @@ public class CameraIPImpl extends AbstractCamera {
 
     @Override
     public void goToPreset(String preset) throws IOException {
-        MessageMapFormat mmp = new MessageMapFormat(presetUrl);
-        Map<String, Object> map = new HashMap();
-        map.put("preset", preset);
-        String goToPreset = mmp.format(map);
-        executeGET(goToPreset);
+        executeGET(mapPresetUrl(preset, presetUrl));
     }
 
     @Override
     public void delPreset(String preset) throws IOException {
-        executeGET(presetDelUrl + preset);
-
+        executeGET(mapPresetUrl(preset, presetDelUrl));
     }
 
     @Override
     public void addPreset(String preset) throws IOException {
-        executeGET(presetAddUrl + preset);
+        executeGET(mapPresetUrl(preset, presetAddUrl));
+    }
+
+    private String mapPresetUrl(String preset, String url) {
+        MessageMapFormat mmp = new MessageMapFormat(url);
+        Map<String, Object> map = new HashMap();
+        map.put("preset", preset);
+        return mmp.format(map);
     }
 
     public void setZoomInUrl(String zoomInUrl) {
