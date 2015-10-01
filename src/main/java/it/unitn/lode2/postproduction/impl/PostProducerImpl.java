@@ -38,13 +38,17 @@ public class PostProducerImpl implements PostProducer{
     public void convert(Lecture lecture) {
         MessageMapFormat mmp = new MessageMapFormat(commandTemplate);
         Map<String, Object> map = new HashMap();
-        map.put("ffmpeg", ffmpeg);
+        //map.put("ffmpeg", ffmpeg);
         String input = lecture.path() + "/movie001.mov";
         map.put("input", "${input}");
+        map.put("ffmpeg", "${ffmpeg}");
         this.partialCommand = mmp.format(map);
         try {
             List<String> command = new ArrayList(Arrays.asList(partialCommand.split(" ")));
-            command = command.stream().map(s -> !"${input}".equals(s) ? s : input).collect(Collectors.toList());
+            command = command.stream()
+                    .map(s -> !"${input}".equals(s) ? s : input)
+                    .map(s -> !"${ffmpeg}".equals(s) ? s : ffmpeg)
+                    .collect(Collectors.toList());
             command.add(lecture.path() + "/movie.mp4");
             System.out.println(command);
             recordProcess = new ProcessBuilder(command).start();
