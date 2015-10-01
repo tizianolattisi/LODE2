@@ -32,7 +32,7 @@
 <Font name="System Bold Italic" size="13.0" />
 </font>
 </Label>
-                        <Button fx:id="skipSlideButton" layoutX="397.0" layoutY="116.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="skip" />
+                        <Button fx:id="skipSlideButton" layoutX="397.0" layoutY="116.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="&gt;&gt;" />
                         <Button fx:id="editSlideButton" layoutX="397.0" layoutY="80.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="edit" />
 </children></AnchorPane>
   </content>
