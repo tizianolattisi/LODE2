@@ -117,6 +117,7 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
                 .get(0);
     }
 
+
     @Override
     public void addSlide(Slide slide) {
         int n = slides.getXMLLodeSlidesSlides().getSlides().size();
@@ -134,7 +135,7 @@ public class XmlLectureImpl extends AbstractLecture implements Lecture {
         xmlLodeSlidesSlidesSlide.setFileName(slide.filename());
         xmlLodeSlidesSlidesSlide.setText(slide.text());
         xmlLodeSlidesSlidesSlide.setTitle(slide.title());
-        xmlLodeSlidesSlidesSlide.setSequenceNumber(position);
+        xmlLodeSlidesSlidesSlide.setSequenceNumber(position+1);
         slides.getXMLLodeSlidesSlides().replaceSlide(position, xmlLodeSlidesSlidesSlide);
     }
 
