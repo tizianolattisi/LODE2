@@ -70,7 +70,7 @@ public class PostProducerImpl implements PostProducer{
         File srcDir = new File(PostProducer.class.getResource("/templatehtml").getFile());
         File destDir = new File(distributionDir);
         try {
-            if( srcDir.exists() ) {
+            if( destDir.exists() ) {
                 FileUtils.deleteDirectory(destDir);
             }
             FileUtils.copyDirectory(srcDir, destDir);
