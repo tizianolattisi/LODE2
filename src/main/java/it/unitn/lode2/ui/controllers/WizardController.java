@@ -104,6 +104,8 @@ public class WizardController implements Initializable {
 
 
     private IntConsumer refreshPane = (s) -> IntStream.range(0, tabPane.getTabs().size()).forEach(i -> tabPane.getTabs().get(i).setDisable(i>s));
+    private Course course = null;
+    private Lecture lecture = null;
 
     public class CourseFormatCell extends ListCell<Course> {
         @Override
@@ -153,7 +155,8 @@ public class WizardController implements Initializable {
         lecturesListView.setCellFactory(list -> new LectureFormatCell());
         slidesListView.setCellFactory(list -> new SlideFormatCell());
         coursesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldCourse, newCourse) -> {
-            if (newCourse != null) {
+            if (newCourse != null && newCourse != course) {
+                setCurrentCourse(newCourse);
                 refreshLectures(newCourse.lectures());
                 tabPane.getSelectionModel().select(1);
                 refreshPane.accept(1);
@@ -161,10 +164,16 @@ public class WizardController implements Initializable {
             }
         });
         lecturesListView.getSelectionModel().selectedItemProperty().addListener((observable, oldLecture, newLecture) -> {
-            if (newLecture != null) {
+            if (newLecture != null && newLecture != lecture) {
+                setCurrentLecture(newLecture);
                 refreshSlides(newLecture.slides());
-                tabPane.getSelectionModel().select(2);
-                refreshPane.accept(2);
+                if( newLecture.slides().size()>0 ) {
+                    tabPane.getSelectionModel().select(2);
+                    refreshPane.accept(3);
+                } else {
+                    tabPane.getSelectionModel().select(2);
+                    refreshPane.accept(2);
+                }
                 courseAndLectureName.setText(newLecture.name());
             }
         });
@@ -179,13 +188,13 @@ public class WizardController implements Initializable {
                 course.setName(name);
                 course.setYear(Calendar.getInstance().get(Calendar.YEAR));
                 course.save();
+                setCurrentCourse(course);
                 setLastCourse(course);
                 refreshCourses();
             });
         });
 
         newLectureButton.setOnAction(event -> {
-            Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
             TextInputDialog dialog = new TextInputDialog("new lecture title");
             dialog.setTitle("New lecture creation");
             dialog.setHeaderText("Insert the title of the new lecture of the '" + course.name() + "' course.");
@@ -201,11 +210,11 @@ public class WizardController implements Initializable {
                 lecture.setNumber(number);
                 lecture.setDate(new Date());
                 lecture.save();
+                setCurrentLecture(lecture);
                 course.addLecture(lecture);
                 course.save();
                 setLastCourse(course);
                 refreshLectures(course.lectures());
-
             });
         });
 
@@ -228,7 +237,6 @@ public class WizardController implements Initializable {
                 dialog.setContentText("Title:");
                 dialog.showAndWait().ifPresent(t -> {
                     slide.setTitle(t);
-                    Lecture lecture = lecturesListView.getSelectionModel().selectedItemProperty().get();
                     lecture.replaceSlide(position, slide);
                     refreshSlides(lecture.slides());
                     lecture.save();
@@ -241,7 +249,6 @@ public class WizardController implements Initializable {
             FileChooser.ExtensionFilter extension = new FileChooser.ExtensionFilter("Select pdf file to import", "*.pdf");
             fileChooser.getExtensionFilters().add(extension);
             File file = fileChooser.showOpenDialog(root.getScene().getWindow());
-            Lecture lecture = lecturesListView.getSelectionModel().selectedItemProperty().get();
 
             Task<Void> task = new Task<Void>() {
                 @Override
@@ -258,6 +265,12 @@ public class WizardController implements Initializable {
                     lecture.save();
                     return null;
                 }
+
+                @Override
+                protected void succeeded() {
+                    refreshSlides(lecture.slides());
+                    refreshPane.accept(3);
+                }
             };
 
             slideImportProgressBar.progressProperty().bind(task.progressProperty());
@@ -272,33 +285,31 @@ public class WizardController implements Initializable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
             setLastCourse(course);
-            refreshCourses();
+            //refreshCourses();
+            //refreshSlides(lecture.slides());
         });
 
         recordingSessionButton.setOnAction(event -> {
-            Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
             try {
-                RecordingSessionLaucher.launch(new Stage(), course.path());
+                RecordingSessionLaucher.launch(new Stage(), course.path(), lecture.name());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
 
         postProcessButton.setOnAction(event -> {
-            Lecture lecture = lecturesListView.getSelectionModel().selectedItemProperty().get();
             PostProducer producer = IOC.queryUtility(PostProducer.class);
             producer.convert(lecture);
             producer.createDistribution(lecture);
         });
 
         createWebsiteButton.setOnAction(event -> {
-            Course course = coursesListView.getSelectionModel().selectedItemProperty().get();
             PostProducer producer = IOC.queryUtility(PostProducer.class);
             producer.createWebsite(course);
         });
 
+        /* Disabled
         exitWizardButton.setOnAction(event -> {
             File lodeHome = new File(Constants.LODE_COURSES);
             List<Course> courses = Arrays.asList(lodeHome.list((dir, name) -> new File(dir, name).isDirectory())).stream().map(n -> new XmlCourseImpl(Constants.LODE_COURSES + n)).collect(Collectors.toList());
@@ -320,6 +331,7 @@ public class WizardController implements Initializable {
             stage.show();
             //((Stage) root.getScene().getWindow()).close();
         });
+        */
 
         onlyLastUsedCheckBox.setOnAction(event -> {
             refreshCourses();
@@ -329,11 +341,19 @@ public class WizardController implements Initializable {
         refreshPane.accept(0);
 
     }
-/*
-    private void refreshPane(Integer step){
-        IntStream.range(0, tabPane.getTabs().size()).forEach(i -> tabPane.getTabs().get(i).setDisable(i>step));
+
+    private void setCurrentCourse(Course course){
+        if( course != this.course) {
+            this.course = course;
+            lecture = null;
+        }
     }
-*/
+
+    private void setCurrentLecture(Lecture lecture){
+        this.lecture = lecture;
+        course = lecture.course();
+    }
+
     public void setLodeCoursesPath(String path){
         lodePath = path;
         refreshCourses();
