@@ -67,8 +67,9 @@ public class PostProducerImpl implements PostProducer{
         String distributionDir = lecture.path() + "/../../Distribution/" + name;
 
         // template
-        File srcDir = new File(PostProducer.class.getResource("/templatehtml").getFile());
+        File srcDir = new File("./templates/html");
         File destDir = new File(distributionDir);
+        assert srcDir.exists();
         try {
             if( destDir.exists() ) {
                 FileUtils.deleteDirectory(destDir);
@@ -131,7 +132,7 @@ public class PostProducerImpl implements PostProducer{
     @Override
     public void createWebsite(Course course) {
         // template
-        File srcDir = new File(PostProducer.class.getResource("/templateindexhtml").getFile());
+        File srcDir = new File("./templates/indexhtml");
         File destDir = new File(course.path() + "/Website");
         try {
             if( srcDir.exists() ) {
