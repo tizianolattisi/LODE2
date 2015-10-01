@@ -23,6 +23,8 @@ import java.util.List;
  */
 public class PdfJuicerImpl implements Juicer {
 
+    private static final int MAX_TITLE_LENGTH = 40;
+
     private File slide;
     private String path = "./";
 
@@ -103,7 +105,20 @@ public class PdfJuicerImpl implements Juicer {
                     File outputfile = new File(path + fileName);
                     ImageIO.write(bufferedImage, "png", outputfile);
                     // create slide
-                    slide = new XmlSlideImpl("Slides/" + fileName, "Slide " + i, textWriter.toString());
+                    String[] rows = textWriter.toString().split("\n");
+                    String title = "Slide " + i;
+                    for( String row: rows ){
+                        if( row.length()>2 ) {
+                            if (row.length() > MAX_TITLE_LENGTH) {
+                                title = row.substring(0, MAX_TITLE_LENGTH-1);
+                            } else {
+                                title = row;
+                            }
+                            break;
+                        }
+                    }
+                    title = title.replace("\r", "");
+                    slide = new XmlSlideImpl("Slides/" + fileName, title, textWriter.toString());
                 } catch (IOException e) {
 
                 }
