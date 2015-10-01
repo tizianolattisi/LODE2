@@ -27,20 +27,21 @@
     </Tab><Tab text="3. Slides">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-<children><ListView fx:id="slidesListView" layoutX="14.0" layoutY="58.0" prefHeight="170.0" prefWidth="370.0" /><Label layoutX="14.0" layoutY="14.0" text="Import slides." /><Button fx:id="importSlideButton" layoutX="397.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="import" /><ProgressBar fx:id="slideImportProgressBar" layoutX="14.0" layoutY="242.0" prefHeight="20.0" prefWidth="370.0" progress="0.0" /><Label fx:id="courseAndLectureName" layoutX="14.0" layoutY="38.0" text="Course and lecture name">
+<children><ListView fx:id="slidesListView" layoutX="14.0" layoutY="58.0" prefHeight="170.0" prefWidth="370.0" /><Label layoutX="14.0" layoutY="14.0" text="Import slides." /><Button fx:id="importSlideButton" layoutX="397.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="import" /><ProgressBar fx:id="slideImportProgressBar" layoutX="14.0" layoutY="242.0" prefHeight="26.0" prefWidth="370.0" progress="0.0" /><Label fx:id="courseAndLectureName" layoutX="14.0" layoutY="38.0" text="Course and lecture name">
 <font>
 <Font name="System Bold Italic" size="13.0" />
 </font>
 </Label>
-                        <Button fx:id="skipSlideButton" layoutX="397.0" layoutY="116.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="&gt;&gt;" />
+                        <Button fx:id="skipSlideButton" layoutX="397.0" layoutY="242.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="&gt;&gt;" />
                         <Button fx:id="editSlideButton" layoutX="397.0" layoutY="80.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="edit" />
 </children></AnchorPane>
   </content>
 </Tab><Tab text="4. Record">
   <content>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-<children><Button fx:id="recordingSessionButton" layoutX="31.17632293701172" layoutY="50.0" mnemonicParsing="false" text="Go to recording session" /><Label layoutX="14.0" layoutY="14.0" text="Recording session." />
-                        <Button fx:id="toPostProcessButton" layoutX="397.0" layoutY="116.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="&gt;&gt;" />
+<children>
+                        <Label fx:id="movieFileLabel" layoutX="14.0" layoutY="40.0" prefHeight="17.0" prefWidth="472.0" text="no movie present" /><Button fx:id="recordingSessionButton" layoutX="15.0" layoutY="120.0" mnemonicParsing="false" text="Go to recording session" /><Label layoutX="14.0" layoutY="14.0" text="Recording session." />
+                        <Button fx:id="toPostProcessButton" layoutX="397.0" layoutY="242.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="&gt;&gt;" />
 </children></AnchorPane>
   </content>
 </Tab><Tab text="5. Post process">

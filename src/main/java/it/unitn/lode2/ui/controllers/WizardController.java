@@ -32,6 +32,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.function.IntConsumer;
 import java.util.stream.Collectors;
@@ -79,6 +80,9 @@ public class WizardController implements Initializable {
     private Button skipSlideButton;
 
     @FXML
+    private Label movieFileLabel;
+
+    @FXML
     private Button toPostProcessButton;
 
     @FXML
@@ -106,6 +110,7 @@ public class WizardController implements Initializable {
     private IntConsumer refreshPane = (s) -> IntStream.range(0, tabPane.getTabs().size()).forEach(i -> tabPane.getTabs().get(i).setDisable(i>s));
     private Course course = null;
     private Lecture lecture = null;
+    private Boolean lectureHasMovie = Boolean.FALSE;
 
     public class CourseFormatCell extends ListCell<Course> {
         @Override
@@ -291,6 +296,17 @@ public class WizardController implements Initializable {
         });
 
         recordingSessionButton.setOnAction(event -> {
+            if( lectureHasMovie ){
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Open recording session");
+                alert.setHeaderText("The movie in this lecture will be overwritten.");
+                alert.setContentText("Are you ok with this?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() != ButtonType.OK){
+                    return;
+                }
+            }
             try {
                 RecordingSessionLaucher.launch(new Stage(), course.path(), lecture.name());
             } catch (IOException e) {
@@ -352,6 +368,14 @@ public class WizardController implements Initializable {
     private void setCurrentLecture(Lecture lecture){
         this.lecture = lecture;
         course = lecture.course();
+        String moviePath = lecture.path() + "/movie001.mov";//XXX: se più spezzoni?
+        File movieFile = new File(moviePath);
+        String out = "No recording session present.";
+        if( movieFile.exists() ){
+            out = "Recording session:  " + readableFileSize(movieFile.length());
+            lectureHasMovie = Boolean.TRUE;
+        }
+        movieFileLabel.setText(out);
     }
 
     public void setLodeCoursesPath(String path){
@@ -390,5 +414,12 @@ public class WizardController implements Initializable {
         LodePrefs lodePrefs = IOC.queryUtility(LodePrefs.class);
         lodePrefs.setLastUsedCourse(course);
         lodePrefs.save();
+    }
+
+    public static String readableFileSize(long size) {
+        if(size <= 0) return "0";
+        final String[] units = new String[] { "B", "kB", "MB", "GB", "TB" };
+        int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
+        return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
 }
