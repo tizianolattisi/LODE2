@@ -54,7 +54,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
 /**
  * User: tiziano
@@ -243,7 +243,12 @@ public class MainController implements Initializable {
         remote.setCommandHandler(RemoteCommand.STOP, handlerRecord);
 
         // camera
-        remote.setCommandHandler(RemoteCommand.PRESET, handlerPreset);
+        remote.setCommandHandler(RemoteCommand.PRESET, s -> {
+            Integer preset = Integer.parseInt(s);
+            ToggleButton button = presetsToggleButtons.get(preset - 1);
+            button.fire();
+            return "OK";
+        });
 
         remote.start();
 
