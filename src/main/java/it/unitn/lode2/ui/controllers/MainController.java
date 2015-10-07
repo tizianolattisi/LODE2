@@ -14,6 +14,7 @@ import it.unitn.lode2.remote.RemoteCommand;
 import it.unitn.lode2.ui.skin.AwesomeIcons;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -53,6 +54,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Supplier;
 
 /**
  * User: tiziano
@@ -74,6 +76,7 @@ public class MainController implements Initializable {
     private Previewer previewer;
     private Recorder recorder=null;
     private Projector projector;
+    private Remote remote;
     private Lecture lecture;
     private Chronometer chronometer = new Chronometer();
 
@@ -217,14 +220,22 @@ public class MainController implements Initializable {
         refreshRecorderButtons();
 
         // remote controller
-        Remote remote = IOC.queryUtility(Remote.class);
-
+         remote = IOC.queryUtility(Remote.class);
         // slides
         remote.setCommandHandler(RemoteCommand.FIRST, handlerFirstSlide);
         remote.setCommandHandler(RemoteCommand.PREVIOUS, handlerPrevSlide);
         remote.setCommandHandler(RemoteCommand.NEXT, handlerNextSlide);
         remote.setCommandHandler(RemoteCommand.LAST, handlerLastSlide);
-        remote.setCommandHandler(RemoteCommand.SHOW, handlerShowSlide);
+        remote.setCommandHandler(RemoteCommand.SHOW, () -> {
+            Platform.runLater(() -> {
+                handlerShowSlide.handle(null);
+            });
+            if( projector.preparedSlideSeqNumber().isPresent() ){
+                return projector.preparedSlideSeqNumber().get().toString();
+            } else {
+                return "NO";
+            }
+        });
 
         // recorder
         remote.setCommandHandler(RemoteCommand.RECORD, handlerRecord);
@@ -817,6 +828,7 @@ public class MainController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if( ButtonType.OK.equals(result.get()) ) {
                 //terminateGobblers();
+                remote.stop();
                 previewer.stop();
                 if( recorder.isRecording() ){
                     recorder.stop();
