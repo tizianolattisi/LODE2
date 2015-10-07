@@ -18,6 +18,8 @@ import it.unitn.lode2.projector.raster.RasterSlideImpl;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
+import it.unitn.lode2.remote.Remote;
+import it.unitn.lode2.remote.smartphone.SmartPhoneRemoteBuilder;
 import it.unitn.lode2.ui.controllers.MainController;
 import it.unitn.lode2.xml.XMLHelper;
 import it.unitn.lode2.xml.course.XMLCourse;
@@ -128,6 +130,13 @@ public class RecordingSessionLaucher {
                 .ffmpeg(lodePrefs.getFfmpegPath())
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
+
+        // Remote
+        Remote remote = SmartPhoneRemoteBuilder.create()
+                .host("127.0.0.1")
+                .port(9999)
+                .build();
+        IOC.registerUtility(remote, Remote.class);
 
         Course course = new XmlCourseImpl(courseFolder);
         Lecture lecture=null;

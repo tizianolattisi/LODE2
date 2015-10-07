@@ -9,6 +9,8 @@ import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
 import it.unitn.lode2.recorder.ipcam.FFMpegStreamGobbler;
+import it.unitn.lode2.remote.Remote;
+import it.unitn.lode2.remote.RemoteCommand;
 import it.unitn.lode2.ui.skin.AwesomeIcons;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -213,6 +215,26 @@ public class MainController implements Initializable {
         projector.first();
         refreshSlides();
         refreshRecorderButtons();
+
+        // remote controller
+        Remote remote = IOC.queryUtility(Remote.class);
+
+        // slides
+        remote.setCommandHandler(RemoteCommand.FIRST, handlerFirstSlide);
+        remote.setCommandHandler(RemoteCommand.PREVIOUS, handlerPrevSlide);
+        remote.setCommandHandler(RemoteCommand.NEXT, handlerNextSlide);
+        remote.setCommandHandler(RemoteCommand.LAST, handlerLastSlide);
+        remote.setCommandHandler(RemoteCommand.SHOW, handlerShowSlide);
+
+        // recorder
+        remote.setCommandHandler(RemoteCommand.RECORD, handlerRecord);
+        remote.setCommandHandler(RemoteCommand.PAUSE, handlerRecord);
+        remote.setCommandHandler(RemoteCommand.STOP, handlerRecord);
+
+        // camera
+        remote.setCommandHandler(RemoteCommand.PRESET, handlerPreset);
+
+        remote.start();
 
         fontAwesome = Font.loadFont(MainController.class.getResource("/fonts/FontAwesome.otf").
                 toExternalForm(), 24);
