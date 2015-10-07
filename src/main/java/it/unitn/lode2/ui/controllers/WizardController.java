@@ -1,6 +1,5 @@
 package it.unitn.lode2.ui.controllers;
 
-import it.unitn.lode2.Constants;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.RecordingSessionLaucher;
 import it.unitn.lode2.asset.Course;
@@ -16,11 +15,8 @@ import it.unitn.lode2.slidejuicer.pdf.PdfJuicerImpl;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
