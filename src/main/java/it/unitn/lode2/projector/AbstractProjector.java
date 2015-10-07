@@ -46,6 +46,14 @@ public abstract class AbstractProjector implements Projector {
     }
 
     @Override
+    public Optional<Integer> preparedSlideSeqNumber() {
+        if( preparedIndex != null ) {
+            return Optional.of(preparedIndex+1);
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<Integer> showSlideNumber(Slide s) {
         Integer n = slides.indexOf(s);
         if( n != null ){

@@ -15,6 +15,7 @@ public interface Projector {
 
     Optional<Slide> shownSlide();
     Optional<Integer> shownSlideSeqNumber();
+    Optional<Integer> preparedSlideSeqNumber();
     Optional<Slide> preparedSlide();
     Optional<Slide> slideNr(Integer n);
     Optional<Slide> slideDelta(Integer n);
