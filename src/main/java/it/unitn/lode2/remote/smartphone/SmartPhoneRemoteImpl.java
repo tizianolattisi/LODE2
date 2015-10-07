@@ -25,7 +25,7 @@ public class SmartPhoneRemoteImpl implements Remote {
     private Boolean terminate=Boolean.FALSE;
     private Map<RemoteCommand, Function<String, String>> functions = new HashMap<>();
 
-    Task<Void> recieverTask = new Task<Void>() {
+    Task<Void> receiverTast = new Task<Void>() {
         @Override
         protected Void call() throws Exception {
             ServerSocket socket = new ServerSocket(port);
@@ -62,7 +62,7 @@ public class SmartPhoneRemoteImpl implements Remote {
 
     @Override
     public void start() {
-        Thread thread = new Thread(recieverTask);
+        Thread thread = new Thread(receiverTast);
         //thread.setDaemon(true);
         thread.start();
     }
