@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -24,6 +25,8 @@ public class SmartPhoneRemoteImpl implements Remote {
     private String host="127.0.0.1";
     private Integer port=80;
     private Boolean terminate=Boolean.FALSE;
+    private Map<RemoteCommand, Supplier<byte[]>> byteSuppliers = new HashMap<>();
+    private Map<RemoteCommand, Function<String, byte[]>> byteFunctions = new HashMap<>();
     private Map<RemoteCommand, Supplier<String>> suppliers = new HashMap<>();
     private Map<RemoteCommand, Function<String, String>> functions = new HashMap<>();
 
@@ -33,26 +36,36 @@ public class SmartPhoneRemoteImpl implements Remote {
             ServerSocket socket = new ServerSocket(port);
             Socket accept = socket.accept();
             BufferedReader commandReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
-            DataOutputStream responseWriter = new DataOutputStream(accept.getOutputStream());
+            DataOutputStream stringResponseWriter = new DataOutputStream(accept.getOutputStream());
+            ObjectOutputStream bytesResponseWriter = new ObjectOutputStream(accept.getOutputStream());
             while(!terminate){
                 String line = commandReader.readLine();
-                System.out.println(line);
                 List<String> params = Arrays.asList(line.split(" "));
                 String command = params.get(0);
                 String param = null;
                 if (params.size() > 1) {
                     param = params.get(1);
                 }
-                String response = "NO\n";
                 RemoteCommand remoteCommand = RemoteCommand.valueOf(command);
                 if (param != null && functions.containsKey(remoteCommand)) {
-                    Function function = functions.get(remoteCommand);
-                    response = (String) function.apply(param);
+                    Function<String, String> function = functions.get(remoteCommand);
+                    String response = function.apply(param);
+                    stringResponseWriter.writeBytes(response);
                 } else if (suppliers.containsKey(remoteCommand)) {
                     Supplier<String> supplier = suppliers.get(remoteCommand);
-                    response = supplier.get();
+                    String response = supplier.get();
+                    stringResponseWriter.writeBytes(response);
+                } else if (param != null && byteFunctions.containsKey(remoteCommand)) {
+                    Function<String, byte[]> function = byteFunctions.get(remoteCommand);
+                    byte[] response = function.apply(param);
+                    bytesResponseWriter.write(response);
+                } else if (byteSuppliers.containsKey(remoteCommand)) {
+                    Supplier<byte[]> supplier = byteSuppliers.get(remoteCommand);
+                    byte[] response = supplier.get();
+                    bytesResponseWriter.write(response);
+                } else {
+                    stringResponseWriter.writeChars("NO\n");
                 }
-                responseWriter.writeBytes(response);
             }
             return null;
         }
@@ -100,5 +113,15 @@ public class SmartPhoneRemoteImpl implements Remote {
     @Override
     public void setCommandHandler(RemoteCommand command, Supplier<String> supplier) {
         suppliers.put(command, supplier);
+    }
+
+    @Override
+    public void setCommandByteHandler(RemoteCommand command, Function<String, byte[]> function) {
+        byteFunctions.put(command, function);
+    }
+
+    @Override
+    public void setCommandByteHandler(RemoteCommand command, Supplier<byte[]> supplier) {
+        byteSuppliers.put(command, supplier);
     }
 }

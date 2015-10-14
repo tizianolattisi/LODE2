@@ -9,7 +9,6 @@ import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
 import it.unitn.lode2.recorder.VolumeChecker;
-import it.unitn.lode2.recorder.ipcam.IPRecorderVolumeCheckerImpl;
 import it.unitn.lode2.remote.Remote;
 import it.unitn.lode2.remote.RemoteCommand;
 import it.unitn.lode2.ui.skin.AwesomeIcons;
@@ -21,6 +20,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -49,13 +49,15 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.function.Supplier;
 
 /**
  * User: tiziano
@@ -232,10 +234,6 @@ public class MainController implements Initializable {
         remote.setCommandHandler(RemoteCommand.GETNSLIDES, () -> {
             return projector.getSlidesNumber().toString() + "\n";
         });
-        remote.setCommandHandler(RemoteCommand.FIRST, handlerFirstSlide);
-        //remote.setCommandHandler(RemoteCommand.PREVIOUS, handlerPrevSlide);
-        //remote.setCommandHandler(RemoteCommand.NEXT, handlerNextSlide);
-        remote.setCommandHandler(RemoteCommand.LAST, handlerLastSlide);
         remote.setCommandHandler(RemoteCommand.NEXT, () -> {
             Platform.runLater(() -> {
                 handlerShowSlide.handle(null);
@@ -252,13 +250,28 @@ public class MainController implements Initializable {
                 handlerPrevSlide.handle(null);
                 handlerShowSlide.handle(null);
             });
-            if( projector.preparedSlideSeqNumber().isPresent() ){
+            if (projector.preparedSlideSeqNumber().isPresent()) {
                 Integer n = projector.preparedSlideSeqNumber().get();
                 n -= 2;
-                return n.toString() + "\n";
+                return (n.toString() + "\n");
             } else {
                 return "NO\n";
             }
+        });
+        remote.setCommandByteHandler(RemoteCommand.GETSLIDE, s -> {
+            int n = Integer.parseInt(s);
+            Slide slide = projector.slideNr(n).get();
+            Image image = slide.createPreview(640.0, 480.0);
+
+            BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            try {
+                ImageIO.write(bImage, "png", baos);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            byte[] bytes = baos.toByteArray();
+            return bytes;
         });
 
         // recorder

@@ -19,6 +19,10 @@ public interface Remote {
 
     void setCommandHandler(RemoteCommand command, Function<String, String> function);
 
-    void setCommandHandler(RemoteCommand command, Supplier<String> function);
+    void setCommandHandler(RemoteCommand command, Supplier<String> supplier);
+
+    void setCommandByteHandler(RemoteCommand command, Function<String, byte[]> function);
+
+    void setCommandByteHandler(RemoteCommand command, Supplier<byte[]> supplier);
 
 }
