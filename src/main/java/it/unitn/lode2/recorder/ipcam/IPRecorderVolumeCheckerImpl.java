@@ -1,5 +1,6 @@
 package it.unitn.lode2.recorder.ipcam;
 
+import it.unitn.lode2.recorder.VolumeChecker;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import org.apache.log4j.Logger;
@@ -14,17 +15,26 @@ import java.io.InputStreamReader;
  * Date: 09/03/15
  * Time: 11:03
  */
-public class FFMpegStreamGobbler extends Thread {
+public class IPRecorderVolumeCheckerImpl extends Thread implements VolumeChecker {
 
     InputStream inputStream;
     DoubleProperty lufs;
     Boolean toTerminate = Boolean.FALSE;
 
-    final static Logger logger = Logger.getLogger(FFMpegStreamGobbler.class);
+    final static Logger logger = Logger.getLogger(IPRecorderVolumeCheckerImpl.class);
 
-    public FFMpegStreamGobbler(InputStream inputStream, DoubleProperty lufs) {
-        this.inputStream = inputStream;
-        this.lufs = lufs;
+    public IPRecorderVolumeCheckerImpl() {
+
+    }
+
+    @Override
+    public void setStream(InputStream stream) {
+        inputStream = stream;
+    }
+
+    @Override
+    public void setLufsProperty(DoubleProperty lufsProperty) {
+        lufs = lufsProperty;
     }
 
     @Override
@@ -64,7 +74,9 @@ public class FFMpegStreamGobbler extends Thread {
         }
     }
 
+    @Override
     public void terminate() {
         toTerminate = Boolean.TRUE;
     }
+
 }

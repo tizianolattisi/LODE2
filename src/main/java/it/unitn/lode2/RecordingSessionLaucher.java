@@ -16,8 +16,10 @@ import it.unitn.lode2.projector.raster.RasterProjectorBuilder;
 import it.unitn.lode2.projector.raster.RasterProjectorImpl;
 import it.unitn.lode2.projector.raster.RasterSlideImpl;
 import it.unitn.lode2.recorder.Recorder;
+import it.unitn.lode2.recorder.VolumeChecker;
 import it.unitn.lode2.recorder.ipcam.IPRecorderBuilder;
 import it.unitn.lode2.recorder.ipcam.IPRecorderProtocol;
+import it.unitn.lode2.recorder.ipcam.IPRecorderVolumeCheckerImpl;
 import it.unitn.lode2.remote.Remote;
 import it.unitn.lode2.remote.smartphone.SmartPhoneRemoteBuilder;
 import it.unitn.lode2.ui.controllers.MainController;
@@ -130,6 +132,10 @@ public class RecordingSessionLaucher {
                 .ffmpeg(lodePrefs.getFfmpegPath())
                 .build();
         IOC.registerUtility(recorder, Recorder.class);
+
+        // Volume checker
+        VolumeChecker volumeChecker = new IPRecorderVolumeCheckerImpl();
+        IOC.registerUtility(volumeChecker, VolumeChecker.class);
 
         // Remote
         Remote remote = SmartPhoneRemoteBuilder.create()

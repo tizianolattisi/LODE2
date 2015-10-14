@@ -8,7 +8,8 @@ import it.unitn.lode2.projector.Slide;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
-import it.unitn.lode2.recorder.ipcam.FFMpegStreamGobbler;
+import it.unitn.lode2.recorder.VolumeChecker;
+import it.unitn.lode2.recorder.ipcam.IPRecorderVolumeCheckerImpl;
 import it.unitn.lode2.remote.Remote;
 import it.unitn.lode2.remote.RemoteCommand;
 import it.unitn.lode2.ui.skin.AwesomeIcons;
@@ -138,9 +139,7 @@ public class MainController implements Initializable {
 
     @FXML private Label recordingLabel;
 
-    //private StreamGobbler errorStreamGobbler = new StreamGobbler();
-    //private StreamGobbler standardStreamGobbler = new StreamGobbler();
-    private FFMpegStreamGobbler gobbler;
+    private VolumeChecker volumeChecker;
 
     DisplayMode displayMode = DisplayMode.SLIDES;
     private SecondDisplay secondDisplay = null;
@@ -608,10 +607,12 @@ public class MainController implements Initializable {
 
                     projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), 0L));
 
-                    // ffmpeg gobbler
+                    // ffmpeg volumeChecker
                     recorder.errorLog().ifPresent(s -> {
-                        gobbler = new FFMpegStreamGobbler(s, lufs);
-                        gobbler.start();
+                        volumeChecker = IOC.queryUtility(VolumeChecker.class);
+                        volumeChecker.setStream(s);
+                        volumeChecker.setLufsProperty(lufs);
+                        volumeChecker.start();
                     });
 
                     recordingLabel.setText(RECORD_LABEL);
@@ -641,7 +642,7 @@ public class MainController implements Initializable {
                 chronometer.stop();
                 recordingLabel.setText(PAUSE_LABEL);
                 recordingLabel.setTextFill(Paint.valueOf(PAUSE_COLOR));
-                gobbler.terminate();
+                volumeChecker.terminate();
             } else if( recorder.isPaused() ){
                 try {
                     recorder.wakeup();
@@ -652,8 +653,11 @@ public class MainController implements Initializable {
                 }
                 chronometer.start();
                 recorder.errorLog().ifPresent(s -> {
-                    gobbler = new FFMpegStreamGobbler(s, lufs);
-                    gobbler.start();
+                    //volumeChecker = new IPRecorderVolumeCheckerImpl();
+                    volumeChecker = IOC.queryUtility(VolumeChecker.class);
+                    volumeChecker.setStream(s);
+                    volumeChecker.setLufsProperty(lufs);
+                    volumeChecker.start();
                 });
             }
             else {
@@ -679,7 +683,7 @@ public class MainController implements Initializable {
                 recordingLabel.setTextFill(Paint.valueOf(IDLE_COLOR));
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
-                gobbler.terminate();
+                volumeChecker.terminate();
             }
             refreshRecorderButtons();
         }
