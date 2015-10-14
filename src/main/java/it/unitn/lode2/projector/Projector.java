@@ -22,6 +22,8 @@ public interface Projector {
 
     Optional<Integer> showSlideNumber(Slide s);
 
+    Integer getSlidesNumber();
+
     /* Prepared slide controls */
     void first();
     void previous();

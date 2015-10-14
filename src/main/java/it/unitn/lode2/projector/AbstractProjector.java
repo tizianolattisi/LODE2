@@ -16,6 +16,11 @@ public abstract class AbstractProjector implements Projector {
     private Integer shownIndex=null;
 
     @Override
+    public Integer getSlidesNumber() {
+        return slides.size();
+    }
+
+    @Override
     public void addSlides(Slide... slides) {
         for( Slide slide: slides ) {
             this.slides.add(slide);
