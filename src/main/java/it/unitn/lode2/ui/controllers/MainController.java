@@ -55,7 +55,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * User: tiziano
@@ -220,33 +220,61 @@ public class MainController implements Initializable {
 
         // remote controller
          remote = IOC.queryUtility(Remote.class);
+
+        // login
+        remote.setCommandHandler(RemoteCommand.LOGIN, s -> {
+            Integer code = Integer.parseInt(s);
+            // TODO: verifica
+            return "AUTHORIZED\n";
+        });
+
         // slides
+        remote.setCommandHandler(RemoteCommand.GETNSLIDES, () -> {
+            return projector.getSlidesNumber().toString() + "\n";
+        });
         remote.setCommandHandler(RemoteCommand.FIRST, handlerFirstSlide);
-        remote.setCommandHandler(RemoteCommand.PREVIOUS, handlerPrevSlide);
-        remote.setCommandHandler(RemoteCommand.NEXT, handlerNextSlide);
+        //remote.setCommandHandler(RemoteCommand.PREVIOUS, handlerPrevSlide);
+        //remote.setCommandHandler(RemoteCommand.NEXT, handlerNextSlide);
         remote.setCommandHandler(RemoteCommand.LAST, handlerLastSlide);
-        remote.setCommandHandler(RemoteCommand.SHOW, () -> {
+        remote.setCommandHandler(RemoteCommand.NEXT, () -> {
             Platform.runLater(() -> {
                 handlerShowSlide.handle(null);
             });
             if( projector.preparedSlideSeqNumber().isPresent() ){
-                return projector.preparedSlideSeqNumber().get().toString();
+                return projector.preparedSlideSeqNumber().get().toString() + "\n";
             } else {
-                return "NO";
+                return "NO\n";
+            }
+        });
+        remote.setCommandHandler(RemoteCommand.PREVIOUS, () -> {
+            Platform.runLater(() -> {
+                handlerPrevSlide.handle(null);
+                handlerPrevSlide.handle(null);
+                handlerShowSlide.handle(null);
+            });
+            if( projector.preparedSlideSeqNumber().isPresent() ){
+                Integer n = projector.preparedSlideSeqNumber().get();
+                n -= 2;
+                return n.toString() + "\n";
+            } else {
+                return "NO\n";
             }
         });
 
         // recorder
         remote.setCommandHandler(RemoteCommand.RECORD, handlerRecord);
-        remote.setCommandHandler(RemoteCommand.PAUSE, handlerRecord);
-        remote.setCommandHandler(RemoteCommand.STOP, handlerRecord);
+        remote.setCommandHandler(RemoteCommand.PAUSE, handlerPause);
+        remote.setCommandHandler(RemoteCommand.STOP, handlerStop);
 
         // camera
+        remote.setCommandHandler(RemoteCommand.GETNPRESETS, () -> {
+            return "4\n";
+        });
         remote.setCommandHandler(RemoteCommand.PRESET, s -> {
             Integer preset = Integer.parseInt(s);
             ToggleButton button = presetsToggleButtons.get(preset - 1);
             button.fire();
-            return "OK";
+            return "OK\n";
         });
 
         remote.start();

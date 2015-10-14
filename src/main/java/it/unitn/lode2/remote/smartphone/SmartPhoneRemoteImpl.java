@@ -31,30 +31,24 @@ public class SmartPhoneRemoteImpl implements Remote {
         @Override
         protected Void call() throws Exception {
             ServerSocket socket = new ServerSocket(port);
+            Socket accept = socket.accept();
+            BufferedReader commandReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
+            DataOutputStream responseWriter = new DataOutputStream(accept.getOutputStream());
             while(!terminate){
-                Socket accept = socket.accept();
-                BufferedReader commandReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
-                DataOutputStream responseWriter = new DataOutputStream(accept.getOutputStream());
                 String line = commandReader.readLine();
+                System.out.println(line);
                 List<String> params = Arrays.asList(line.split(" "));
                 String command = params.get(0);
                 String param = null;
-                if( params.size()>1 ){
+                if (params.size() > 1) {
                     param = params.get(1);
                 }
-                /*
-                params.remove(0);
-                System.out.println("Received: " + command + " " + params);
-                String param = null;
-                if( params.size()>0 ){
-                    param = params.get(0);
-                }*/
-                String response = "NO";
+                String response = "NO\n";
                 RemoteCommand remoteCommand = RemoteCommand.valueOf(command);
-                if( param != null && functions.containsKey(remoteCommand) ){
+                if (param != null && functions.containsKey(remoteCommand)) {
                     Function function = functions.get(remoteCommand);
                     response = (String) function.apply(param);
-                } else if( suppliers.containsKey(remoteCommand)) {
+                } else if (suppliers.containsKey(remoteCommand)) {
                     Supplier<String> supplier = suppliers.get(remoteCommand);
                     response = supplier.get();
                 }
@@ -84,11 +78,18 @@ public class SmartPhoneRemoteImpl implements Remote {
 
     @Override
     public void setCommandHandler(RemoteCommand command, EventHandler<ActionEvent> handler) {
+        /*
         Function<String, String> function = actionEventEventHandler -> {
             Platform.runLater(() -> handler.handle(null));
             return "OK\n";
         };
         functions.put(command, function);
+        */
+        Supplier<String> supplier = () -> {
+            Platform.runLater(() -> handler.handle(null));
+            return "OK\n";
+        };
+        suppliers.put(command, supplier);
     }
 
     @Override
