@@ -139,8 +139,8 @@ public class RecordingSessionLaucher {
 
         // Remote
         Remote remote = SmartPhoneRemoteBuilder.create()
-                .host("127.0.0.1")
-                .port(9999)
+                .host("192.168.1.101")
+                .port(2147)
                 .build();
         IOC.registerUtility(remote, Remote.class);
 

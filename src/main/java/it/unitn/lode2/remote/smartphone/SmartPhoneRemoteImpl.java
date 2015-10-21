@@ -7,10 +7,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
@@ -34,11 +31,9 @@ public class SmartPhoneRemoteImpl implements Remote {
         @Override
         protected Void call() throws Exception {
             ServerSocket socket = new ServerSocket(port);
-            Socket accept = socket.accept();
-            BufferedReader commandReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
-            DataOutputStream stringResponseWriter = new DataOutputStream(accept.getOutputStream());
-            ObjectOutputStream bytesResponseWriter = new ObjectOutputStream(accept.getOutputStream());
             while(!terminate){
+                Socket accept = socket.accept();
+                BufferedReader commandReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
                 String line = commandReader.readLine();
                 List<String> params = Arrays.asList(line.split(" "));
                 String command = params.get(0);
@@ -50,26 +45,43 @@ public class SmartPhoneRemoteImpl implements Remote {
                 if (param != null && functions.containsKey(remoteCommand)) {
                     Function<String, String> function = functions.get(remoteCommand);
                     String response = function.apply(param);
-                    stringResponseWriter.writeBytes(response);
+                    writeString(accept, response);
                 } else if (suppliers.containsKey(remoteCommand)) {
                     Supplier<String> supplier = suppliers.get(remoteCommand);
                     String response = supplier.get();
-                    stringResponseWriter.writeBytes(response);
+                    writeString(accept, response);
                 } else if (param != null && byteFunctions.containsKey(remoteCommand)) {
                     Function<String, byte[]> function = byteFunctions.get(remoteCommand);
                     byte[] response = function.apply(param);
-                    bytesResponseWriter.write(response);
+                    writeBytes(accept, response);
                 } else if (byteSuppliers.containsKey(remoteCommand)) {
                     Supplier<byte[]> supplier = byteSuppliers.get(remoteCommand);
                     byte[] response = supplier.get();
-                    bytesResponseWriter.write(response);
+                    writeBytes(accept, response);
                 } else {
-                    stringResponseWriter.writeChars("NO\n");
+                    writeString(accept, "NO\n");
                 }
+                accept.close();
             }
             return null;
         }
     };
+
+    private void writeString(Socket accept, String response) throws IOException {
+        DataOutputStream stringResponseWriter = new DataOutputStream(accept.getOutputStream());
+        stringResponseWriter.writeBytes(response);
+        stringResponseWriter.flush();
+        stringResponseWriter.close();
+    }
+
+    private void writeBytes(Socket accept, byte[] response) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream(response.length);
+        byteArrayOutputStream.write(response, 0, response.length);
+        byteArrayOutputStream.writeTo(accept.getOutputStream());
+        byteArrayOutputStream.flush();
+        byteArrayOutputStream.close();
+    }
+
 
     public SmartPhoneRemoteImpl(String host, Integer port) {
         this.host = host;
