@@ -22,7 +22,7 @@ GETNSLIDES: restituisce il numero delle slide (N numero di slide)
 
 GETNPRESETS: restituisce il numero dei preset gestiti (N numero di preset)
 
-LOGIN N: esegue il login passando il codice di associazione (N il codice)
+LOGIN N: esegue il login passando il codice di associazione (TOKEN|NO)
 
 CANPAN: la camera supporta il pan (TRUE|FALSE)
 
