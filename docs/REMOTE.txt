@@ -12,10 +12,6 @@ NEXT: visualizza la slide successiva (N numero slide visualizzata)
 
 PREVIOUS: visualizza la slide precedente (N numero slide visualizzata)
 
-FIRST: visualizza la prima slide (N numero slide visualizzata)
-
-LAST: visualizza l'ultima slide (N numero slide visualizzata)
-
 PRESET N: orienta la camera con il preset N (OK/NO)
 
 GETSLIDE N: restituisce i byte della slide N (byte[])
@@ -34,6 +30,6 @@ CANTILT: : la camera supporta il tilt (TRUE|FALSE)
 
 CANZOOM: la camera supporta lo zoom (TRUE|FALSE)
 
-CANPRESET: la camera supporta pan (TRUE|FALSE)
+CANPRESET: la camera supporta i preset (TRUE|FALSE)
 
-GOTOSLIDE N: visualizza la slide N (N numero di slide visualizzata)
+SHOW N: visualizza la slide N (N numero di slide visualizzata)
