@@ -3,6 +3,7 @@ package it.unitn.lode2.ui.controllers;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.camera.Camera;
+import it.unitn.lode2.camera.Capability;
 import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.projector.Slide;
 import it.unitn.lode2.recorder.Chronometer;
@@ -58,6 +59,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 
 /**
  * User: tiziano
@@ -258,6 +260,15 @@ public class MainController implements Initializable {
                 return "NO\n";
             }
         });
+        remote.setCommandHandler(RemoteCommand.SHOW, s -> {
+            int n = Integer.parseInt(s);
+            projector.goTo(n);
+            projector.show();
+            Platform.runLater(() -> {
+                handlerShowSlide.handle(null);
+            });
+            return s;
+        });
         remote.setCommandByteHandler(RemoteCommand.GETSLIDE, s -> {
             int n = Integer.parseInt(s);
             Slide slide = projector.slideNr(n).get();
@@ -273,6 +284,12 @@ public class MainController implements Initializable {
             byte[] bytes = baos.toByteArray();
             return bytes;
         });
+
+        // capabilities
+        Function<Capability, String> f = c -> camera.hasCapability(c).toString().toUpperCase()+"\n";
+        remote.setCommandHandler(RemoteCommand.CANPAN, () -> f.apply(Capability.PAN) );
+        remote.setCommandHandler(RemoteCommand.CANTILT, () -> f.apply(Capability.TILT));
+        remote.setCommandHandler(RemoteCommand.CANZOOM, () -> f.apply(Capability.ZOOM));
 
         // recorder
         remote.setCommandHandler(RemoteCommand.RECORD, handlerRecord);
