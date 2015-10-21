@@ -1,0 +1,39 @@
+== REMOTE ==
+
+== COMANDI SUPPORTATI ==
+
+RECORD: avvia registrazione (OK|NO)
+
+PAUSE: mette in pausa la registrazione (OK|NO)
+
+STOP: blocca la registrazione (OK|NO)
+
+NEXT: visualizza la slide successiva (N numero slide visualizzata)
+
+PREVIOUS: visualizza la slide precedente (N numero slide visualizzata)
+
+FIRST: visualizza la prima slide (N numero slide visualizzata)
+
+LAST: visualizza l'ultima slide (N numero slide visualizzata)
+
+PRESET N: orienta la camera con il preset N (OK/NO)
+
+GETSLIDE N: restituisce i byte della slide N (byte[])
+
+GETPRESET N: restituisce i byte dell'immagine del preset N (byte[])
+
+GETNSLIDES: restituisce il numero delle slide (N numero di slide)
+
+GETNPRESETS: restituisce il numero dei preset gestiti (N numero di preset)
+
+LOGIN N: esegue il login passando il codice di associazione (N il codice)
+
+CANPAN: la camera supporta il pan (TRUE|FALSE)
+
+CANTILT: : la camera supporta il tilt (TRUE|FALSE)
+
+CANZOOM: la camera supporta lo zoom (TRUE|FALSE)
+
+CANPRESET: la camera supporta pan (TRUE|FALSE)
+
+GOTOSLIDE N: visualizza la slide N (N numero di slide visualizzata)
