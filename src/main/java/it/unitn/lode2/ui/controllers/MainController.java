@@ -49,11 +49,13 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -284,12 +286,26 @@ public class MainController implements Initializable {
             byte[] bytes = baos.toByteArray();
             return bytes;
         });
+        remote.setCommandByteHandler(RemoteCommand.GETPRESET, s -> {
+            int n = Integer.parseInt(s);
+            Optional<InputStream> inputStream = previewer.getSnapshotPreview(n);
+            byte[] bytes=null;
+            if( inputStream.isPresent() ){
+                try {
+                    return IOUtils.toByteArray(inputStream.get());
+                } catch (IOException e) {
+                    return bytes;
+                }
+            }
+            return bytes;
+        });
 
         // capabilities
         Function<Capability, String> f = c -> camera.hasCapability(c).toString().toUpperCase()+"\n";
         remote.setCommandHandler(RemoteCommand.CANPAN, () -> f.apply(Capability.PAN) );
         remote.setCommandHandler(RemoteCommand.CANTILT, () -> f.apply(Capability.TILT));
         remote.setCommandHandler(RemoteCommand.CANZOOM, () -> f.apply(Capability.ZOOM));
+        remote.setCommandHandler(RemoteCommand.CANPRESET, () -> f.apply(Capability.PRESETS));
 
         // recorder
         remote.setCommandHandler(RemoteCommand.RECORD, handlerRecord);
