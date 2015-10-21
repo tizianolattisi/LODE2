@@ -30,7 +30,7 @@ public class SmartPhoneRemoteImpl implements Remote {
     Task<Void> receiverTast = new Task<Void>() {
         @Override
         protected Void call() throws Exception {
-            ServerSocket socket = new ServerSocket(port);
+            socket = new ServerSocket(port);
             while(!terminate){
                 Socket accept = socket.accept();
                 BufferedReader commandReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
@@ -63,9 +63,11 @@ public class SmartPhoneRemoteImpl implements Remote {
                 }
                 accept.close();
             }
+            socket.close();
             return null;
         }
     };
+    private ServerSocket socket;
 
     private void writeString(Socket accept, String response) throws IOException {
         DataOutputStream stringResponseWriter = new DataOutputStream(accept.getOutputStream());
@@ -98,6 +100,13 @@ public class SmartPhoneRemoteImpl implements Remote {
     @Override
     public void stop() {
         terminate = Boolean.TRUE;
+        try {
+            if( socket!=null && !socket.isClosed() ) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
