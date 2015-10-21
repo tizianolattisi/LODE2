@@ -4,7 +4,6 @@ import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.PreviewMode;
 import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.camera.ipcam.connection.ConnectionProvider;
-import it.unitn.lode2.recorder.ipcam.PreviewerThread;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -21,7 +20,7 @@ public class PreviewerIPImpl implements Previewer {
 
     private String snapshotUrl;
     private PreviewMode mode=PreviewMode.ONDEMAND;
-    private PreviewerThread previewerThread;
+    private PreviewerIPThread previewerIPThread;
     private Map<Integer, InputStream> snapshotPreviews = new HashMap<>();
 
 
@@ -34,10 +33,10 @@ public class PreviewerIPImpl implements Previewer {
                 return Optional.empty();
             }
         } else {
-            if( previewerThread == null ){
+            if( previewerIPThread == null ){
                 return Optional.empty();
             }
-            byte[] cache = previewerThread.getCache();
+            byte[] cache = previewerIPThread.getCache();
             if( cache == null ) {
                 return Optional.empty();
             }
@@ -53,17 +52,17 @@ public class PreviewerIPImpl implements Previewer {
 
     @Override
     public void start() {
-        if( PreviewMode.CONTINUOUS.equals(mode) && (previewerThread==null || !previewerThread.isAlive()) ) {
-            previewerThread = new PreviewerThread(snapshotUrl);
-            previewerThread.start();
+        if( PreviewMode.CONTINUOUS.equals(mode) && (previewerIPThread ==null || !previewerIPThread.isAlive()) ) {
+            previewerIPThread = new PreviewerIPThread(snapshotUrl);
+            previewerIPThread.start();
         }
     }
 
     @Override
     public void stop() {
-        if( previewerThread != null && previewerThread.isAlive() ){
-            previewerThread.terminate();
-            previewerThread = null;
+        if( previewerIPThread != null && previewerIPThread.isAlive() ){
+            previewerIPThread.terminate();
+            previewerIPThread = null;
         }
     }
 

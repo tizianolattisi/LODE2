@@ -1,4 +1,4 @@
-package it.unitn.lode2.recorder.ipcam;
+package it.unitn.lode2.camera.ipcam;
 
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.ipcam.connection.ConnectionProvider;
@@ -12,7 +12,7 @@ import java.net.URL;
 /**
  * Created by tiziano on 10/03/15.
  */
-public class PreviewerThread extends Thread {
+public class PreviewerIPThread extends Thread {
 
     private Boolean toTerminate = Boolean.FALSE;
     private String snapshotUrl;
@@ -20,7 +20,7 @@ public class PreviewerThread extends Thread {
     private Integer maxMillisecs=1000/frameRate;
     private byte[] cache;
 
-    public PreviewerThread(String url) {
+    public PreviewerIPThread(String url) {
         this.snapshotUrl = url;
     }
 
