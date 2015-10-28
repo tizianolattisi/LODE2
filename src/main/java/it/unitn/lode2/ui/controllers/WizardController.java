@@ -364,7 +364,7 @@ public class WizardController implements Initializable {
     private void setCurrentLecture(Lecture lecture){
         this.lecture = lecture;
         course = lecture.course();
-        String moviePath = lecture.path() + "/movie001.mov";//XXX: se più spezzoni?
+        String moviePath = lecture.path() + "/movie001.mov";//XXX: if more than one segment?
         File movieFile = new File(moviePath);
         String out = "No recording session present.";
         if( movieFile.exists() ){
