@@ -49,13 +49,11 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -288,16 +286,18 @@ public class MainController implements Initializable {
         });
         remote.setCommandByteHandler(RemoteCommand.GETPRESET, s -> {
             int n = Integer.parseInt(s);
-            Optional<InputStream> inputStream = previewer.getSnapshotPreview(n);
-            byte[] bytes=null;
-            if( inputStream.isPresent() ){
+            ImageView image = (ImageView) presetsToggleButtons.get(n-1).getGraphic();
+            if( image != null ) {
                 try {
-                    return IOUtils.toByteArray(inputStream.get());
+                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image.getImage(), null);
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ImageIO.write(bufferedImage, "png", baos);
+                    return baos.toByteArray();
                 } catch (IOException e) {
-                    return bytes;
+
                 }
             }
-            return bytes;
+            return "NO\n".getBytes();
         });
 
         // capabilities

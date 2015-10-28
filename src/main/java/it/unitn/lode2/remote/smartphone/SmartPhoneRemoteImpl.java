@@ -27,47 +27,63 @@ public class SmartPhoneRemoteImpl implements Remote {
     private Map<RemoteCommand, Supplier<String>> suppliers = new HashMap<>();
     private Map<RemoteCommand, Function<String, String>> functions = new HashMap<>();
 
+    ServerSocket serverSocket;
+
     Task<Void> receiverTast = new Task<Void>() {
         @Override
         protected Void call() throws Exception {
-            socket = new ServerSocket(port);
+            serverSocket = new ServerSocket(port);
             while(!terminate){
-                Socket accept = socket.accept();
-                BufferedReader commandReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
-                String line = commandReader.readLine();
-                List<String> params = Arrays.asList(line.split(" "));
-                String command = params.get(0);
-                String param = null;
-                if (params.size() > 1) {
-                    param = params.get(1);
-                }
-                RemoteCommand remoteCommand = RemoteCommand.valueOf(command);
-                if (param != null && functions.containsKey(remoteCommand)) {
-                    Function<String, String> function = functions.get(remoteCommand);
-                    String response = function.apply(param);
-                    writeString(accept, response);
-                } else if (suppliers.containsKey(remoteCommand)) {
-                    Supplier<String> supplier = suppliers.get(remoteCommand);
-                    String response = supplier.get();
-                    writeString(accept, response);
-                } else if (param != null && byteFunctions.containsKey(remoteCommand)) {
-                    Function<String, byte[]> function = byteFunctions.get(remoteCommand);
-                    byte[] response = function.apply(param);
-                    writeBytes(accept, response);
-                } else if (byteSuppliers.containsKey(remoteCommand)) {
-                    Supplier<byte[]> supplier = byteSuppliers.get(remoteCommand);
-                    byte[] response = supplier.get();
-                    writeBytes(accept, response);
-                } else {
-                    writeString(accept, "NO\n");
-                }
-                accept.close();
+                Socket acceptSocket = serverSocket.accept();
+
+                Task<Boolean> task = new Task() {
+                    @Override
+                    protected Boolean call() throws Exception {
+                        return acceptSocketThread(acceptSocket);
+                    }
+                };
+
+                Thread thread = new Thread(task);
+                thread.start();
+
+
             }
-            socket.close();
             return null;
         }
     };
-    private ServerSocket socket;
+
+    private Boolean acceptSocketThread(Socket accept) throws IOException {
+        BufferedReader commandReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
+        String line = commandReader.readLine();
+        List<String> params = Arrays.asList(line.split(" "));
+        String command = params.get(0);
+        String param = null;
+        if (params.size() > 1) {
+            param = params.get(1);
+        }
+        RemoteCommand remoteCommand = RemoteCommand.valueOf(command);
+        if (param != null && functions.containsKey(remoteCommand)) {
+            Function<String, String> function = functions.get(remoteCommand);
+            String response = function.apply(param);
+            writeString(accept, response);
+        } else if (suppliers.containsKey(remoteCommand)) {
+            Supplier<String> supplier = suppliers.get(remoteCommand);
+            String response = supplier.get();
+            writeString(accept, response);
+        } else if (param != null && byteFunctions.containsKey(remoteCommand)) {
+            Function<String, byte[]> function = byteFunctions.get(remoteCommand);
+            byte[] response = function.apply(param);
+            writeBytes(accept, response);
+        } else if (byteSuppliers.containsKey(remoteCommand)) {
+            Supplier<byte[]> supplier = byteSuppliers.get(remoteCommand);
+            byte[] response = supplier.get();
+            writeBytes(accept, response);
+        } else {
+            writeString(accept, "NO\n");
+        }
+        accept.close();
+        return Boolean.TRUE;
+    }
 
     private void writeString(Socket accept, String response) throws IOException {
         DataOutputStream stringResponseWriter = new DataOutputStream(accept.getOutputStream());
@@ -101,9 +117,7 @@ public class SmartPhoneRemoteImpl implements Remote {
     public void stop() {
         terminate = Boolean.TRUE;
         try {
-            if( socket!=null && !socket.isClosed() ) {
-                socket.close();
-            }
+            serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,13 +126,6 @@ public class SmartPhoneRemoteImpl implements Remote {
 
     @Override
     public void setCommandHandler(RemoteCommand command, EventHandler<ActionEvent> handler) {
-        /*
-        Function<String, String> function = actionEventEventHandler -> {
-            Platform.runLater(() -> handler.handle(null));
-            return "OK\n";
-        };
-        functions.put(command, function);
-        */
         Supplier<String> supplier = () -> {
             Platform.runLater(() -> handler.handle(null));
             return "OK\n";
