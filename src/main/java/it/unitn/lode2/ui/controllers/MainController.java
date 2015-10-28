@@ -272,7 +272,7 @@ public class MainController implements Initializable {
         remote.setCommandByteHandler(RemoteCommand.GETSLIDE, s -> {
             int n = Integer.parseInt(s);
             Slide slide = projector.slideNr(n).get();
-            Image image = slide.createPreview(640.0, 480.0);
+            Image image = slide.createPreview(800.0, 600.0);
 
             BufferedImage bImage = SwingFXUtils.fromFXImage(image, null);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
