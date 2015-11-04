@@ -271,7 +271,6 @@ public class MainController implements Initializable {
         remote.setCommandHandler(RemoteCommand.SHOW, s -> {
             int n = Integer.parseInt(s);
             projector.goTo(n);
-            projector.show();
             Platform.runLater(() -> {
                 handlerShowSlide.handle(null);
             });
