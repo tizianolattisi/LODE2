@@ -59,6 +59,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
 /**
@@ -152,6 +153,8 @@ public class MainController implements Initializable {
     // SimpleBooleanProperty per gestire la disabilitazione dei pulsanti
     DoubleProperty lufs = new SimpleDoubleProperty();
     DoubleProperty vuMeter = new SimpleDoubleProperty();
+    private Integer bindingCode;
+    private String token;
 
 
     @Override
@@ -229,7 +232,12 @@ public class MainController implements Initializable {
         remote.setCommandHandler(RemoteCommand.LOGIN, s -> {
             Integer code = Integer.parseInt(s);
             // TODO: verifica
-            return "AUTHORIZED\n";
+            if( code.equals(bindingCode) ) {
+                token = remote.initializeToken();
+                return token + "\n";
+            } else {
+                return "NO\n";
+            }
         });
 
         // slides
@@ -344,6 +352,14 @@ public class MainController implements Initializable {
 
         setFontAwesome(showSlideButton, AwesomeIcons.ICON_CARET_UP, "black");
         setFontAwesome(goToSlideButton, AwesomeIcons.ICON_SIGNIN, "black");
+
+        // code popup
+        bindingCode = ThreadLocalRandom.current().nextInt(1111, 9999);
+        Alert codeBox = new Alert(Alert.AlertType.INFORMATION);
+        codeBox.setTitle("Remote control bind code");
+        codeBox.setHeaderText("Remote control binding code: " + bindingCode);
+        codeBox.setContentText("If you want to use a remote control, please use the above code in the binding request.");
+        codeBox.showAndWait();
 
     }
 

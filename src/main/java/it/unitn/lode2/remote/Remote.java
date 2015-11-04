@@ -25,4 +25,6 @@ public interface Remote {
 
     void setCommandByteHandler(RemoteCommand command, Supplier<byte[]> supplier);
 
+    String initializeToken();
+
 }

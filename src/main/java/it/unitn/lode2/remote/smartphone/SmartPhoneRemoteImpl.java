@@ -8,8 +8,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -28,6 +30,9 @@ public class SmartPhoneRemoteImpl implements Remote {
     private Map<RemoteCommand, Function<String, String>> functions = new HashMap<>();
 
     ServerSocket serverSocket;
+
+    private SecureRandom random = new SecureRandom();
+
 
     Task<Void> receiverTast = new Task<Void>() {
         @Override
@@ -51,12 +56,21 @@ public class SmartPhoneRemoteImpl implements Remote {
             return null;
         }
     };
+    private String token;
+
+    private Boolean checkSession(String tokenToCheck){
+        return tokenToCheck.equals(token);
+    }
 
     private Boolean acceptSocketThread(Socket accept) throws IOException {
         BufferedReader commandReader = new BufferedReader(new InputStreamReader(accept.getInputStream()));
         String line = commandReader.readLine();
         List<String> params = Arrays.asList(line.split(" "));
         String command = params.get(0);
+        if( !"LOGIN".equals(command) && !checkSession(params.get(params.size()-1)) ){
+            writeString(accept, "DENY\n");
+            return Boolean.FALSE;
+        }
         String param = null;
         if (params.size() > 1) {
             param = params.get(1);
@@ -151,5 +165,11 @@ public class SmartPhoneRemoteImpl implements Remote {
     @Override
     public void setCommandByteHandler(RemoteCommand command, Supplier<byte[]> supplier) {
         byteSuppliers.put(command, supplier);
+    }
+
+    @Override
+    public String initializeToken() {
+        token = new BigInteger(130, random).toString(32);
+        return token;
     }
 }
