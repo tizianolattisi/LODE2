@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!-- FOSCAM FI9826P -->
 <CAMERA_IP>
+    <NAME>FOSCAM</NAME>
     <AUTH>QUERY</AUTH>
     <AUTHQUERY>usr=${user}&amp;pwd=${password}</AUTHQUERY>
     <CGI_PORT>88</CGI_PORT>

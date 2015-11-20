@@ -51,7 +51,7 @@ public class IPRecorderVolumeCheckerImpl extends Thread implements VolumeChecker
                         int start = line.indexOf("M:") + 2;
                         int end = line.indexOf("S:", start);
                         String substring = line.substring(start, end);
-                        Double m = Double.parseDouble(substring);
+                        Double m = Double.parseDouble(substring); // NumberFormatException
                         Platform.runLater(() -> lufs.setValue(m));
                     } catch (StringIndexOutOfBoundsException ex) {
                         logger.error("Unable to parse ebur128 line.");

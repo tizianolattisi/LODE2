@@ -13,6 +13,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "CAMERA_IP")
 public class XMLCameraIPConf {
 
+    private String name;
+
     private AuthMode authMode;
     private String authQuery;
 
@@ -40,6 +42,11 @@ public class XMLCameraIPConf {
     private String snapshot;
     private String recordCommand;
     private String convCommand;
+
+    @XmlElement(name = "NAME")
+    public String getName() {
+        return name;
+    }
 
     @XmlElement(name = "AUTH")
     public AuthMode getAuthMode() {
@@ -144,6 +151,10 @@ public class XMLCameraIPConf {
     @XmlElement(name = "CONV_COMMAND")
     public String getConvCommand() {
         return convCommand;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setConvCommand(String convCommand) {

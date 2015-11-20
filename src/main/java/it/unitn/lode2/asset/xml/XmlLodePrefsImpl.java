@@ -108,6 +108,16 @@ public class XmlLodePrefsImpl extends AbstractLodePrefs implements LodePrefs {
     }
 
     @Override
+    public String getISightRecorderPath() {
+        return getPropertyInSectionName("GENERIC", "isightrecorder").getValue();
+    }
+
+    @Override
+    public void setISightRecorderPath(String path) {
+        getPropertyInSectionName("GENERIC", "isightrecorder").setValue(path);
+    }
+
+    @Override
     public String getUser() {
         return getPropertyInSectionName("IPCAM", "user").getValue();
     }

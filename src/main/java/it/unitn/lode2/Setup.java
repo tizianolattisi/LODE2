@@ -57,6 +57,23 @@ public class Setup {
         }
     }
 
+    public static void checkAndSetupISightRecorder(Stage stage){
+        LodePrefs lodePrefs = IOC.queryUtility(LodePrefs.class);
+        String iSightRecorderPath = lodePrefs.getISightRecorderPath();
+        File file = new File(iSightRecorderPath);
+        if( !file.exists() ){
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Select iSightRecorder path");
+            if( false ) { // windows
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Exe Files", "*.exe"));
+            }
+            File iSightRecorderFile = fileChooser.showOpenDialog(stage);
+            iSightRecorderPath = iSightRecorderFile.getAbsolutePath();
+            lodePrefs.setISightRecorderPath(iSightRecorderPath);
+            lodePrefs.save();
+        }
+    }
+
     public static void checkAndSetupIpCam(Stage stage) throws IOException{
         LodePrefs prefs = IOC.queryUtility(LodePrefs.class);
         File home = new File(Constants.CAMERA_CONF);
@@ -75,7 +92,7 @@ public class Setup {
         String host = prefs.getHost();
         String user = prefs.getUser();
         String password = prefs.getPassword();
-        if( host!=null && host!="" && user!=null && user!=null && password!=null && password!="" ){
+        if( host!=null && host!="" ){
             return;
         }
 

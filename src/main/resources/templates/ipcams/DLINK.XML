@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- DLINK -->
 <CAMERA_IP>
+    <NAME>DLINK</NAME>
     <AUTH>BASIC</AUTH>
     <AUTHQUERY></AUTHQUERY>
     <CGI_PORT>80</CGI_PORT>

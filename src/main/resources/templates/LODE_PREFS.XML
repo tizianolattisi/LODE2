@@ -4,6 +4,7 @@
         <GROUP_OF_PROPERTIES>
             <PROPERTY NAME="Debug" VALUE="NO"/>
             <PROPERTY NAME="ffmpeg" VALUE=""/>
+            <PROPERTY NAME="isightrecorder" VALUE=""/>
         </GROUP_OF_PROPERTIES>
     </SECTION>
     <SECTION NAME="IPCAM">

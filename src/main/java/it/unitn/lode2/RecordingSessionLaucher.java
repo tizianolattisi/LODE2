@@ -141,6 +141,7 @@ public class RecordingSessionLaucher {
                 .recordCommand(cameraIPConf.getRecordCommand())
                         //.output(lectureFolder + "/movie0.mp4")
                 .output(lectureFolder)
+                .isight(lodePrefs.getISightRecorderPath())
                 .ffmpeg(lodePrefs.getFfmpegPath())
                 .build();
         IOC.registerUtility(recorder, Recorder.class);

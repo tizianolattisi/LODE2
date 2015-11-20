@@ -37,7 +37,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
     final static Logger logger = Logger.getLogger(IPRecorderImpl.class);
 
 
-    public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password, String recordTemplate, String output, String ffmpeg) {
+    public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password, String recordTemplate, String output, String ffmpeg, String isight) {
         this.protocol = protocol;
         this.host = host;
         this.port = port;
@@ -60,6 +60,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
         MessageMapFormat mmp = new MessageMapFormat(recordTemplate);
         Map<String, Object> map = new HashMap();
         map.put("ffmpeg", ffmpeg);
+        map.put("isight", isight);
         map.put("input", url);
         this.recordPartialCommand = mmp.format(map);
     }
@@ -145,7 +146,6 @@ public class IPRecorderImpl implements Recorder, EventListener {
 
         ArrayList<String> recordCommand = new ArrayList(Arrays.asList(recordPartialCommand.split(" ")));
         recordCommand.add(output + "/" + fileName);
-        System.out.println(recordCommand);
         recordProcess = new ProcessBuilder(recordCommand).start();
         (new RecorderObserver(recordProcess, this)).start();
     }

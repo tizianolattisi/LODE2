@@ -12,6 +12,8 @@ public interface LodePrefs {
     void save();
     String getFfmpegPath();
     void setFfmpegPath(String path);
+    String getISightRecorderPath();
+    void setISightRecorderPath(String path);
     String getUser();
     void setUser(String user);
     String getPassword();
