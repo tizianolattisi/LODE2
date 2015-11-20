@@ -99,12 +99,19 @@ public class RecordingSessionLaucher {
         if( cameraIPConf.getTiltStop()!=null ){
             builder = builder.template(Cmds.TILTSTOP, cameraIPConf.getTiltStop());
         }
-        Camera camera = builder
-                .template(Cmds.SNAPSHOT, cameraIPConf.getSnapshot())
-                .template(Cmds.PRESET, cameraIPConf.getPreset())
-                .template(Cmds.ADDPRESET, cameraIPConf.getAddPreset())
-                .template(Cmds.DELPRESET, cameraIPConf.getDelPreset())
-                .build();
+        if( cameraIPConf.getSnapshot()!=null ){
+            builder = builder.template(Cmds.SNAPSHOT, cameraIPConf.getSnapshot());
+        }
+        if( cameraIPConf.getPreset()!=null ){
+            builder = builder.template(Cmds.PRESET, cameraIPConf.getPreset());
+        }
+        if( cameraIPConf.getAddPreset()!=null ){
+            builder = builder.template(Cmds.ADDPRESET, cameraIPConf.getAddPreset());
+        }
+        if( cameraIPConf.getDelPreset()!=null ){
+            builder = builder.template(Cmds.DELPRESET, cameraIPConf.getDelPreset());
+        }
+        Camera camera = builder.build();
         IOC.registerUtility(camera, Camera.class);
 
         // Previewer
@@ -119,10 +126,15 @@ public class RecordingSessionLaucher {
 
 
         // Recorder
-        Recorder recorder = IPRecorderBuilder.create()
-                .protocol(IPRecorderProtocol.valueOf(cameraIPConf.getStreamProtocol()))
+        IPRecorderBuilder recorderBuilder = IPRecorderBuilder.create();
+        if( cameraIPConf.getStreamProtocol()!=null ){
+            recorderBuilder = recorderBuilder.protocol(IPRecorderProtocol.valueOf(cameraIPConf.getStreamProtocol()));
+        }
+        if( cameraIPConf.getStreamPort()!=null ){
+            recorderBuilder = recorderBuilder.port(cameraIPConf.getStreamPort());
+        }
+        Recorder recorder = recorderBuilder
                 .host(lodePrefs.getHost())
-                .port(cameraIPConf.getStreamPort())
                 .url(cameraIPConf.getStreamUrl())
                 .user(lodePrefs.getUser())
                 .password(lodePrefs.getPassword())

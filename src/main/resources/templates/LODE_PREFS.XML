@@ -8,7 +8,7 @@
     </SECTION>
     <SECTION NAME="IPCAM">
         <GROUP_OF_PROPERTIES>
-            <PROPERTY NAME="presets" VALUE="FOSCAM,DLINK"/>
+            <PROPERTY NAME="presets" VALUE="FOSCAM,DLINK,ISIGHT"/>
             <PROPERTY NAME="user" VALUE=""/>
             <PROPERTY NAME="password" VALUE=""/>
             <PROPERTY NAME="host" VALUE=""/>
