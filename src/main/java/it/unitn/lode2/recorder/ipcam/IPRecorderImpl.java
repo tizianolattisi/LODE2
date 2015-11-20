@@ -157,7 +157,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
         }
         BufferedWriter pi = new BufferedWriter(new OutputStreamWriter(recordProcess.getOutputStream()));
         try {
-            pi.write("q");
+            pi.write("q\n");
             pi.flush();
         } catch (IOException e) {
             logger.error("Unable to quit from ffmpeg process.", e);
