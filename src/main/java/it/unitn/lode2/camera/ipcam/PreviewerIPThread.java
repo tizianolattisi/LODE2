@@ -56,6 +56,8 @@ public class PreviewerIPThread extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        data = null;
+        System.gc();
         cache = buffer.toByteArray();
     }
 
