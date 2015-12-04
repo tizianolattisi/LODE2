@@ -144,7 +144,21 @@ public class IPRecorderImpl implements Recorder, EventListener {
         numOfFragments++;
         String fileName = "movie" + String.format("%03d", numOfFragments) + ".mov";
 
-        ArrayList<String> recordCommand = new ArrayList(Arrays.asList(recordPartialCommand.split(" ")));
+        ArrayList<String> recordCommand = new ArrayList();
+        Boolean odd = Boolean.TRUE;
+        for( String token: recordPartialCommand.split("'") ){
+            if( odd ) {
+                // outside double quote
+                token.split(" ");
+                recordCommand.addAll(Arrays.asList(token.split(" ")));
+            } else {
+                // inside double quote
+                recordCommand.add("'" + token +"'");
+            }
+            odd = !odd;
+        }
+
+        //ArrayList<String> recordCommand = new ArrayList(Arrays.asList(recordPartialCommand.split(" ")));
         recordCommand.add(output + "/" + fileName);
         recordProcess = new ProcessBuilder(recordCommand).start();
         (new RecorderObserver(recordProcess, this)).start();
