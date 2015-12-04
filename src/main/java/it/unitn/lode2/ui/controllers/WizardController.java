@@ -15,9 +15,14 @@ import it.unitn.lode2.slidejuicer.Juicer;
 import it.unitn.lode2.slidejuicer.pdf.PdfJuicerImpl;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -193,6 +198,8 @@ public class WizardController implements Initializable {
                 e.printStackTrace();
             }
         });
+
+        testButton.setOnAction(handlerTestScene);
 
         newCourseButton.setOnAction(event -> {
             TextInputDialog dialog = new TextInputDialog("new course name");
@@ -433,4 +440,25 @@ public class WizardController implements Initializable {
         int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
         return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
     }
+
+
+    private EventHandler<ActionEvent> handlerTestScene = event -> {
+        try {
+            FXMLLoader loader = new FXMLLoader(WizardController.class.getResource("/fxml/test.fxml"));
+            Parent root = loader.load();
+            TestController controller = loader.getController();
+            Scene scene = new Scene(root, 348, 298);
+            Stage stage = new Stage();
+            stage.setTitle("Test camera");
+            stage.setScene(scene);
+            stage.setX(100);
+            stage.setY(100);
+            stage.setOnCloseRequest(controller.handlerClose);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    };
+
 }

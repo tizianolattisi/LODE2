@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="348.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.controllers.TestController">
+   <children>
+      <ImageView fx:id="previewImageView" fitHeight="240.0" fitWidth="320.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+      <ProgressBar fx:id="vuMeterProgressBar" layoutX="14.0" layoutY="264.0" prefHeight="20.0" prefWidth="320.0" progress="0.0" />
+   </children>
+</AnchorPane>
