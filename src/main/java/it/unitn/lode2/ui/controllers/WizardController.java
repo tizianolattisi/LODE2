@@ -2,6 +2,7 @@ package it.unitn.lode2.ui.controllers;
 
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.RecordingSessionLaucher;
+import it.unitn.lode2.Setup;
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.asset.LodePrefs;
@@ -182,6 +183,14 @@ public class WizardController implements Initializable {
                     refreshPane.accept(3);
                 }
                 courseAndLectureName.setText(newLecture.name());
+            }
+        });
+
+        setupButton.setOnAction(event -> {
+            try {
+                Setup.checkAndSetupIpCam(new Stage(), true);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 

@@ -75,9 +75,13 @@ public class Setup {
     }
 
     public static void checkAndSetupIpCam(Stage stage) throws IOException{
+        checkAndSetupIpCam(stage, false);
+    }
+
+    public static void checkAndSetupIpCam(Stage stage, Boolean forceSetup) throws IOException{
         LodePrefs prefs = IOC.queryUtility(LodePrefs.class);
         File home = new File(Constants.CAMERA_CONF);
-        if( !home.exists() ){
+        if( forceSetup || !home.exists() ){
             ChoiceDialog<String> dialog = new ChoiceDialog<>("FOSCAM", prefs.getIpCamPresets());
             dialog.setTitle("IPCAM configuration missing");
 
@@ -92,7 +96,7 @@ public class Setup {
         String host = prefs.getHost();
         String user = prefs.getUser();
         String password = prefs.getPassword();
-        if( host!=null && host!="" ){
+        if( !forceSetup && (host!=null && host!="") ){
             return;
         }
 
