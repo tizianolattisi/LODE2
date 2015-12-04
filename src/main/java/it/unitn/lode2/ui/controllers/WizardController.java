@@ -64,6 +64,12 @@ public class WizardController implements Initializable {
     private Label courseNameLabel;
 
     @FXML
+    private Button setupButton;
+
+    @FXML
+    private Button testButton;
+
+    @FXML
     private Button newLectureButton;
 
     @FXML
@@ -159,8 +165,8 @@ public class WizardController implements Initializable {
             if (newCourse != null && newCourse != course) {
                 setCurrentCourse(newCourse);
                 refreshLectures(newCourse.lectures());
-                tabPane.getSelectionModel().select(1);
-                refreshPane.accept(1);
+                tabPane.getSelectionModel().select(2);
+                refreshPane.accept(2);
                 courseNameLabel.setText(newCourse.name());
             }
         });
@@ -169,11 +175,11 @@ public class WizardController implements Initializable {
                 setCurrentLecture(newLecture);
                 refreshSlides(newLecture.slides());
                 if( newLecture.slides().size()>0 ) {
-                    tabPane.getSelectionModel().select(2);
-                    refreshPane.accept(3);
+                    tabPane.getSelectionModel().select(3);
+                    refreshPane.accept(4);
                 } else {
-                    tabPane.getSelectionModel().select(2);
-                    refreshPane.accept(2);
+                    tabPane.getSelectionModel().select(3);
+                    refreshPane.accept(3);
                 }
                 courseAndLectureName.setText(newLecture.name());
             }
@@ -220,13 +226,13 @@ public class WizardController implements Initializable {
         });
 
         skipSlideButton.setOnAction(event -> {
-            refreshPane.accept(3);
-            tabPane.getSelectionModel().select(3);
+            refreshPane.accept(4);
+            tabPane.getSelectionModel().select(4);
         });
 
         toPostProcessButton.setOnAction(event -> {
-            refreshPane.accept(4);
-            tabPane.getSelectionModel().select(4);
+            refreshPane.accept(5);
+            tabPane.getSelectionModel().select(5);
         });
 
         editSlideButton.setOnAction(event -> {
@@ -270,7 +276,7 @@ public class WizardController implements Initializable {
                 @Override
                 protected void succeeded() {
                     refreshSlides(lecture.slides());
-                    refreshPane.accept(3);
+                    refreshPane.accept(4);
                 }
             };
 
@@ -350,7 +356,7 @@ public class WizardController implements Initializable {
         });
 
         // Tab setup
-        refreshPane.accept(0);
+        refreshPane.accept(1);
 
     }
 

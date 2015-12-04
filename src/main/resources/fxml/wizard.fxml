@@ -8,6 +8,16 @@
 <VBox fx:id="root" prefHeight="345.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.controllers.WizardController">
 <children><TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE">
   <tabs>
+            <Tab text="0. Setup">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="setupButton" layoutX="358.0" layoutY="184.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="115.0" text="Setup" />
+                        <Button fx:id="testButton" layoutX="358.0" layoutY="222.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Test" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
     <Tab text="1. Course">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="274.0" prefWidth="499.0">
