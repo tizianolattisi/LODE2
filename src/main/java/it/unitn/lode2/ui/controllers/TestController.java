@@ -78,7 +78,7 @@ public class TestController implements Initializable {
                 .password(lodePrefs.getPassword())
                 .recordCommand(cameraIPConf.getRecordCommand())
                 //.output(lectureFolder + "/movie0.mp4")
-                .output("/Users/tiziano") // XXX
+                .output(Constants.LODE_HOME) // XXX
                 .isight(lodePrefs.getISightRecorderPath())
                 .ffmpeg(lodePrefs.getFfmpegPath())
                 .build();

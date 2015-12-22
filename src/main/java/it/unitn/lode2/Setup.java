@@ -7,6 +7,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -42,6 +44,11 @@ public class Setup {
 
     public static void checkAndSetupFfmpeg(Stage stage){
         LodePrefs lodePrefs = IOC.queryUtility(LodePrefs.class);
+        if( checkIfMacAppBundle() ){
+            lodePrefs.setFfmpegPath("./recorders/ffmpeg");
+            lodePrefs.save();
+            return;
+        }
         String ffmpegPath = lodePrefs.getFfmpegPath();
         File file = new File(ffmpegPath);
         if( !file.exists() ){
@@ -59,6 +66,11 @@ public class Setup {
 
     public static void checkAndSetupISightRecorder(Stage stage){
         LodePrefs lodePrefs = IOC.queryUtility(LodePrefs.class);
+        if( checkIfMacAppBundle() ){
+            lodePrefs.setISightRecorderPath("./recorders/MacRecorder");
+            lodePrefs.save();
+            return;
+        }
         String iSightRecorderPath = lodePrefs.getISightRecorderPath();
         File file = new File(iSightRecorderPath);
         if( !file.exists() ){
@@ -81,6 +93,7 @@ public class Setup {
     public static void checkAndSetupIpCam(Stage stage, Boolean forceSetup) throws IOException{
         LodePrefs prefs = IOC.queryUtility(LodePrefs.class);
         File home = new File(Constants.CAMERA_CONF);
+        Boolean isISight = Boolean.FALSE;
         if( forceSetup || !home.exists() ){
             ChoiceDialog<String> dialog = new ChoiceDialog<>("FOSCAM", prefs.getIpCamPresets());
             dialog.setTitle("IPCAM configuration missing");
@@ -88,6 +101,7 @@ public class Setup {
             dialog.setHeaderText("Your setup don't contains a IPCAM config.");
             Optional<String> result = dialog.showAndWait();
             if( result.isPresent() ){
+                isISight = "ISIGHT".equals(result.get());
                 copyTemplate("/templates/ipcams/" + result.get() + ".XML", new FileOutputStream(Constants.CAMERA_CONF));
             }
 
@@ -100,25 +114,88 @@ public class Setup {
             return;
         }
 
-        TextInputDialog dialog = new TextInputDialog(host);
-        dialog.setTitle("IPCAM ip address");
-        dialog.setHeaderText("Insert the ip address of the cam.");
-        dialog.setContentText("Ip address:");
-        dialog.showAndWait().ifPresent(s -> prefs.setHost(s));
+        if( isISight ){
+            final String[] iSightPars = {""}; //" -v 'FaceTime Camera' -a 'Built-in Microphone'";
+            prefs.setHost("127.0.0.1");
+            prefs.setUser("");
+            prefs.setPassword("");
+            List<String> videoDevices = listDevices("v");
+            List<String> audioDevices = listDevices("a");
+            List<String> mutexDevices = listDevices("m");
+            if( videoDevices.size()>0 ) {
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(videoDevices.get(0), videoDevices);
+                dialog.setTitle("Select video device");
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(s -> {
+                    iSightPars[0] += " -v '" + s + "'";
+                });
+            }
+            if( audioDevices.size()>0 ) {
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(audioDevices.get(0), audioDevices);
+                dialog.setTitle("Select audio device");
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(s -> {
+                    iSightPars[0] += " -a '" + s + "'";
+                });
+            }
+            if( mutexDevices.size()>0 ) {
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(mutexDevices.get(0), mutexDevices);
+                dialog.setTitle("Select mutex device");
+                Optional<String> result = dialog.showAndWait();
+                result.ifPresent(s -> {
+                    iSightPars[0] += " -m '" + s + "'";
+                });
+            }
+            prefs.setISightRecorderPath(prefs.getISightRecorderPath() + iSightPars[0]);
+        } else {
+            TextInputDialog dialog = new TextInputDialog(host);
+            dialog.setTitle("IPCAM ip address");
+            dialog.setHeaderText("Insert the ip address of the cam.");
+            dialog.setContentText("Ip address:");
+            dialog.showAndWait().ifPresent(s -> prefs.setHost(s));
 
-        dialog = new TextInputDialog(user);
-        dialog.setTitle("IPCAM ip user");
-        dialog.setHeaderText("Insert the user name.");
-        dialog.setContentText("User:");
-        dialog.showAndWait().ifPresent(s -> prefs.setUser(s));
+            dialog = new TextInputDialog(user);
+            dialog.setTitle("IPCAM ip user");
+            dialog.setHeaderText("Insert the user name.");
+            dialog.setContentText("User:");
+            dialog.showAndWait().ifPresent(s -> prefs.setUser(s));
 
-        dialog = new TextInputDialog(password);
-        dialog.setTitle("IPCAM ip password");
-        dialog.setHeaderText("Insert the password.");
-        dialog.setContentText("Password:");
-        dialog.showAndWait().ifPresent(s -> prefs.setPassword(s));
+            dialog = new TextInputDialog(password);
+            dialog.setTitle("IPCAM ip password");
+            dialog.setHeaderText("Insert the password.");
+            dialog.setContentText("Password:");
+            dialog.showAndWait().ifPresent(s -> prefs.setPassword(s));
+        }
 
         prefs.save();
+    }
+
+    private static List<String> listDevices(String deviceType) throws IOException {
+        ArrayList<String> command = new ArrayList();
+        command.add("./recorders/MacRecorder");
+        command.add("-l");
+        command.add(deviceType);
+        Process process = new ProcessBuilder(command).start();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        String line;
+        List<String> devices = new ArrayList<>();
+        while ( (line = reader.readLine()) != null ) {
+            devices.add(line);
+        }
+        return devices;
+    }
+
+    private static Boolean checkIfMacAppBundle(){
+        if( System.getProperty("os.name").toLowerCase().indexOf("mac")>=0 ){
+            try {
+                if( new File(".").getCanonicalPath().endsWith("Contents/Resources") ){
+                    return Boolean.TRUE;
+                }
+            } catch (IOException e) {
+                return Boolean.FALSE;
+            }
+        }
+        return Boolean.FALSE;
     }
 
 }

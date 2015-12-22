@@ -6,6 +6,6 @@
     <CGI_PORT>9080</CGI_PORT>
     <STREAM_URL>/videoMain</STREAM_URL>
     <SNAPSHOT>/snapshot</SNAPSHOT>
-    <RECORD_COMMAND>${isight} -v 'FaceTime Camera' -a 'Built-in Microphone'</RECORD_COMMAND>
-    <CONV_COMMAND>${ffmpeg} -i ${input} -strict -2 -c:a aac -b:a 8k -c:v copy -y</CONV_COMMAND>
+    <RECORD_COMMAND>${isight}</RECORD_COMMAND>
+    <CONV_COMMAND>${ffmpeg} -i ${input} -strict -2 -c:a aac -c:v copy -y</CONV_COMMAND>
 </CAMERA_IP>

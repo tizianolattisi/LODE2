@@ -56,7 +56,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
         } else {
             url += host + ":" + port + path;
         }
-
+        recordTemplate = recordTemplate.replace("'", "''");
         MessageMapFormat mmp = new MessageMapFormat(recordTemplate);
         Map<String, Object> map = new HashMap();
         map.put("ffmpeg", ffmpeg);
@@ -150,10 +150,10 @@ public class IPRecorderImpl implements Recorder, EventListener {
             if( odd ) {
                 // outside double quote
                 token.split(" ");
-                recordCommand.addAll(Arrays.asList(token.split(" ")));
+                recordCommand.addAll(Arrays.asList(token.trim().split(" ")));
             } else {
                 // inside double quote
-                recordCommand.add("'" + token +"'");
+                recordCommand.add(token);
             }
             odd = !odd;
         }
@@ -181,7 +181,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
     }
 
     public void timeoutHandle() {
-        logger.warn("");
+        logger.warn("Timeout handling...");
         if( RecorderStatus.RECORDING.equals(status) ){
             try {
                 status = RecorderStatus.PAUSED;
