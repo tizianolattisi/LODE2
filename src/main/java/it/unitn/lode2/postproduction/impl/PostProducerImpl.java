@@ -50,7 +50,6 @@ public class PostProducerImpl implements PostProducer{
                     .map(s -> !"${ffmpeg}".equals(s) ? s : ffmpeg)
                     .collect(Collectors.toList());
             command.add(lecture.path() + "/movie.mp4");
-            System.out.println(command);
             recordProcess = new ProcessBuilder(command).start();
             recordProcess.waitFor();
         } catch (IOException e) {
