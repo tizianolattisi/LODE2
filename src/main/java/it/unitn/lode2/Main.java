@@ -41,10 +41,6 @@ public class Main extends Application {
 
         XMLCameraIPConf cameraIPConf = XMLHelper.build(XMLCameraIPConf.class).unmarshal(new File(Constants.CAMERA_CONF));
 
-        if( "ISIGHT".equals(cameraIPConf.getName()) ){
-            Setup.checkAndSetupISightRecorder(primaryStage);
-        }
-
         // Post producer
         PostProducer postProducer = PostProducerBuilder.create()
                 .command(cameraIPConf.getConvCommand())

@@ -103,6 +103,18 @@ public class Setup {
             if( result.isPresent() ){
                 isISight = "ISIGHT".equals(result.get());
                 copyTemplate("/templates/ipcams/" + result.get() + ".XML", new FileOutputStream(Constants.CAMERA_CONF));
+                if( "".equals(prefs.getISightRecorderPath()) ){
+                    if( checkIfMacAppBundle() ){
+                        prefs.setISightRecorderPath("./recorders/MacRecorder");
+                    } else {
+                        FileChooser fileChooser = new FileChooser();
+                        fileChooser.setTitle("Select iSightRecorder path");
+                        //fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Exe Files", "*.exe"));
+                        File iSightRecorderFile = fileChooser.showOpenDialog(stage);
+                        prefs.setISightRecorderPath(iSightRecorderFile.getAbsolutePath());
+                    }
+                }
+
             }
 
         }
@@ -146,7 +158,8 @@ public class Setup {
                     iSightPars[0] += " -m '" + s + "'";
                 });
             }
-            prefs.setISightRecorderPath(prefs.getISightRecorderPath() + iSightPars[0]);
+            String macRecorderPath = prefs.getISightRecorderPath().split("MacRecorder")[0];
+            prefs.setISightRecorderPath(macRecorderPath + "MacRecorder " + iSightPars[0]);
         } else {
             TextInputDialog dialog = new TextInputDialog(host);
             dialog.setTitle("IPCAM ip address");
