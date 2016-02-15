@@ -3,6 +3,7 @@ package it.unitn.lode2.camera.ipcam;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.AbstractCamera;
 import it.unitn.lode2.camera.ipcam.connection.ConnectionProvider;
+import it.unitn.lode2.camera.ipcam.connection.SynchronizedURLConnection;
 import it.unitn.lode2.mapformat.MessageMapFormat;
 
 import java.io.*;
@@ -151,11 +152,12 @@ public class CameraIPImpl extends AbstractCamera {
     }
 
     private void executeGET(String sUrl) throws IOException {
-        URL url = new URL(sUrl);
+        SynchronizedURLConnection.invoke(sUrl);
+        /*URL url = new URL(sUrl);
         HttpURLConnection connection = IOC.queryUtility(ConnectionProvider.class).createConnection(url);
         connection.setRequestMethod("GET");
         connection.connect();
-        connection.getContent();
+        connection.getContent();*/
     }
 
 

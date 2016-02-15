@@ -2,6 +2,7 @@ package it.unitn.lode2.camera.ipcam;
 
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.ipcam.connection.ConnectionProvider;
+import it.unitn.lode2.camera.ipcam.connection.SynchronizedURLConnection;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,9 +30,8 @@ public class PreviewerIPThread extends Thread {
         while( !toTerminate ){
             try {
                 long initTime = System.currentTimeMillis();
-                URL url = new URL(snapshotUrl);
-                HttpURLConnection connection = IOC.queryUtility(ConnectionProvider.class).createConnection(url);
-                cachePreview(connection.getInputStream());
+                InputStream inputStream = SynchronizedURLConnection.invoke(snapshotUrl, Boolean.TRUE);
+                cachePreview(inputStream);
                 long toWait = maxMillisecs - (System.currentTimeMillis() - initTime);
                 if( toWait>0 ) {
                     sleep(toWait);
