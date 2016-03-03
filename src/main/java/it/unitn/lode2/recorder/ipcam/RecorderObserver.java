@@ -21,7 +21,10 @@ public class RecorderObserver extends Thread {
     public void run() {
         try {
             process.waitFor();
-            recorder.timeoutHandle();
+            if( recorder.isRecording() ) {
+                Thread.sleep(1000);
+                recorder.timeoutHandle();
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
