@@ -14,7 +14,7 @@ import java.util.*;
  * Date: 14/12/14
  * Time: 14:18
  */
-public class IPRecorderImpl implements Recorder, EventListener {
+public class IPRecorderImpl implements Recorder {
 
     // ffmpeg -i "concat:movie001.ts|movie002.ts|movie003.ts|movie004.ts" -c copy -bsf:a aac_adtstoasc movie0.mp4
 
