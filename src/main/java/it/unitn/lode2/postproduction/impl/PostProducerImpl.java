@@ -12,8 +12,7 @@ import it.unitn.lode2.xml.distribution.XMLDataVideo;
 import it.unitn.lode2.xml.timedslides.XMLTimedSlides;
 import org.apache.commons.io.FileUtils;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,12 +33,40 @@ public class PostProducerImpl implements PostProducer{
 
     }
 
+    private void concat(Lecture lecture){
+        File folder = new File(lecture.path());
+        File[] files = folder.listFiles();
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter(lecture.path() + "/filelist.txt", "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        for( File file: files ){
+            if( file.isFile() && file.getName().toLowerCase().endsWith("mov") ){
+                writer.println("file '" + file.getAbsolutePath() + "'");
+            }
+        }
+        writer.close();
+        String[] command = {ffmpeg, "-f", "concat", "-i", lecture.path() + "/filelist.txt", "-c", "copy", lecture.path() + "/movie.mov"};
+        try {
+            new ProcessBuilder(command).start().waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void convert(Lecture lecture) {
+        concat(lecture);
         MessageMapFormat mmp = new MessageMapFormat(commandTemplate);
         Map<String, Object> map = new HashMap();
         //map.put("ffmpeg", ffmpeg);
-        String input = lecture.path() + "/movie001.mov";
+        String input = lecture.path() + "/movie.mov";
         map.put("input", "${input}");
         map.put("ffmpeg", "${ffmpeg}");
         this.partialCommand = mmp.format(map);
