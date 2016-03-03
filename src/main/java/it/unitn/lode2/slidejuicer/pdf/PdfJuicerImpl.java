@@ -85,21 +85,21 @@ public class PdfJuicerImpl implements Juicer {
 
             @Override
             public boolean hasNext() {
-                return i < pages.size() - 1;
+                return i < pages.size();
             }
 
             @Override
             public Slide next() {
                 Slide slide = null;
                 try {
+                    i++;
                     // text
                     StringWriter textWriter = new StringWriter();
                     textStripper.setStartPage(i);
                     textStripper.setEndPage(i);
                     textStripper.writeText(document, textWriter);
                     // image
-                    PDPage page = pages.get(i);
-                    i++;
+                    PDPage page = pages.get(i-1);
                     BufferedImage bufferedImage = page.convertToImage();
                     String fileName = i + ".png";
                     File outputfile = new File(path + fileName);
