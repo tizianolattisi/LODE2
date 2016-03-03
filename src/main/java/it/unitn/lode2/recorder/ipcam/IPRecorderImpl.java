@@ -167,7 +167,10 @@ public class IPRecorderImpl implements Recorder {
 
         //ArrayList<String> recordCommand = new ArrayList(Arrays.asList(recordPartialCommand.split(" ")));
         recordCommand.add(output + "/" + fileName);
-        recordProcess = new ProcessBuilder(recordCommand).start();
+        recordProcess = new ProcessBuilder(recordCommand)
+                .redirectOutput(ProcessBuilder.Redirect.to(new File("~/ffmpegstdout.log")))
+                .start();
+
         (new RecorderObserver(recordProcess, this)).start();
     }
 
@@ -190,11 +193,15 @@ public class IPRecorderImpl implements Recorder {
     public void timeoutHandle() {
         logger.warn("Timeout handling...");
         if( RecorderStatus.RECORDING.equals(status) ){
-            try {
-                status = RecorderStatus.PAUSED;
-                record();
-            } catch (IOException e) {
-                logger.error("Something wrong in restarting record process.", e);
+            status = RecorderStatus.PAUSED;
+            if( controller.isPresent() ) {
+                controller.ifPresent(c -> c.timeoutHandler());
+            } else {
+                try {
+                    record();
+                } catch (IOException e) {
+                    logger.error("Something wrong in restarting record process.", e);
+                }
             }
         }
     }
