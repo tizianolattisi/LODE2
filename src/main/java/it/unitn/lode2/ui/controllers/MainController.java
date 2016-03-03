@@ -54,6 +54,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -698,12 +699,7 @@ public class MainController implements Initializable, RecordController {
                     projector.shownSlideSeqNumber().ifPresent(n -> lecture.addTimedSlide(lecture.slide(n), 0L));
 
                     // ffmpeg volumeChecker
-                    recorder.errorLog().ifPresent(s -> {
-                        volumeChecker = IOC.queryUtility(VolumeChecker.class);
-                        volumeChecker.setStream(s);
-                        volumeChecker.setLufsProperty(lufs);
-                        volumeChecker.start();
-                    });
+                    startVolumeChecker();
 
                     recordingLabel.setText(RECORD_LABEL);
                     recordingLabel.setTextFill(Paint.valueOf(RECORDING_COLOR));
@@ -732,7 +728,6 @@ public class MainController implements Initializable, RecordController {
                 chronometer.stop();
                 recordingLabel.setText(PAUSE_LABEL);
                 recordingLabel.setTextFill(Paint.valueOf(PAUSE_COLOR));
-                volumeChecker.terminate();
             } else if( recorder.isPaused() ){
                 try {
                     recorder.wakeup();
@@ -742,13 +737,7 @@ public class MainController implements Initializable, RecordController {
                     handleIOException(e);
                 }
                 chronometer.start();
-                recorder.errorLog().ifPresent(s -> {
-                    //volumeChecker = new IPRecorderVolumeCheckerImpl();
-                    volumeChecker = IOC.queryUtility(VolumeChecker.class);
-                    volumeChecker.setStream(s);
-                    volumeChecker.setLufsProperty(lufs);
-                    volumeChecker.start();
-                });
+                startVolumeChecker();
             }
             else {
                 pauseToggleButton.setSelected(false);
@@ -773,7 +762,7 @@ public class MainController implements Initializable, RecordController {
                 recordingLabel.setTextFill(Paint.valueOf(IDLE_COLOR));
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
-                volumeChecker.terminate();
+                //volumeChecker.terminate();
             }
             refreshRecorderButtons();
         }
@@ -982,5 +971,14 @@ public class MainController implements Initializable, RecordController {
         } catch (IOException e) {
             handleIOException(e);
             }
+    }
+
+    private void startVolumeChecker() {
+        recorder.errorLog().ifPresent(s -> {
+            volumeChecker = IOC.queryUtility(VolumeChecker.class);
+            volumeChecker.setStream(s);
+            volumeChecker.setLufsProperty(lufs);
+            volumeChecker.start();
+        });
     }
 }
