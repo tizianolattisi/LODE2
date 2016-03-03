@@ -1,6 +1,7 @@
 package it.unitn.lode2.recorder;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import it.unitn.lode2.ui.controllers.RecordController;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +21,8 @@ public interface Recorder {
     void pause();
 
     void wakeup() throws IOException;
+
+    void setRecordController(RecordController recordController);
 
     RecorderStatus status();
 

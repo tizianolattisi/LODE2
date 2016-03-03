@@ -3,6 +3,7 @@ package it.unitn.lode2.recorder.ipcam;
 import it.unitn.lode2.mapformat.MessageMapFormat;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.recorder.RecorderStatus;
+import it.unitn.lode2.ui.controllers.RecordController;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -35,6 +36,7 @@ public class IPRecorderImpl implements Recorder, EventListener {
     private Integer numOfFragments=0;
 
     final static Logger logger = Logger.getLogger(IPRecorderImpl.class);
+    private Optional<RecordController> controller;
 
 
     public IPRecorderImpl(String host, Integer port, IPRecorderProtocol protocol, String path, String user, String password, String recordTemplate, String output, String ffmpeg, String isight) {
@@ -100,6 +102,11 @@ public class IPRecorderImpl implements Recorder, EventListener {
             status = RecorderStatus.RECORDING;
             logger.debug("Wakeup recording.");
         }
+    }
+
+    @Override
+    public void setRecordController(RecordController recordController) {
+        controller = Optional.of(recordController);
     }
 
     @Override

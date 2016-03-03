@@ -67,7 +67,7 @@ import java.util.function.Function;
  * Date: 07/11/14
  * Time: 09:39
  */
-public class MainController implements Initializable {
+public class MainController implements Initializable, RecordController {
 
     private Font fontAwesome;
 
@@ -181,6 +181,7 @@ public class MainController implements Initializable {
         camera = IOC.queryUtility(Camera.class);
         previewer = IOC.queryUtility(Previewer.class);
         recorder = IOC.queryUtility(Recorder.class);
+        recorder.setRecordController(this);
         projector = IOC.queryUtility(Projector.class);
         lecture = IOC.queryUtility(Lecture.class);
 
@@ -970,4 +971,16 @@ public class MainController implements Initializable {
         e.printStackTrace();
     }
 
+    @Override
+    public void timeoutHandler() {
+        try {
+            chronometer.stop();
+            recorder.stop();
+            recorder.record();
+            startVolumeChecker();
+            chronometer.start();
+        } catch (IOException e) {
+            handleIOException(e);
+            }
+    }
 }
