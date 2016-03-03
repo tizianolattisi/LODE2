@@ -96,9 +96,9 @@ public class Setup {
         Boolean isISight = Boolean.FALSE;
         if( forceSetup || !home.exists() ){
             ChoiceDialog<String> dialog = new ChoiceDialog<>("FOSCAM", prefs.getIpCamPresets());
-            dialog.setTitle("IPCAM configuration missing");
+            dialog.setTitle("CAM configuration");
 
-            dialog.setHeaderText("Your setup don't contains a IPCAM config.");
+            dialog.setHeaderText("Select the CAM");
             Optional<String> result = dialog.showAndWait();
             if( result.isPresent() ){
                 isISight = "ISIGHT".equals(result.get());
@@ -134,22 +134,6 @@ public class Setup {
             List<String> videoDevices = listDevices("v");
             List<String> audioDevices = listDevices("a");
             List<String> mutexDevices = listDevices("m");
-            if( videoDevices.size()>0 ) {
-                ChoiceDialog<String> dialog = new ChoiceDialog<>(videoDevices.get(0), videoDevices);
-                dialog.setTitle("Select video device");
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(s -> {
-                    iSightPars[0] += " -v '" + s + "'";
-                });
-            }
-            if( audioDevices.size()>0 ) {
-                ChoiceDialog<String> dialog = new ChoiceDialog<>(audioDevices.get(0), audioDevices);
-                dialog.setTitle("Select audio device");
-                Optional<String> result = dialog.showAndWait();
-                result.ifPresent(s -> {
-                    iSightPars[0] += " -a '" + s + "'";
-                });
-            }
             if( mutexDevices.size()>0 ) {
                 ChoiceDialog<String> dialog = new ChoiceDialog<>(mutexDevices.get(0), mutexDevices);
                 dialog.setTitle("Select mutex device");
@@ -157,6 +141,23 @@ public class Setup {
                 result.ifPresent(s -> {
                     iSightPars[0] += " -m '" + s + "'";
                 });
+            } else {
+                if (videoDevices.size() > 0) {
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(videoDevices.get(0), videoDevices);
+                    dialog.setTitle("Select video device");
+                    Optional<String> result = dialog.showAndWait();
+                    result.ifPresent(s -> {
+                        iSightPars[0] += " -v '" + s + "'";
+                    });
+                }
+                if (audioDevices.size() > 0) {
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(audioDevices.get(0), audioDevices);
+                    dialog.setTitle("Select audio device");
+                    Optional<String> result = dialog.showAndWait();
+                    result.ifPresent(s -> {
+                        iSightPars[0] += " -a '" + s + "'";
+                    });
+                }
             }
             String macRecorderPath = prefs.getISightRecorderPath().split("MacRecorder")[0];
             prefs.setISightRecorderPath(macRecorderPath + "MacRecorder " + iSightPars[0]);
