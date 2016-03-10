@@ -42,6 +42,8 @@ public class IPRecorderVolumeCheckerImpl implements VolumeChecker {
                         // do noting
                     } else if( line.startsWith("[mpegts") ) {
                         // do noting
+                    } else if( line.startsWith("[aac") ) {
+                        // do noting
                     } else {
                         logger.debug(line);
                     }
