@@ -4,9 +4,11 @@ import it.unitn.lode2.IOC;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Capability;
+import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
 import it.unitn.lode2.projector.Projector;
+import it.unitn.lode2.recorder.ipcam.StreamGobbler;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -30,6 +32,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -46,6 +49,7 @@ import java.util.ResourceBundle;
 public class CamCtrlController implements Initializable {
 
     private Camera camera;
+    private Previewer previewer;
     private Recorder recorder=null;
     private Projector projector;
     private Lecture lecture;
@@ -94,6 +98,10 @@ public class CamCtrlController implements Initializable {
 
     private Timeline timeline;
     private final SimpleBooleanProperty setPresetMode = new SimpleBooleanProperty();
+    private LogsController logsController;
+
+    private StreamGobbler errorStreamGobbler = new StreamGobbler();
+    private StreamGobbler standardStreamGobbler = new StreamGobbler();
 
     private enum ZoomMode {
         NONE, WIDE, NARROW
@@ -126,6 +134,7 @@ public class CamCtrlController implements Initializable {
 
         // IOC to inject the implementations of Camera, Recorder, and Projector
         camera = IOC.queryUtility(Camera.class);
+        previewer = IOC.queryUtility(Previewer.class);
         recorder = IOC.queryUtility(Recorder.class);
         projector = IOC.queryUtility(Projector.class);
         lecture = IOC.queryUtility(Lecture.class);
@@ -140,7 +149,7 @@ public class CamCtrlController implements Initializable {
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(40), new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 refreshPreview();
@@ -221,18 +230,20 @@ public class CamCtrlController implements Initializable {
     /* Preview */
     private void refreshPreview() {
         try {
-            previewImageView.setImage(new Image(camera.snapshot()));
+            previewer.snapshot().ifPresent(s -> previewImageView.setImage(new Image(s)));
         } catch (IOException e) {
             handleIOException(e);
         }
     }
 
     private void playPreview() {
+        previewer.start();
         timeline.play();
     }
 
     private void stopPreview() {
         timeline.stop();
+        previewer.stop();
         previewImageView.setImage(null);
     }
 
@@ -471,12 +482,21 @@ public class CamCtrlController implements Initializable {
         @Override
         public void handle(ActionEvent event) {
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/it/unitn/lode2/ui/camsetup.fxml"));
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/it/unitn/lode2/ui/logs.fxml"));
+                Parent root = loader.load();
+                logsController = loader.getController();
                 Scene scene = new Scene(root, 600, 700);
                 Stage stage = new Stage();
-                stage.setTitle("Camera config");
+                stage.setTitle("Acquisition logs");
                 stage.setScene(scene);
                 stage.show();
+                //logsController.logRecorder(recorder);
+                recorder.errorLog().ifPresent(s -> errorStreamGobbler.stream(s).widget(logsController.getStderrorTextArea()).start());
+                recorder.outputLog().ifPresent(s -> standardStreamGobbler.stream(s).widget(logsController.getStdoutTextArea()).start());
+                if( recorder.isRecording() ) {
+                    //controller.logRecorder(recorder);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -526,14 +546,25 @@ public class CamCtrlController implements Initializable {
             if( recorder.isRecording() || recorder.isPaused() ){
                 recorder.stop();
                 chronometer.stop();
-                lecture.setVideoLength(chronometer.elapsed()/1000);
+                lecture.setVideoLength(chronometer.elapsed() / 1000);
                 lecture.save();
+                terminateGobblers();
+                //logsController.stop();
                 offair.setId("offair");
                 recordToggleButton.setSelected(false);
                 pauseToggleButton.setSelected(false);
             }
         }
     };
+
+    private void terminateGobblers() {
+        if( errorStreamGobbler != null && errorStreamGobbler.isAlive() ) {
+            errorStreamGobbler.terminate();
+        }
+        if( standardStreamGobbler != null && standardStreamGobbler.isAlive() ) {
+            standardStreamGobbler.terminate();
+        }
+    }
 
     private EventHandler<ActionEvent> handlerPreset = new EventHandler<ActionEvent>() {
         @Override
@@ -618,6 +649,14 @@ public class CamCtrlController implements Initializable {
         public void handle(ActionEvent event) {
             projector.last();
             refreshSlides();
+        }
+    };
+    public EventHandler<WindowEvent> handlerClose = new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent event) {
+            terminateGobblers();
+            previewer.stop();
+            recorder.stop();
         }
     };
 

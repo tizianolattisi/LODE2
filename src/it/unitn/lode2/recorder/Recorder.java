@@ -3,6 +3,8 @@ package it.unitn.lode2.recorder;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Optional;
 
 /**
  * User: tiziano
@@ -26,4 +28,8 @@ public interface Recorder {
     public Boolean isRecording();
 
     public Boolean isPaused();
+
+    public Optional<InputStream> outputLog();
+
+    public Optional<InputStream> errorLog();
 }

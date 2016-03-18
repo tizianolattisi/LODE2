@@ -29,7 +29,6 @@ public class CameraIPImpl extends AbstractCamera {
     private String presetAddUrl;
     private String presetDelUrl;
 
-    private String snapshotUrl;
 
     @Override
     public void zoomIn() throws IOException {
@@ -92,12 +91,6 @@ public class CameraIPImpl extends AbstractCamera {
         executeGET(presetAddUrl + preset);
     }
 
-    @Override
-    public InputStream snapshot() throws IOException {
-        URL url = new URL(snapshotUrl);
-        return url.openStream();
-    }
-
     public void setZoomInUrl(String zoomInUrl) {
         this.zoomInUrl = zoomInUrl;
     }
@@ -132,10 +125,6 @@ public class CameraIPImpl extends AbstractCamera {
 
     public void setTiltStopUrl(String tiltStopUrl) {
         this.tiltStopUrl = tiltStopUrl;
-    }
-
-    public void setSnapshotUrl(String snapshotUrl) {
-        this.snapshotUrl = snapshotUrl;
     }
 
     public void setPresetUrl(String presetUrl) {

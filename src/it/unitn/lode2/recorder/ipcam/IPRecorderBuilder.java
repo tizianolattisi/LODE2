@@ -13,6 +13,7 @@ public class IPRecorderBuilder {
     private String url="/";
     private String user=null;
     private String password=null;
+    private String recordCommand;
     private String output ="movie.mp4";
 
     public static IPRecorderBuilder create(){
@@ -49,6 +50,11 @@ public class IPRecorderBuilder {
         return this;
     }
 
+    public IPRecorderBuilder recordCommand(String recordCommand) {
+        this.recordCommand = recordCommand;
+        return this;
+    }
+
     public IPRecorderBuilder output(String output) {
         this.output = output;
         return this;
@@ -56,7 +62,7 @@ public class IPRecorderBuilder {
 
     public IPRecorderImpl build(){
         // TODO: per ora il builder si limita a creare l'istanza
-        IPRecorderImpl recorder = new IPRecorderImpl(host, port, protocol, url, user, password, output);
+        IPRecorderImpl recorder = new IPRecorderImpl(host, port, protocol, url, user, password, recordCommand, output);
         return recorder;
     }
 }

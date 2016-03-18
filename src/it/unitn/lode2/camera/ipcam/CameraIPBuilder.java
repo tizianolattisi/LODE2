@@ -100,11 +100,6 @@ public class CameraIPBuilder {
             cameraIP.setPresetDelUrl(urls.get(Cmds.DELPRESET));
             cameraIP.addCapability(Capability.PRESETS);
         }
-        // SNAPSHOT
-        if( urls.containsKey(Cmds.SNAPSHOT) ){
-            cameraIP.setSnapshotUrl(urls.get(Cmds.SNAPSHOT));
-            cameraIP.addCapability(Capability.SNAPSHOT);
-        }
         return cameraIP;
     }
 }
