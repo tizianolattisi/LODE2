@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- FOSCAM FI9826P -->
+<CAMERA_IP>
+    <NAME>FOSCAM</NAME>
+    <AUTH>QUERY</AUTH>
+    <AUTHQUERY>usr=${user}&amp;pwd=${password}</AUTHQUERY>
+    <CGI_PORT>88</CGI_PORT>
+    <STREAM_PORT>88</STREAM_PORT>
+    <STREAM_PROTOCOL>RTSP</STREAM_PROTOCOL>
+    <STREAM_URL>/videoMain</STREAM_URL>
+    <ZOOMIN>/cgi-bin/CGIProxy.fcgi?cmd=zoomIn</ZOOMIN>
+    <ZOOMOUT>/cgi-bin/CGIProxy.fcgi?cmd=zoomOut</ZOOMOUT>
+    <ZOOMSTOP>/cgi-bin/CGIProxy.fcgi?cmd=zoomStop</ZOOMSTOP>
+    <PANLEFT>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveLeft</PANLEFT>
+    <PANRIGHT>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveRight</PANRIGHT>
+    <PANSTOP>/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun</PANSTOP>
+    <TILTUP>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveUp</TILTUP>
+    <TILTDOWN>/cgi-bin/CGIProxy.fcgi?cmd=ptzMoveDown</TILTDOWN>
+    <TILTSTOP>/cgi-bin/CGIProxy.fcgi?cmd=ptzStopRun</TILTSTOP>
+    <PRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzGotoPresetPoint&amp;name=${preset}</PRESET>
+    <ADDPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzAddPresetPoint&amp;name=${preset}</ADDPRESET>
+    <DELPRESET>/cgi-bin/CGIProxy.fcgi?cmd=ptzDeletePresetPoint&amp;name=${preset}</DELPRESET>
+    <SNAPSHOT>/cgi-bin/CGIProxy.fcgi?cmd=snapPicture2</SNAPSHOT>
+    <RECORD_COMMAND>${ffmpeg} -rtsp_transport tcp -stimeout 5000000 -i ${input} -strict -2 -c:a aac -b:a 32k -vn -f mpegts -filter:a ebur128 out.ts -c:v copy -c:a copy -y</RECORD_COMMAND>
+    <CONV_COMMAND>${ffmpeg} -i ${input} -strict -2 -c:a aac -c:v copy -y</CONV_COMMAND>
+</CAMERA_IP>

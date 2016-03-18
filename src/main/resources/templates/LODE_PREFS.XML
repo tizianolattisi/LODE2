@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PREFERENCES>
+    <SECTION NAME="GENERIC">
+        <GROUP_OF_PROPERTIES>
+            <PROPERTY NAME="Debug" VALUE="NO"/>
+            <PROPERTY NAME="ffmpeg" VALUE=""/>
+            <PROPERTY NAME="isightrecorder" VALUE=""/>
+        </GROUP_OF_PROPERTIES>
+    </SECTION>
+    <SECTION NAME="IPCAM">
+        <GROUP_OF_PROPERTIES>
+            <PROPERTY NAME="presets" VALUE="FOSCAM,DLINK,ISIGHT"/>
+            <PROPERTY NAME="user" VALUE=""/>
+            <PROPERTY NAME="password" VALUE=""/>
+            <PROPERTY NAME="host" VALUE=""/>
+        </GROUP_OF_PROPERTIES>
+    </SECTION>
+    <SECTION NAME="LAST USED COURSE">
+        <GROUP_OF_PROPERTIES>
+            <PROPERTY NAME="Last used course" VALUE=""/>
+            <PROPERTY NAME="Last used course-2" VALUE=""/>
+            <PROPERTY NAME="Last used course-3" VALUE=""/>
+        </GROUP_OF_PROPERTIES>
+    </SECTION>
+</PREFERENCES>

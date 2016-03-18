@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>LODE HTML5 Frontend</title>
+        <script type = 'text/javascript' src = "lib/js/popcorn-complete.min.js"></script>
+        <script type = 'text/javascript' src = "lib/js/jquery.min.js"></script>
+        <script type = 'text/javascript' src = 'lib/js/jquery.iosslider.min.js'></script>
+        <script type = 'text/javascript' src = 'lib/js/bigscreen.min.js'></script>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link href="lib/css/bootstrap.css" rel="stylesheet">
+        <link href="lib/css/bootstrap-responsive.css" rel="stylesheet">
+
+        <link href="lib/css/custom.css" rel="stylesheet">
+
+        <script type="text/javascript" >
+            var data = new Object();
+            data.slides = new Array();
+            data.video = new Object();
+            data.video.sources = new Array();
+            var layout = "both";
+            
+            
+            $(document).ready(function()  
+            {  
+                $.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase()); 
+                //                if($.browser.chrome){
+                //                    $("#container").html("<div class=\"hero-unit\"><h1>Chrome not supported.</h1><p>Chrome won't load load local xml files due to security policy.</p></div>");
+                //                } else {
+                
+                var popcorn = Popcorn( "#player" );
+            
+                //read and parse xml
+            
+                $.get('content/data.xml', function(d){ 
+
+
+
+                    /*                   *
+                     *      LECTURE      * 
+                     *                   */
+                
+                    //fetch lecture info
+                    var $info=$(d).find('info');
+                    data.course = $info.find('corso').text();
+                    data.lecture = $info.find('titolo').text();
+                    data.professor = $info.find('professore').text();
+                    data.url = $info.find('dinamic_url').text();
+                    
+                    //set lecture info            
+                    $("#lecture").text(data.lecture);
+                    $("#course").text(data.course);
+                    $("#professor").text(data.professor); 
+                    $("#url").html("<a href=\""+data.url+"\" target=\"_blank\" title=\"link\">"+data.url+"</a>"); 
+                    //replace page title
+                    document.title = "LODE: "+data.course+" - "+data.lecture;
+                    
+                    
+                    /*                  *
+                     *      VIDEO       * 
+                     *                  */   
+                    
+                    //fetch video info
+                    var $video=$(d).find('video');
+                    data.video.name = "content/"+$video.find('nome').text().replace(/(.*)\.[^.]+$/, "$1");
+                    data.video.duration = $video.find('totaltime').text();
+                    data.video.start = $video.find('starttime').text();
+                    
+                    //assume all sources available
+                    data.video.sources.push(data.video.name+".mp4");
+                    data.video.sources.push(data.video.name+".ogv");
+                    data.video.sources.push(data.video.name+".webm");
+
+                    //load video, check capabilities
+                    var player = getPlayer();
+                    if (player.canPlayType("video/ogg")) {
+                        player.setAttribute("src", data.video.name+".ogv");
+                    } else if (player.canPlayType("video/webm")) {
+                        player.setAttribute("src", data.video.name+".webm");
+                    } else if (player.canPlayType("video/mp4")) {
+                        player.setAttribute("src", data.video.name+".mp4");
+                    }
+                    var video = $("#player");
+                    $('#progress-time-duration').text(timeFormat(data.video.duration));
+
+
+                    /*                  *
+                     *      SLIDES      * 
+                     *                  */  
+
+                    //fetch and load slides
+                    $(d).find('slide').each(function(){ 
+                        var slide = new Object();
+                        var $element = $(this);  
+                        slide.title = $element.find('titolo').text();  
+                        slide.image = "content/"+$element.find('immagine').text();  
+                        slide.time = $element.find('tempo').text();  
+                        data.slides.push(slide);
+                    });  
+                    
+                    //calculate slide ends                    
+                    var endTime = Math.round(getPlayer().duration);
+                    for(var i=data.slides.length; i>0; i--) {
+                        var slide = data.slides[i-1];
+                        slide.end = endTime;
+                        endTime = slide.time;
+                    }
+
+
+                    if(data.slides.length > 0) {
+                        //load first slide
+                        $("#slides").html("<img id=\"slide\" alt=\"slide\" src=\""+data.slides[0].image+"\" data-slide=\"0\" data-slide-video=\"0\"/>");
+                        
+                        //add slides to navigation
+                        //group by 4 elements
+                        var j,z,elements;
+                        var count = 0;
+                        var chunk = 4;
+                        for (j=0,z=data.slides.length; j<z; j+=chunk) {
+                            elements = data.slides.slice(j,j+chunk);
+                            $('#navigation').append("<div class=\"slide\"><ul class=\"navigation-ul thumbnails\" id=\"navigation-"+j+"\">");
+                            for(var i=0; i<elements.length; i++) {
+                                var slide = elements[i];
+                                $('#navigation-'+j).append("<li class=\"\" id=\"nav-"+count+"\"><a class=\"thumbnail\" href=\"javascript:slideJump("+count+");\"><img src=\""+slide.image+"\" /><h4>"+(count+1)+". "+slide.title+"</h4></a></li>");                                  
+                                var videoDuration=data.video.duration;
+                                var slideProgressPosition = parseInt((100 * parseInt(slide.time)) / videoDuration);
+                               
+                                $("#progress-bar").append("<span id=\"nav-"+count+"\" class=\"progress-bar-chapter\" style=\"left: "+slideProgressPosition+"%\"></span>");
+                                
+                                popcorn.code({
+                                    start: parseInt(slide.time),
+                                    end: parseInt(slide.end),
+                                    slideNumber: count,
+                                    onStart: function(options) {
+                                        playerSlideHandler(options.slideNumber);
+                                    },
+                                    onEnd: function(options) {
+                                    }
+                                });  
+                                count++;
+                            }
+                            $('#navigation').append("</ul></div>");
+                        }
+                        //set first slide active
+                        $("#nav-0 a").addClass("active");
+                        $('.iosSlider').iosSlider({
+                            snapToChildren: false,
+                            scrollbar: true,
+                            scrollbarHide: false,
+                            desktopClickDrag: true,
+                            scrollbarLocation: 'bottom',
+                            scrollbarHeight: '12px',
+                            scrollbarDrag: true,
+                            responsiveSlideContainer: true,
+                            responsiveSlides: false
+                        });
+                    }
+                    
+                    //temporary resize player with slide dimensions
+                    //                    $("#cell-player").height('100%');
+
+                    $("#cell-player").height(430);
+
+                    //                    video.height($("#slide").height());                    
+                    //                    video.width($("#slide").width());
+                    
+                    
+                    //video controls and callback
+                    
+                    //set progress bar and controls
+                    video.on('loadedmetadata', function() {
+                        $('#progress-time-current').text(timeFormat(0));
+                        //                        $('#progress-time-duration').text(timeFormat(video[0].duration));
+                        //start to get video buffering data 
+                        //setTimeout(startBuffer(), 150);
+                        //
+                        //remove default control when JS loaded
+                        video[0].removeAttribute("controls");
+
+                       
+                    });
+                    
+                    video.on('loadeddata', function() {
+                        //resize player with actual dimensions
+                        fixPlayerSize();
+                        //                        video.height("auto");
+                        //                        video.width("auto");
+                    });
+                    
+                    //display current video play time
+                    video.on('timeupdate', function() {
+                        var currentPos = video[0].currentTime;
+                        var maxduration = video[0].duration;
+                        var perc = 100 * currentPos / maxduration;
+                        $('#progress-bar-time').css('width',perc+'%');	
+                        $('#progress-time-current').text(timeFormat(currentPos));	
+                    });
+                    
+                    video.on('click', function() { playerPlayPause(); } );
+                    
+                    //video ended event
+                    video.on('ended', function() {
+                        playerPause();
+                    });
+                    video.on('play', function() {
+                        playPauseButtonCallback();
+                    });
+                    video.on('pause', function() {
+                        playPauseButtonCallback();
+                    });
+                    
+                    //VIDEO PROGRESS BAR
+                    //when video timebar clicked
+                    var timeDrag = false;	/* check for drag event */
+                    $('#progress-bar').on('mousedown', function(e) {
+                        timeDrag = true;
+                        updatebar(e.pageX);
+                    });
+                    $(document).on('mouseup', function(e) {
+                        if(timeDrag) {
+                            timeDrag = false;
+                            updatebar(e.pageX);
+                        }
+                    });
+                    $(document).on('mousemove', function(e) {
+                        if(timeDrag) {
+                            updatebar(e.pageX);
+                        }
+                    });
+                    var updatebar = function(x) {
+                        var progress = $('#progress-bar');
+		
+                        //calculate drag position
+                        //and update video currenttime
+                        //as well as progress bar
+                        var maxduration = video[0].duration;
+                        var position = x - progress.offset().left;
+                        var percentage = 100 * position / progress.width();
+                        if(percentage > 100) {
+                            percentage = 100;
+                        }
+                        if(percentage < 0) {
+                            percentage = 0;
+                        }
+                        $('#progress-bar-time').css('width',percentage+'%');	
+                        video[0].currentTime = maxduration * percentage / 100;
+                    };
+                    
+                });  
+            
+                //                }
+            
+               
+            }); 
+            
+            function fixPlayerSize() {
+                //workaround for safari, broken height
+                if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+                    $("#cell-player").height(430);                
+                } else {
+                    $("#cell-player").css({height: ''});
+
+                }
+            }
+            
+            function timeFormat(seconds){
+                var m = Math.floor(seconds/60)<10 ? "0"+Math.floor(seconds/60) : Math.floor(seconds/60);
+                var s = Math.floor(seconds-(m*60))<10 ? "0"+Math.floor(seconds-(m*60)) : Math.floor(seconds-(m*60));
+                return m+":"+s;
+            };
+
+            //display video buffering bar
+            function startBuffer() {
+                alert("buffer");
+                var video = $("#player");
+                var currentBuffer = video[0].buffered.end(0);
+                var maxduration = video[0].duration;
+                var perc = 100 * currentBuffer / maxduration;
+                $('#progress-bar-buffer').css('width',perc+'%');
+			
+                if(currentBuffer < maxduration) {
+                    setTimeout(startBuffer, 500);
+                }
+            };
+
+            function getPlayer() {
+                return document.getElementById("player");
+            }
+
+            function playerSlideHandler(id) {
+                var current= $("#slide").attr("data-slide");
+                var current_video= $("#slide").attr("data-slide-video");
+                $("#slide").attr("data-slide-video",id);
+                if(current == current_video) {
+                    slideLoad(id);
+                } else {
+                    $("#buttonSlideCurrent").removeClass("disabled");
+                }
+
+                thumbnailsActive(id);
+		
+            }
+
+            function playerJump(pos) {
+                var video = getPlayer();
+                pos=(+pos)+(+0.1);               
+                video.currentTime = parseFloat(pos);
+                video.play();
+            }
+
+            function playerPlayPause() {
+                var video = getPlayer();
+                if(video.paused || video.ended) {
+                    playerPlay();
+                }
+                else {
+                    playerPause();
+                }
+                playPauseButtonCallback();
+            }
+            
+            function playPauseButtonCallback() {
+                var video = getPlayer();
+                if(video.paused || video.ended) {
+                    $("#buttonPlayerPlay").removeClass("active");
+                    $("#buttonPlayerPlay").text("Play");
+                } else {
+                    $("#buttonPlayerPlay").addClass("active");
+                    $("#buttonPlayerPlay").text("Pause");   
+                }
+            }
+
+            function playerPlay() {
+                return getPlayer().play();
+            }
+
+            function playerPause() {
+                return getPlayer().pause();
+            }	
+		
+            function playerMuteToggle() {
+                var muted = 	getPlayer().muted;
+                if(muted) {	
+                    getPlayer().muted = false;
+                } else {
+                    getPlayer().muted = true;
+                }
+                return getPlayer().muted;
+            }
+
+            function playerSpeed(factor) {
+                var video = getPlayer();
+                video.defaultPlaybackRate = parseFloat(factor);
+                video.playbackRate = parseFloat(factor);
+                video.play();
+            }
+
+            function playerSpeedToggle() {
+                var status = false;
+                var video = getPlayer();
+                var factor = video.defaultPlaybackRate;
+                if( factor > 1.0) {
+                    playerSpeed(1.0);
+                } else {
+                    playerSpeed(2.0);
+                    status = true;
+                }
+                return status;
+            }
+
+            function slideGet(id) {
+                if(data.slides.length >=id) {
+                    return data.slides[id];  
+                }
+                return false;   
+            }
+
+            function slideJump(id) {                             
+                playerJump((slideGet(id)).time);  
+                setTimeout(navigationHide,600);
+            }
+            
+            function slideLoad(id) {
+                var slide = slideGet(id);
+                $("#slide").attr("src",slide.image).stop(true,true).hide().fadeIn();
+                $("#slide").attr("data-slide",id);
+                if($("#slide").attr("data-slide-video") == id) {
+                    $("#buttonSlideCurrent").addClass("disabled");
+                } else {
+                    $("#buttonSlideCurrent").removeClass("disabled");
+                }
+                if(id>0) {
+                    $("#buttonSlidePrev").removeClass("disabled");
+                } else {
+                    $("#buttonSlidePrev").addClass("disabled");
+                }
+                if(id< +(data.slides.length -1)) {
+                    $("#buttonSlideNext").removeClass("disabled");
+                } else {
+                    $("#buttonSlideNext").addClass("disabled");
+                }                  
+            }
+            function thumbnailsActive(id) {
+                $("#navigation li a").removeClass("active");
+                $("#nav-"+id+" a").addClass("active");   
+                var numerator = (+id);
+                var remainder = numerator % 4;
+                var quotient = ( numerator - remainder ) / 4;
+                quotient = Math.floor( quotient );
+                var slidePage = +(+quotient)+(+1);
+                $('.iosSlider').iosSlider('goToSlide', slidePage);
+            }
+
+            function slideNext() {
+                var id= $("#slide").attr("data-slide");
+                var next=(+id)+(+1);
+                if(next < data.slides.length) {
+                    slideLoad(next);
+                }	
+            }
+            function slidePrev() {
+                var id= $("#slide").attr("data-slide");
+                var prev=(+id)-(+1);
+                if(prev >=0) {
+                    slideLoad(prev);
+                }	
+            }
+            function slideCurrent() {
+                var id= $("#slide").attr("data-slide-video");	
+                slideLoad(id);		
+            }
+
+            function slideFullToggle() {
+                if(layout != "fullSlide" ) {
+                    layoutChange("fullSlide");
+                    return true;
+                } else {
+                    layoutChange("both");
+                    return false;
+                }
+            }
+            function playerFullToggle() {
+                if(layout != "fullPlayer" ) {
+                    layoutChange("fullPlayer");
+                    return true;
+                } else {
+                    layoutChange("both");
+                    return false;
+                }
+            }
+            
+            function layoutChange(layoutNew) {
+                if(layout != layoutNew ) {
+                    //hide menus
+                    navigationHide();
+                    helpHide();
+                    //change layout
+                    if(layoutNew == "fullPlayer") {
+                        slideHide();
+                        playerShow();
+                        playerFull();
+                    } else if(layoutNew == "fullSlide") {
+                        playerHide();
+                        slideShow();
+                        slideFull();
+                    }  else if(layoutNew == "both") {
+                        playerNormal();
+                        playerShow();
+                        slideNormal();
+                        slideShow();
+                    }       
+                    
+                    layout = layoutNew;
+                    layoutChangeButtonCallback();
+                    layoutSelectorHide();
+                }
+            }
+            
+            function layoutChangeButtonCallback() {
+                $("#layoutSelectorPlayerFull").removeClass("active");
+                $("#layoutSelectorSlideFull").removeClass("active");
+                $("#layoutSelectorBoth").removeClass("active");
+                $("#buttonSlideFullscreen").removeClass("active");
+                $("#buttonPlayerFullscreen").removeClass("active");
+
+                
+                if(layout == "fullPlayer") {
+                    $("#buttonPlayerFullscreen").addClass("active");
+                    $("#layoutSelectorPlayerFull").addClass("active");
+
+                    //scroll viewPort to hide header
+                    window.scrollTo(0, 108);
+                } else if(layout == "fullSlide") {
+                    $("#buttonSlideFullscreen").addClass("active");
+                    $("#layoutSelectorSlideFull").addClass("active");
+
+                    //scroll viewPort to hide header
+                    window.scrollTo(0, 108);
+                } else if(layout == "both") {
+                    $("#buttonSlideFullscreen").removeClass("active");
+                    $("#buttonPlayerFullscreen").removeClass("active");
+                    $("#layoutSelectorBoth").addClass("active");
+
+                }
+            }
+            
+            function slideFull() {
+                $("#cell-slides").removeClass("span6 span2 span10 span12").addClass("span12");   
+            }
+            function slideNormal() {
+                $("#cell-slides").removeClass("span6 span2 span10 span12").addClass("span6");   
+            }
+            function slideSmall() {
+                $("#cell-slides").removeClass("span6 span2 span10 span12").addClass("span2");   
+            }
+            function slideHide() {
+                $("#cell-slides").removeClass("span6 span2 span10 span12").addClass("span12").hide();   
+            }
+            function slideShow() {
+                $("#cell-slides").show();   
+            }      
+            
+            function playerFull() {
+                $("#cell-player").removeClass("span6 span2 span10 span12").addClass("span12").height('auto');   
+            }
+            function playerNormal() {
+                $("#cell-player").removeClass("span6 span2 span10 span12").addClass("span6").height('auto');   
+            }
+            function playerSmall() {
+                $("#cell-player").removeClass("span6 span2 span10 span12").addClass("span2").height('auto');     
+            }
+            function playerHide() {
+                $("#cell-player").removeClass("span6 span2 span10 span12").addClass("span12").height(0);   
+            }         
+            function playerShow() {
+                fixPlayerSize();
+            }    
+                
+            function helpToggle() {
+                $("#row-help").slideToggle(400, function() {
+                    if($("#row-help").css('display') == 'none') {
+                        $("#buttonHelpToggle").removeClass("active");
+                    } else {
+                        $("#buttonHelpToggle").addClass("active");
+                    }
+                });               
+            }
+            function helpHide() {
+                $("#row-help").slideUp(); 
+                $("#buttonHelpToggle").removeClass("active");
+            } 
+            function navigationToggle() {
+                $("#row-navigation").slideToggle(400, function() {
+                    if($("#row-navigation").css('display') == 'none') {
+                        $("#buttonNavigationToggle").removeClass("active");
+                    } else {
+                        $("#buttonNavigationToggle").addClass("active");
+                    }
+                });               
+            }   
+            function navigationHide() {
+                $("#row-navigation").slideUp(); 
+                $("#buttonNavigationToggle").removeClass("active");
+            } 
+            function headerHide() {
+                $("#header").hide(); 
+            } 
+            function headerShow() {
+                $("#header").show(); 
+            }     
+            
+            function layoutSelectorToggle() {
+                $("#row-layout").slideToggle(400, function() {
+                    if($("#row-layout").css('display') == 'none') {
+                        $("#buttonLayoutSelectorToggle").removeClass("active");
+                    } else {
+                        $("#buttonLayoutSelectorToggle").addClass("active");
+                    }
+                });               
+            }   
+            function layoutSelectorHide() {
+                $("#row-layout").slideUp(); 
+                $("#buttonLayoutSelectorToggle").removeClass("active");
+            } 
+            
+            
+            function fullscreenToggle() {
+                var viewport = document.getElementById("viewport");
+                if (BigScreen.enabled) {
+                    BigScreen.toggle(viewport, fullscreenOnEnter, fullscreenOnExit, fullscreenOnError);
+                }               
+
+            }
+
+           
+            function fullscreenOnEnter() {
+                headerHide();
+                $("#buttonFullscreenToggle").addClass("active");
+            }
+            function fullscreenOnExit() {
+                headerShow();     
+                $("#buttonFullscreenToggle").removeClass("active");
+            }
+            function fullscreenOnError() {
+                
+            }
+            
+            function buttonPlayerPlay() {
+                playerPlayPause();
+            }
+            function buttonPlayerPause() {
+                playerPause();
+            }
+            function buttonPlayerSpeed() {
+                var status = playerSpeedToggle();
+                if(status) {
+                    $("#buttonPlayerSpeed").addClass("active");
+                } else {
+                    $("#buttonPlayerSpeed").removeClass("active");
+                }
+            }
+            function buttonPlayerFullscreen() {
+                playerFullToggle();
+            }
+            function buttonPlayerMute() {
+                var status = playerMuteToggle();
+                if(status) {
+                    $("#buttonPlayerMute").addClass("active");
+                } else {
+                    $("#buttonPlayerMute").removeClass("active");
+                }
+            }
+            function buttonSlidePrev() {
+                slidePrev();
+            }
+            function buttonSlideCurrent() {
+                slideCurrent();
+            }
+            function buttonSlideFullscreen() {
+                slideFullToggle();
+            }
+            function buttonSlideNext() {
+                slideNext();
+            }
+            function buttonNavigationToggle() {
+                navigationToggle();             
+            }
+            function buttonHelpToggle() {
+                helpToggle();
+            }
+            function buttonFullscreenToggle() {
+                fullscreenToggle();              
+            }
+            function buttonLayoutSelectorToggle() {
+                layoutSelectorToggle();
+            }
+        </script>
+
+    </head>
+    <body id="viewport">
+        <div class="container" id="container">
+            <div class="hero-unit" id="header">
+                <h1 id="lecture">Html5 LODE Test</h1>
+                <p>
+                    <span id="course">Development version - DEMO</span> -
+                    <span id="professor">Development version - DEMO</span> -
+                    <span id="url"></span>
+
+                </p>
+            </div>
+            <div id="content">
+                <div class="row" id="row-toolbar">
+                    <div class="btn-toolbar box-gray-dark" id="toolbar">
+                        <div id="player-controls" class="btn-group">
+                            <label>Video</label>
+                            <button id="buttonPlayerPlay" class="btn btn-small btn-inverse" type="button" onclick="buttonPlayerPlay()">Play</button>
+                            <button id="buttonPlayerSpeed" class="btn btn-small btn-inverse" type="button" onclick="buttonPlayerSpeed()" data-toggle="button">Speed</button>
+                            <!--<button id="buttonPlayerFullscreen" class="btn btn-small btn-inverse" type="button" onclick="buttonPlayerFullscreen()" data-toggle="button">Fullscreen</button>-->
+                            <button id="buttonPlayerMute" class="btn btn-small btn-inverse" type="button" onclick="buttonPlayerMute()" data-toggle="button">Mute</button>
+                        </div>
+                        <div id="slides-controls" class="btn-group">
+                            <label>Slide</label>
+                            <button id="buttonSlidePrev" class="btn btn-small btn-inverse disabled" type="button" onclick="buttonSlidePrev()">Prev</button>
+                            <button id="buttonSlideCurrent" class="btn btn-small btn-inverse disabled" type="button" onclick="buttonSlideCurrent()">Current</button>
+                            <button id="buttonSlideNext" class="btn btn-small btn-inverse" type="button" onclick="buttonSlideNext()">Next</button>
+                            <!--<button id="buttonSlideFullscreen" class="btn btn-small btn-inverse" type="button" onclick="buttonSlideFullscreen()" data-toggle="button">Fullscreen</button>-->
+                        </div>
+                        <div id="navigation-controls" class="btn-group">
+                            <button id="buttonNavigationToggle" class="btn btn-small btn-inverse active" type="button" onclick="buttonNavigationToggle()">Navigation</button>
+                        </div>
+                        <div id="help-controls" class="btn-group">
+                            <button id="buttonHelpToggle" class="btn btn-small btn-inverse" type="button" onclick="buttonHelpToggle()">Help</button>
+                        </div>
+                        <div id="layout-controls" class="btn-group">
+                            <button id="buttonLayoutSelectorToggle" class="btn btn-small btn-inverse" type="button" onclick="buttonLayoutSelectorToggle()">Layout</button>
+                            <button id="buttonFullscreenToggle" class="btn btn-small btn-inverse" type="button" onclick="buttonFullscreenToggle()">Fullscreen</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row box-gray-light" id="row-help">
+                    <h4>Utilizzo del player</h4>
+                    <p>
+                        Il player video può essere controllato dai pulsanti presenti nella toolbar. I controlli permettono di avviare/fermare la riproduzione, modificare la velocità (normale/raddoppiata) e escludere l'audio.<br/>
+                        La navigazione delle slide può essere effettuata in maniera indipendente dalla riproduzione del video tramite i pulsanti della toolbar. Il menu di navigazione permette di saltare al punto di interesse selezionando la minuatura della slide. <br/>
+                        Il layout del player può essere modificato, portando in primo piano video oppure slide, e passando alla modalità fullscreen.<br/>
+                        La barra di avanzamento sul fondo della pagina riporta la posizione corrente nel video e la posizione relativa delle slide.
+                    </p>
+                </div>
+                <div class="row box-gray-light" id="row-layout">
+                    <ul class="thumbnails layout-ul">
+                        <li>
+                            <a class="thumbnail active" id="layoutSelectorBoth" href="javascript:layoutChange('both');">
+                                <img src="lib/img/layout-both.png" />
+                                <span>Video + Slide</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="thumbnail" id="layoutSelectorPlayerFull" href="javascript:layoutChange('fullPlayer');">
+                                <img src="lib/img/layout-video.png" />
+                                <span>Video</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="thumbnail" id="layoutSelectorSlideFull" href="javascript:layoutChange('fullSlide');">
+                                <img src="lib/img/layout-slide.png" />
+                                <span>Slide</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="row" id="row-navigation">
+                    <div class="span12 box-gray-light" id="cell-navigation">
+                        <div class = 'iosSlider'>
+                            <div class="slider" id="navigation">  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="row-content">
+                    <div class="span6" id="cell-player">
+                        <video style="height: 100%; width:100%;" id="player" controls="controls">
+                        </video>
+                    </div>
+                    <div class="span6" id="cell-slides">
+                        <div id="slides" class="box-gray">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="box-gray-dark" id="row-progress">
+                    <div class="row">
+                        <div id="cell-progress-bar"  class="span10">
+                            <div id="progress-bar">
+                                <span id="progress-bar-buffer"></span>
+                                <span id="progress-bar-time"></span>
+                            </div>
+                        </div>
+                        <div id="cell-progress-time" class="span2">
+                            <span id="progress-time-current"></span>/<span id="progress-time-duration"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <footer class="footer">
+            <div class="container" id="footer">
+                <p>LODE &copy;Marco Ronchetti - HTML5 Frontend </p>
+            </div>
+        </footer>
+
+        <script type="text/javascript">
+            function dumpObject(obj, maxDepth) {  
+                var dump = function(obj, name, depth, tab){  
+                    if (depth > maxDepth) {  
+                        return name + ' - Max depth\n';  
+                    }  
+  
+                    if (typeof(obj) == 'object') {  
+                        var child = null;  
+                        var output = tab + name + '\n';  
+                        tab += '\t';  
+                        for(var item in obj){  
+                            child = obj[item];  
+                            if (typeof(child) == 'object') {  
+                                output += dump(child, item, depth + 1, tab);  
+                            } else {  
+                                output += tab + item + ': ' + child + '\n';  
+                            }  
+                        }  
+                    }  
+                    return output;  
+                }  
+  
+                return dump(obj, '', 0, '');  
+            }  
+        </script>
+
+
+    </body>
+</html>

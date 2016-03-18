@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.controllers.CameraController">
+<children><Button fx:id="preset3ToggleButton" layoutX="154.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button><Button fx:id="preset4ToggleButton" layoutX="210.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button><Button fx:id="preset2ToggleButton" layoutX="98.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button><Button fx:id="preset1ToggleButton" layoutX="42.0" layoutY="181.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="SET" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button><Button fx:id="tiltDownButton" layoutX="84.0" layoutY="77.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="TILT&#10;DOWN" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button><Button fx:id="tiltUpButton" layoutX="84.0" layoutY="21.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="TILT&#10;UP" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button><Button fx:id="panRightButton" layoutX="140.0" layoutY="77.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="PAN&#10;RIGHT" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button><Button fx:id="panLeftButton" layoutX="28.0" layoutY="77.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="PAN&#10;LEFT" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button><Button fx:id="zoomOutButton" layoutX="225.0" layoutY="76.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="ZOOM&#10;OUT" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button><Button fx:id="zoomInButton" layoutX="225.0" layoutY="20.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" text="ZOOM&#10;IN" textAlignment="CENTER">
+<font>
+<Font size="9.0" />
+</font>
+</Button>
+      <ToggleButton fx:id="view1ToggleButton" layoutX="42.0" layoutY="233.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="VIEW" textAlignment="CENTER">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </ToggleButton>
+      <ToggleButton fx:id="view2ToggleButton" layoutX="98.0" layoutY="233.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="VIEW" textAlignment="CENTER">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </ToggleButton>
+      <ToggleButton fx:id="view4ToggleButton" layoutX="210.0" layoutY="233.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="VIEW" textAlignment="CENTER">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </ToggleButton>
+      <ToggleButton fx:id="view3ToggleButton" layoutX="154.0" layoutY="233.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="VIEW" textAlignment="CENTER">
+         <font>
+            <Font size="9.0" />
+         </font>
+      </ToggleButton>
+      <Label layoutX="45.0" layoutY="151.0" text="PRESET&#10;1" textAlignment="CENTER">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="101.0" layoutY="151.0" text="PRESET&#10;2" textAlignment="CENTER">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="213.0" layoutY="151.0" text="PRESET&#10;4" textAlignment="CENTER">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="157.0" layoutY="151.0" text="PRESET&#10;3" textAlignment="CENTER">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+</children></AnchorPane>

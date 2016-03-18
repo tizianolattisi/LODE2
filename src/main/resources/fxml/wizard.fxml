@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="root" prefHeight="345.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.unitn.lode2.ui.controllers.WizardController">
+<children><TabPane fx:id="tabPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE">
+  <tabs>
+            <Tab text="0. Setup">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="setupButton" layoutX="358.0" layoutY="184.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="115.0" text="Setup" />
+                        <Button fx:id="testButton" layoutX="358.0" layoutY="222.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Test" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+    <Tab text="1. Course">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="274.0" prefWidth="499.0">
+<children><ListView fx:id="coursesListView" layoutX="14.0" layoutY="58.0" prefHeight="170.0" prefWidth="470.0" /><Label layoutX="14.0" layoutY="14.0" text="Select a course from the above list, or create a new one." /><Button fx:id="newCourseButton" layoutX="397.0" layoutY="239.0" mnemonicParsing="false" text="new course" /><CheckBox fx:id="onlyLastUsedCheckBox" layoutX="15.296745300292969" layoutY="33.25" mnemonicParsing="false" selected="true" text="show only last used courses" />
+</children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="2. Lecture">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+<children><ListView fx:id="lecturesListView" layoutX="14.0" layoutY="58.0" prefHeight="170.0" prefWidth="470.0" /><Label layoutX="14.0" layoutY="14.0" text="Select a lecture of the course, or create a new one." /><Button fx:id="newLectureButton" layoutX="397.0" layoutY="239.0" mnemonicParsing="false" text="new lecture" /><Label fx:id="courseNameLabel" layoutX="14.0" layoutY="38.0" text="Course name">
+<font>
+<Font name="System Bold Italic" size="13.0" />
+</font></Label>
+</children></AnchorPane>
+      </content>
+    </Tab><Tab text="3. Slides">
+  <content>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+<children><ListView fx:id="slidesListView" layoutX="14.0" layoutY="58.0" prefHeight="170.0" prefWidth="370.0" /><Label layoutX="14.0" layoutY="14.0" text="Import slides." /><Button fx:id="importSlideButton" layoutX="397.0" layoutY="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="import" /><ProgressBar fx:id="slideImportProgressBar" layoutX="14.0" layoutY="242.0" prefHeight="26.0" prefWidth="370.0" progress="0.0" /><Label fx:id="courseAndLectureName" layoutX="14.0" layoutY="38.0" text="Course and lecture name">
+<font>
+<Font name="System Bold Italic" size="13.0" />
+</font>
+</Label>
+                        <Button fx:id="skipSlideButton" layoutX="397.0" layoutY="242.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="&gt;&gt;" />
+                        <Button fx:id="editSlideButton" layoutX="397.0" layoutY="80.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="edit" />
+</children></AnchorPane>
+  </content>
+</Tab><Tab text="4. Record">
+  <content>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+<children>
+                        <Label fx:id="movieFileLabel" layoutX="14.0" layoutY="40.0" prefHeight="17.0" prefWidth="472.0" text="no movie present" /><Button fx:id="recordingSessionButton" layoutX="15.0" layoutY="120.0" mnemonicParsing="false" text="Go to recording session" /><Label layoutX="14.0" layoutY="14.0" text="Recording session." />
+                        <Button fx:id="toPostProcessButton" layoutX="397.0" layoutY="242.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="92.0" text="&gt;&gt;" />
+</children></AnchorPane>
+  </content>
+</Tab><Tab text="5. Post process">
+  <content>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+<children><Label layoutX="14.0" layoutY="14.0" text="Post process." /><Button fx:id="postProcessButton" layoutX="31.17632293701172" layoutY="50.0" mnemonicParsing="false" text="Lecture post process" /><Button fx:id="createWebsiteButton" layoutX="31.17632293701172" layoutY="90.0" mnemonicParsing="false" text="Create course website" />
+</children></AnchorPane>
+  </content>
+</Tab>
+  </tabs>
+</TabPane><ToolBar prefWidth="200.0" visible="false">
+  <items>
+    <Button fx:id="exitWizardButton" mnemonicParsing="false" text="Exit wizard" />
+  </items>
+</ToolBar>
+</children>
+</VBox>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- DLINK -->
+<CAMERA_IP>
+    <NAME>DLINK</NAME>
+    <AUTH>BASIC</AUTH>
+    <AUTHQUERY></AUTHQUERY>
+    <CGI_PORT>80</CGI_PORT>
+    <STREAM_PORT>554</STREAM_PORT>
+    <STREAM_PROTOCOL>RTSP</STREAM_PROTOCOL>
+    <STREAM_URL>/live1.sdp</STREAM_URL>
+    <ZOOMIN></ZOOMIN>
+    <ZOOMOUT></ZOOMOUT>
+    <PANLEFT>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=-5&amp;posY=0</PANLEFT>
+    <PANRIGHT>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=5&amp;posY=0</PANRIGHT>
+    <TILTUP>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=0&amp;posY=5</TILTUP>
+    <TILTDOWN>/cgi/ptdc.cgi?command=set_relative_pos&amp;posX=0&amp;posY=-5</TILTDOWN>
+    <PRESET></PRESET>
+    <ADDPRESET></ADDPRESET>
+    <DELPRESET></DELPRESET>
+    <SNAPSHOT>/image/jpeg.cgi</SNAPSHOT>
+    <RECORD_COMMAND>${ffmpeg} -rtsp_transport tcp -stimeout 5000000 -i ${input} -strict -2 -c:a aac -b:a 32k -vn -f mpegts -filter:a ebur128 out.ts -c:v copy -c:a copy -y</RECORD_COMMAND>
+    <CONV_COMMAND>${ffmpeg} -i ${input} -strict -2 -c:a aac -c:v copy -y</CONV_COMMAND>
+</CAMERA_IP>

@@ -1,0 +1,49 @@
+#backgroundPane {
+    -fx-background-image: url("../../java/it/unitn/lode2/ui/images/background.png");
+}
+
+.monitor {
+    -fx-image: url("../../java/it/unitn/lode2/ui/images/monitor.png");
+}
+
+#previewImageView {
+    -fx-image: url("../../java/it/unitn/lode2/ui/images/no-image.png");
+}
+
+#currentSlideImageView {
+
+}
+
+#preparedSlideImageView {
+    -fx-alignment: center;
+}
+
+#next1SlideImageView {
+}
+
+#next2SlideImageView {
+}
+
+#next3SlideImageView {
+}
+
+/* Standard buttons */
+.button {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-background-image: url("../../java/it/unitn/lode2/ui/images/button48.png");
+}
+
+.button:pressed {
+    -fx-background-image: url("../../java/it/unitn/lode2/ui/images/button-pressed48.png");
+}
+
+/* Preset button */
+.preset {
+    -fx-background-image: url("../../java/it/unitn/lode2/ui/images/button48.png");
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+.preset:selected {
+    -fx-background-image: url("../../java/it/unitn/lode2/ui/images/button-pressed48.png");
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>      <html lang="en" ng-app="App" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="App" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="App" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="App" class="no-js"> <!--<![endif]-->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+    <head>
+        <title>LODE</title>
+        <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+        <link rel="stylesheet" href="bower_components/html5-boilerplate/css/normalize.css">
+        <link rel="stylesheet" href="bower_components/html5-boilerplate/css/main.css">
+        <link rel="stylesheet" href="app.css">
+        <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+        <script src="app.js"></script>
+    </head>
+<body ng-app="App">
+
+<div id="container" ng-controller="CourseCtrl">
+
+    <div id="header">
+        <table id="infoTable">
+            <tr>
+                <td class="top-left"></td>
+                <td>Course name: </td>
+                <td>{{course.name}}</td>
+                <td class="top-right"></td>
+            </tr>
+            <tr>
+                <td class="foot-left"></td>
+                <td>Year: </td>
+                <td>{{course.year}}</td>
+                <td class="foot-right"></td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="footer"></div>
+
+    <div id="content">
+        <table id="table">
+            <caption></caption>
+            <thead>
+            <tr>
+                <th width=5%; class="top-left"></th>
+                <th width=15% align='center'>Date<br><br>Lenght</th>
+                <th width=15% align='center'>Lecturer<br><br>Title</th>
+                <th width=15% align='center'>Contents<br>(Tag Cloud)</th>
+                <th width=15% align='center'>Slides on line<br>(Click to browse)</th>
+                <th width=10% align='center'>Downloadable slides<br>(Click to download)</th>
+                <th width=15% align='center'>Video on line<br>(Click to view)</th>
+                <th width=10% align='center'>Zipped video<br>(Click to download)</th>
+                <th align='center'>Notes<br>(Click to expand)</th>
+                <th class="top-right"></th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <td class="foot-left" colspan="9"></td>
+                <td class="foot-right">  </td>
+            </tr>
+            </tfoot>
+            <tbody>
+            <tr ng-repeat="lecture in course.lectures">
+                <td>{{lecture.number}}</td>
+                <td align='center'>{{lecture.date}}<br><br>{{lecture.length}}
+                </td>
+                <td align='center'>{{lecture.lecturer}}<br><br>{{lecture.title}}</td>
+                <td align='center'><a href="#tcloud2_zoom" id ="flash_tcloud_link_2"><div id="tcloud2">
+                </div>
+                </a>
+                    <div id="tcloud2_zoom"/>
+                </td>
+                <td align='center'><div class="photo">
+                    <a href="#01___2013-03-07_img2">
+                        <img WIDTH="100" src="courses/Architettura_Degli_Elaboratori_2013/01___2013-03-07/content/img/1.jpg" style="-moz-opacity:0.3" onmouseover="Tip('Click to preview the content of the slides')" onmouseout="UnTip()" />
+                    </a>
+                </div>
+                    <div id="01___2013-03-07_img2">
+
+                    </div>
+                </td>
+                <td align='center'><a href="{{lecture.slide}}" ><img src="images/pdf.jpg" alt="download slides" width="50" onmouseover="Tip('Click to download the slides')" onmouseout='UnTip()'><br>{{lecture.slides|getfilename}}</a><br>
+                </td>
+                <td align='center'><a href="{{lecture.video}}"><!--img width="100" src="" alt="Click to start viewing the video on line" onmouseover="Tip('Click to start viewing the video on line')" onmouseout="UnTip()" -->link</a>
+                </td>
+                <td align='center'><a href="{{lecture.zip}}"><img src='images/box.gif' alt='Click to download video' onmouseover="Tip('Click to download the video')" onmouseout='UnTip()'><br>{{lecture.zip|getfilename}}</a>
+                </td>
+                <td>{{lecture.note}}</td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="app.js"></script>
+<script src="components/version/version.js"></script>
+<script src="components/version/version-directive.js"></script>
+<script src="components/version/interpolate-filter.js"></script>
+
+</body>
+</html>
+
