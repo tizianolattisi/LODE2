@@ -837,12 +837,14 @@ public class MainController implements Initializable, RecordController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/camera.fxml"));
                 Parent root = loader.load();
-                Scene scene = new Scene(root, 300, 300);
+                Scene scene = new Scene(root, 340, 560);
                 Stage stage = new Stage();
                 stage.setTitle("Camera controller");
                 stage.setScene(scene);
                 stage.setX(100);
                 stage.setY(100);
+                CameraController controller = loader.getController();
+                stage.setOnCloseRequest(controller.handlerClose);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
