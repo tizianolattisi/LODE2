@@ -76,6 +76,9 @@ public class WizardController implements Initializable {
     private Button testButton;
 
     @FXML
+    private Button infoButton;
+
+    @FXML
     private Button newLectureButton;
 
     @FXML
@@ -216,6 +219,8 @@ public class WizardController implements Initializable {
                 refreshCourses();
             });
         });
+
+        infoButton.setOnAction(handlerInfo);
 
         newLectureButton.setOnAction(event -> {
             TextInputDialog dialog = new TextInputDialog("new lecture title");
@@ -459,6 +464,15 @@ public class WizardController implements Initializable {
             e.printStackTrace();
         }
 
+    };
+
+    private EventHandler<ActionEvent> handlerInfo = event -> {
+        String buildTime = IOC.queryUtility(String.class, "Build-Time");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("LODE 2");
+        alert.setHeaderText("Welcome to LODE 2");
+        alert.setContentText("Build-Time: " + buildTime);
+        alert.showAndWait();
     };
 
 }

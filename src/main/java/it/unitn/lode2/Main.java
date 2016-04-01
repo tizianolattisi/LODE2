@@ -117,8 +117,8 @@ public class Main extends Application {
             URL url = cl.findResource("META-INF/MANIFEST.MF");
             Manifest manifest = new Manifest(url.openStream());
             Attributes attributes = manifest.getMainAttributes();
-            System.out.println(attributes.entrySet());
-            System.out.println(attributes.getValue("Build-Time"));
+            String buildTime = attributes.getValue("Build-Time");
+            IOC.registerUtility(buildTime, String.class, "Build-Time");
         } catch (IOException E) {
 
         }
