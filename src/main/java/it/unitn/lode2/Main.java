@@ -22,7 +22,11 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Optional;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 public class Main extends Application {
 
@@ -106,6 +110,18 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+
+        // check manifest
+        URLClassLoader cl = (URLClassLoader) Main.class.getClassLoader();
+        try {
+            URL url = cl.findResource("META-INF/MANIFEST.MF");
+            Manifest manifest = new Manifest(url.openStream());
+            Attributes attributes = manifest.getMainAttributes();
+            System.out.println(attributes.entrySet());
+            System.out.println(attributes.getValue("Build-Time"));
+        } catch (IOException E) {
+
+        }
 
         launch(args);
     }
