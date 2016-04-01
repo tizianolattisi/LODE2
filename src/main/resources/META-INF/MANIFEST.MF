@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Created-By: Tiziano Lattisi <tiziano.lattisi@gmail.com>
+Build-Time: ${build.time}
