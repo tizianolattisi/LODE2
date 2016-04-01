@@ -184,7 +184,7 @@ public class IPRecorderImpl implements Recorder {
             pi.write("q\n");
             pi.flush();
         } catch (IOException e) {
-            logger.error("Unable to quit from ffmpeg process.", e);
+            logger.warn("Unable to quit from ffmpeg process (" + e.getMessage() + ").");
         }
         //recordProcess.destroy();
         recordProcess=null;
