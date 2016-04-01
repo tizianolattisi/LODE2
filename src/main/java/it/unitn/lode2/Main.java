@@ -26,7 +26,11 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Optional;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 public class Main extends Application {
 
@@ -115,6 +119,19 @@ public class Main extends Application {
         // /Applications/VLC.app/Contents/MacOS/lib/libvlc.dylib
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "/Applications/VLC.app/Contents/MacOS/lib");
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+
+        // check manifest
+        URLClassLoader cl = (URLClassLoader) Main.class.getClassLoader();
+        try {
+            URL url = cl.findResource("META-INF/MANIFEST.MF");
+            Manifest manifest = new Manifest(url.openStream());
+            Attributes attributes = manifest.getMainAttributes();
+            String buildTime = attributes.getValue("Build-Time");
+            IOC.registerUtility(buildTime, String.class, "Build-Time");
+        } catch (IOException E) {
+
+        }
+
         launch(args);
     }
 }

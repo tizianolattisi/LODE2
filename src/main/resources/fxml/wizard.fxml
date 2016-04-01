@@ -12,8 +12,9 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="setupButton" layoutX="358.0" layoutY="184.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="115.0" text="Setup" />
-                        <Button fx:id="testButton" layoutX="358.0" layoutY="222.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Test" />
+                        <Button fx:id="setupButton" layoutX="359.0" layoutY="148.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="115.0" text="Setup" />
+                        <Button fx:id="testButton" layoutX="359.0" layoutY="184.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Test" />
+                        <Button fx:id="infoButton" layoutX="359.0" layoutY="220.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="116.0" text="Info" />
                      </children>
                   </AnchorPane>
               </content>
