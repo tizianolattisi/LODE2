@@ -5,6 +5,7 @@ import it.unitn.lode2.IOC;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Capability;
+import it.unitn.lode2.camera.ipcam.LODEMediaPlayerComponent;
 import it.unitn.lode2.projector.Slide;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
@@ -49,11 +50,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-import uk.co.caprica.vlcj.component.DirectMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.direct.BufferFormat;
-import uk.co.caprica.vlcj.player.direct.BufferFormatCallback;
 import uk.co.caprica.vlcj.player.direct.DefaultDirectMediaPlayer;
-import uk.co.caprica.vlcj.player.direct.format.RV32BufferFormat;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -374,8 +372,7 @@ public class MainController implements Initializable, RecordController {
         pixelWriter = canvas.getGraphicsContext2D().getPixelWriter();
         byteBgraInstance = PixelFormat.getByteBgraInstance();
         previewPane.getChildren().add(canvas);
-
-        mediaPlayerComponent = new LODEMediaPlayerComponent();
+        mediaPlayerComponent = new LODEMediaPlayerComponent(canvas, WIDTH, HEIGHT);
         mediaPlayerComponent.getMediaPlayer().playMedia("rtsp://admin:admin@192.168.102.50:88/videoMain");
         mediaPlayerComponent.getMediaPlayer().setPosition(0.7f);
 
@@ -1001,21 +998,4 @@ public class MainController implements Initializable, RecordController {
         mediaPlayerComponent.getMediaPlayer().unlock();
     }
 
-    private class LODEMediaPlayerComponent extends DirectMediaPlayerComponent {
-
-        public LODEMediaPlayerComponent() {
-            super(new PreviewBufferFormatCallback());
-        }
-    }
-    private class PreviewBufferFormatCallback implements BufferFormatCallback {
-
-        @Override
-        public BufferFormat getBufferFormat(int sourceWidth, int sourceHeight) {
-            Platform.runLater(() -> {
-                canvas.setWidth(WIDTH);
-                canvas.setHeight(HEIGHT);
-            });
-            return new RV32BufferFormat(WIDTH, HEIGHT);
-        }
-    }
 }
