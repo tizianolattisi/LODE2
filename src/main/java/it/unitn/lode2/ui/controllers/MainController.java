@@ -915,6 +915,8 @@ public class MainController implements Initializable, RecordController {
             if( ButtonType.OK.equals(result.get()) ) {
                 //terminateGobblers();
                 remote.stop();
+                mediaPlayerComponent.getMediaPlayer().stop();
+                mediaPlayerComponent.getMediaPlayer().release();
                 //previewer.stop();
                 if( recorder.isRecording() ){
                     recorder.stop();
