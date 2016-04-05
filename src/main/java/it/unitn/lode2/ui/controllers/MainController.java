@@ -914,6 +914,9 @@ public class MainController implements Initializable, RecordController {
                 remote.stop();
                 mediaPlayerComponent.getMediaPlayer().stop();
                 mediaPlayerComponent.getMediaPlayer().release();
+                if( secondDisplay!=null ){
+                    secondDisplay.dispose();
+                }
                 //previewer.stop();
                 if( recorder.isRecording() ){
                     recorder.stop();
