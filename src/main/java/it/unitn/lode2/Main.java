@@ -1,5 +1,7 @@
 package it.unitn.lode2;
 
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
 import it.unitn.lode2.asset.Course;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.asset.LodePrefs;
@@ -19,6 +21,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import uk.co.caprica.vlcj.binding.LibVlc;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -110,6 +114,11 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+        System.setProperty("VLC_PLUGIN_PATH", "/Applications/VLC.app/Contents/MacOS/plugins");
+
+        // /Applications/VLC.app/Contents/MacOS/lib/libvlc.dylib
+        NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "/Applications/VLC.app/Contents/MacOS/lib");
+        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
 
         // check manifest
         URLClassLoader cl = (URLClassLoader) Main.class.getClassLoader();

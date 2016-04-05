@@ -17,7 +17,7 @@ public class PreviewerIPThread extends Thread {
 
     private Boolean toTerminate = Boolean.FALSE;
     private String snapshotUrl;
-    private Integer frameRate=5;
+    private Integer frameRate=10;
     private Integer maxMillisecs=1000/frameRate;
     private byte[] cache;
 

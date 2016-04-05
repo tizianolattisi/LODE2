@@ -84,7 +84,7 @@
       </Pane>
       <Pane layoutX="10.0" layoutY="10.0" prefHeight="328.0" prefWidth="479.0" style="-fx-background-color: gray;">
          <children>
-            <ImageView fx:id="previewImageView" fitHeight="240.0" fitWidth="320.0" layoutX="107.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" styleClass="shadowed" />
+            <Pane fx:id="previewPane" layoutX="107.0" layoutY="14.0" prefHeight="240.0" prefWidth="320.0" />
             <ToggleButton fx:id="previewToggleButton" layoutX="10.0" layoutY="10.0" maxHeight="48.0" maxWidth="48.0" minHeight="48.0" minWidth="48.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="48.0" styleClass="preset" text="PREVIEW">
                <font>
                   <Font size="8.0" />

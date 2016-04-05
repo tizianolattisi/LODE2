@@ -1,10 +1,10 @@
 package it.unitn.lode2.ui.controllers;
 
+import com.sun.jna.Memory;
 import it.unitn.lode2.IOC;
 import it.unitn.lode2.asset.Lecture;
 import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Capability;
-import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.projector.Slide;
 import it.unitn.lode2.recorder.Chronometer;
 import it.unitn.lode2.recorder.Recorder;
@@ -32,9 +32,9 @@ import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.MouseEvent;
@@ -49,13 +49,18 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
+import uk.co.caprica.vlcj.component.DirectMediaPlayerComponent;
+import uk.co.caprica.vlcj.player.direct.BufferFormat;
+import uk.co.caprica.vlcj.player.direct.BufferFormatCallback;
+import uk.co.caprica.vlcj.player.direct.DefaultDirectMediaPlayer;
+import uk.co.caprica.vlcj.player.direct.format.RV32BufferFormat;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -79,8 +84,12 @@ public class MainController implements Initializable, RecordController {
     private final String PAUSE_LABEL = "PAUSE";
     private final String IDLE_LABEL = "";
 
+    private static final int WIDTH = 320;
+    private static final int HEIGHT = 240;
+
+
     private Camera camera;
-    private Previewer previewer;
+    //private Previewer previewer;
     private Recorder recorder=null;
     private Projector projector;
     private Remote remote;
@@ -108,7 +117,7 @@ public class MainController implements Initializable, RecordController {
     @FXML private Label next1SlideLabel;
     @FXML private Label next2SlideLabel;
 
-    @FXML private ImageView previewImageView;
+    @FXML private Pane previewPane;
     @FXML private ToggleButton previewToggleButton;
 
     @FXML private Button setupButton;
@@ -156,6 +165,10 @@ public class MainController implements Initializable, RecordController {
     DoubleProperty vuMeter = new SimpleDoubleProperty();
     private Integer bindingCode;
     private String token;
+    private Canvas canvas;
+    private LODEMediaPlayerComponent mediaPlayerComponent;
+    private PixelWriter pixelWriter;
+    private WritablePixelFormat<ByteBuffer> byteBgraInstance;
 
 
     @Override
@@ -180,7 +193,6 @@ public class MainController implements Initializable, RecordController {
 
         // IOC to inject the implementations of Camera, Recorder, and Projector
         camera = IOC.queryUtility(Camera.class);
-        previewer = IOC.queryUtility(Previewer.class);
         recorder = IOC.queryUtility(Recorder.class);
         recorder.setRecordController(this);
         projector = IOC.queryUtility(Projector.class);
@@ -214,12 +226,7 @@ public class MainController implements Initializable, RecordController {
 
         timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(40), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                refreshPreview();
-            }
-        }));
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(40), event -> renderFrame()));
 
         //recordToggleButton.disableProperty().bind((new SimpleBooleanProperty(recorder.isIdle())).not());
 
@@ -362,6 +369,16 @@ public class MainController implements Initializable, RecordController {
         codeBox.setContentText("If you want to use a remote control, please use the above code in the binding request.");
         codeBox.showAndWait();
 
+        // preview
+        canvas = new Canvas();
+        pixelWriter = canvas.getGraphicsContext2D().getPixelWriter();
+        byteBgraInstance = PixelFormat.getByteBgraInstance();
+        previewPane.getChildren().add(canvas);
+
+        mediaPlayerComponent = new LODEMediaPlayerComponent();
+        mediaPlayerComponent.getMediaPlayer().playMedia("rtsp://admin:admin@192.168.102.50:88/videoMain");
+        mediaPlayerComponent.getMediaPlayer().setPosition(0.7f);
+
     }
 
     private void setFontAwesome(ButtonBase button, String iconName, String color) {
@@ -422,27 +439,13 @@ public class MainController implements Initializable, RecordController {
         goToSlideButton.setOnAction(handlerGoToSlide);
     }
 
-    /* Preview */
-    private void refreshPreview() {
-        try {
-            previewer.snapshot().ifPresent(s -> previewImageView.setImage(new Image(s)));
-            if( hasSecondDisplay() && DisplayMode.PREVIEW.equals(displayMode) ){
-                previewer.snapshot().ifPresent(s -> secondDisplay.setImage(new Image(s)));
-            }
-        } catch (IOException e) {
-            handleIOException(e);
-        }
-    }
 
     private void playPreview() {
-        previewer.start();
         timeline.play();
     }
 
     private void stopPreview() {
         timeline.stop();
-        previewer.stop();
-        previewImageView.setImage(null);
     }
 
     private void resetPresetButtons() {
@@ -788,14 +791,7 @@ public class MainController implements Initializable, RecordController {
                 button.setSelected(button == pressedButton);
                 if( button == pressedButton ) {
                     if( pressedButton.getText()!=null ) {
-                        previewer.getSnapshotPreview(i).ifPresent(s -> {
-                            Image image = new Image(s);
-                            ImageView imageView = new ImageView(image);
-                            imageView.setFitHeight(60);
-                            imageView.setFitWidth(80);
-                            pressedButton.setGraphic(imageView);
-                            pressedButton.setText(null);
-                        });
+                        // TODO: catch preview image
                     }
                     try {
                         if( hasSecondDisplay() ) {
@@ -837,12 +833,14 @@ public class MainController implements Initializable, RecordController {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/camera.fxml"));
                 Parent root = loader.load();
-                Scene scene = new Scene(root, 300, 300);
+                Scene scene = new Scene(root, 340, 560);
                 Stage stage = new Stage();
                 stage.setTitle("Camera controller");
                 stage.setScene(scene);
                 stage.setX(100);
                 stage.setY(100);
+                CameraController controller = loader.getController();
+                stage.setOnCloseRequest(controller.handlerClose);
                 stage.show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -917,7 +915,7 @@ public class MainController implements Initializable, RecordController {
             if( ButtonType.OK.equals(result.get()) ) {
                 //terminateGobblers();
                 remote.stop();
-                previewer.stop();
+                //previewer.stop();
                 if( recorder.isRecording() ){
                     recorder.stop();
                     chronometer.stop();
@@ -980,5 +978,42 @@ public class MainController implements Initializable, RecordController {
             volumeChecker.setLufsProperty(lufs);
             volumeChecker.start();
         });
+    }
+
+
+    protected final void renderFrame() {
+        Memory[] nativeBuffers = mediaPlayerComponent.getMediaPlayer().lock();
+        if (nativeBuffers != null) {
+            // FIXME there may be more efficient ways to do this...
+            // Since this is now being called by a specific rendering time, independent of the native video callbacks being
+            // invoked, some more defensive conditional checks are needed
+            Memory nativeBuffer = nativeBuffers[0];
+            if (nativeBuffer != null) {
+                ByteBuffer byteBuffer = nativeBuffer.getByteBuffer(0, nativeBuffer.size());
+                BufferFormat bufferFormat = ((DefaultDirectMediaPlayer) mediaPlayerComponent.getMediaPlayer()).getBufferFormat();
+                if (bufferFormat.getWidth() > 0 && bufferFormat.getHeight() > 0) {
+                    pixelWriter.setPixels(0, 0, bufferFormat.getWidth(), bufferFormat.getHeight(), byteBgraInstance, byteBuffer, bufferFormat.getPitches()[0]);
+                }
+            }
+        }
+        mediaPlayerComponent.getMediaPlayer().unlock();
+    }
+
+    private class LODEMediaPlayerComponent extends DirectMediaPlayerComponent {
+
+        public LODEMediaPlayerComponent() {
+            super(new PreviewBufferFormatCallback());
+        }
+    }
+    private class PreviewBufferFormatCallback implements BufferFormatCallback {
+
+        @Override
+        public BufferFormat getBufferFormat(int sourceWidth, int sourceHeight) {
+            Platform.runLater(() -> {
+                canvas.setWidth(WIDTH);
+                canvas.setHeight(HEIGHT);
+            });
+            return new RV32BufferFormat(WIDTH, HEIGHT);
+        }
     }
 }

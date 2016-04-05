@@ -5,6 +5,8 @@ import it.unitn.lode2.camera.Camera;
 import it.unitn.lode2.camera.Capability;
 import it.unitn.lode2.camera.Previewer;
 import it.unitn.lode2.ui.skin.AwesomeIcons;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -13,7 +15,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
+import javafx.stage.WindowEvent;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,10 +51,15 @@ public class CameraController implements Initializable {
     @FXML private ToggleButton view3ToggleButton;
     @FXML private ToggleButton view4ToggleButton;
 
+    @FXML private ImageView previewImageView;
+
     private Camera camera;
 
     private List<Button> presetToggleButtons;
     private List<ToggleButton> viewToggleButtons;
+
+    private Previewer previewer;
+    private Timeline timeline;
 
 
 
@@ -59,6 +70,15 @@ public class CameraController implements Initializable {
         presetToggleButtons = Arrays.asList(preset1ToggleButton, preset2ToggleButton, preset3ToggleButton, preset4ToggleButton);
         viewToggleButtons = Arrays.asList(view1ToggleButton, view2ToggleButton, view3ToggleButton, view4ToggleButton);
         configHandlers();
+
+        previewer = IOC.queryUtility(Previewer.class);
+
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100), event -> refreshPreview()));
+
+        previewer.start();
+        timeline.play();
     }
 
     private void configHandlers() {
@@ -367,6 +387,21 @@ public class CameraController implements Initializable {
                     }
                 }
             }
+        }
+    };
+
+    private void refreshPreview() {
+        try {
+            previewer.snapshot().ifPresent(s -> previewImageView.setImage(new Image(s)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public EventHandler<WindowEvent> handlerClose = new EventHandler<WindowEvent>() {
+        @Override
+        public void handle(WindowEvent event) {
+            previewer.stop();
         }
     };
 
