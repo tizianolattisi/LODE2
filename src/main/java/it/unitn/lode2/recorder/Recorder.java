@@ -35,4 +35,6 @@ public interface Recorder {
     Optional<InputStream> outputLog();
 
     Optional<InputStream> errorLog();
+
+    String getUrl();
 }

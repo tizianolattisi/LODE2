@@ -145,6 +145,9 @@ public class IPRecorderImpl implements Recorder {
         return Optional.empty();
     }
 
+    public String getUrl() {
+        return url;
+    }
 
     private void startProcess() throws IOException {
         // fragment file name

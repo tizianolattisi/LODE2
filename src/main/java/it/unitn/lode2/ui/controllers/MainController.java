@@ -373,7 +373,7 @@ public class MainController implements Initializable, RecordController {
         byteBgraInstance = PixelFormat.getByteBgraInstance();
         previewPane.getChildren().add(canvas);
         mediaPlayerComponent = new LODEMediaPlayerComponent(canvas, WIDTH, HEIGHT);
-        mediaPlayerComponent.getMediaPlayer().playMedia("rtsp://admin:admin@192.168.102.50:88/videoMain");
+        mediaPlayerComponent.getMediaPlayer().playMedia(recorder.getUrl());
         mediaPlayerComponent.getMediaPlayer().setPosition(0.7f);
 
     }

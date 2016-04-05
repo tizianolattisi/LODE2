@@ -1,7 +1,9 @@
 package it.unitn.lode2.ui.controllers;
 
 import com.sun.jna.Memory;
+import it.unitn.lode2.IOC;
 import it.unitn.lode2.camera.ipcam.LODEMediaPlayerComponent;
+import it.unitn.lode2.recorder.Recorder;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -56,11 +58,12 @@ public class SecondDisplay extends Stage {
         browser.getChildren().add(addresses);
         browser.getChildren().add(browserWebView);
 
+        String url = IOC.queryUtility(Recorder.class).getUrl();
 
         pixelWriter = previewCanvas.getGraphicsContext2D().getPixelWriter();
         byteBgraInstance = PixelFormat.getByteBgraInstance();
-        mediaPlayerComponent = new LODEMediaPlayerComponent(previewCanvas, 800, 600);
-        mediaPlayerComponent.getMediaPlayer().playMedia("rtsp://admin:admin@192.168.102.50:88/videoMain");
+        mediaPlayerComponent = new LODEMediaPlayerComponent(previewCanvas, ((Double) bounds.getWidth()).intValue(), ((Double) bounds.getHeight()).intValue());
+        mediaPlayerComponent.getMediaPlayer().playMedia(url);
         mediaPlayerComponent.getMediaPlayer().setPosition(0.7f);
 
         timeline = new Timeline();
