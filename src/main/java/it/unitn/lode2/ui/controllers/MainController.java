@@ -73,6 +73,8 @@ import java.util.function.Function;
  */
 public class MainController implements Initializable, RecordController {
 
+    private Boolean end=Boolean.FALSE;
+
     private Font fontAwesome;
 
     private final String RECORDING_COLOR = "red";
@@ -715,9 +717,9 @@ public class MainController implements Initializable, RecordController {
 
     private void refreshRecorderButtons() {
         Recorder recorder = IOC.queryUtility(Recorder.class);
-        recordToggleButton.setDisable(!recorder.isIdle());
-        pauseToggleButton.setDisable(recorder.isIdle());
-        stopButton.setDisable(recorder.isIdle());
+        recordToggleButton.setDisable(end || !recorder.isIdle());
+        pauseToggleButton.setDisable(end || recorder.isIdle());
+        stopButton.setDisable(end || recorder.isIdle());
     }
 
     private EventHandler<ActionEvent> handlerPause = new EventHandler<ActionEvent>() {
@@ -750,19 +752,26 @@ public class MainController implements Initializable, RecordController {
         @Override
         public void handle(ActionEvent event) {
             if( recorder.isRecording() || recorder.isPaused() ){
-                recorder.stop();
-                chronometer.stop();
-                long length = chronometer.elapsed() / 1000;
-                System.out.println(length);
-                lecture.setVideoLength(length);
-                lecture.save();
-                //terminateGobblers();
-                //logsController.stop();
-                recordingLabel.setText(IDLE_LABEL);
-                recordingLabel.setTextFill(Paint.valueOf(IDLE_COLOR));
-                recordToggleButton.setSelected(false);
-                pauseToggleButton.setSelected(false);
-                //volumeChecker.terminate();
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirm stop");
+                alert.setHeaderText("Do you really want to stop the recording session?");
+                alert.setContentText("The current recording session will end, and the window will be closed.\n\n");
+                Optional<ButtonType> result = alert.showAndWait();
+                if( ButtonType.OK.equals(result.get()) ) {
+                    recorder.stop();
+                    chronometer.stop();
+                    long length = chronometer.elapsed() / 1000;
+                    lecture.setVideoLength(length);
+                    lecture.save();
+                    //terminateGobblers();
+                    //logsController.stop();
+                    recordingLabel.setText(IDLE_LABEL);
+                    recordingLabel.setTextFill(Paint.valueOf(IDLE_COLOR));
+                    recordToggleButton.setSelected(false);
+                    pauseToggleButton.setSelected(false);
+                    //volumeChecker.terminate();
+                    end = Boolean.TRUE;
+                }
             }
             refreshRecorderButtons();
         }
